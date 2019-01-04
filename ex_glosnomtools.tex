@@ -1,12 +1,14 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = fr_CA
 
+% ajout de l'option nohyperref pour charger le package manuellement 
+% voir https://gitlab.com/vigou3/ulthese/issues/2
 \documentclass[PhD,nohyperref,english,french]{ulthese}
 %% ===================== packages ============================================
 \ifxetex\else \usepackage[utf8]{inputenc} \fi
 \usepackage{amsmath,amsfonts,amssymb,mathtools,siunitx,etoolbox}
 \usepackage{hyperref} % dernier package chargé sauf glossaries
-\usepackage[toc,noredefwarn,numberedsection=nameref]{glossaries}
+\usepackage[noredefwarn]{glossaries} % aucun warning remplacement theglossary memoir
 \usepackage{glosnomtools}
 %% ===================== preamble ============================================
 %% ------------- glossaries ---------------------------------
@@ -16,11 +18,6 @@
 \loadglsentries{ex_glosnomtools_glos}
 \glssetwidest{LOOP}  % nomenclature widest name
 %% ------------- ulthese ------------------------------------
-\frenchbsetup{%
-	StandardItemizeEnv=true,        % format standard des listes
-	ThinSpaceInFrenchNumbers=true,  % espace fine dans les nombres
-	og=«, fg=»                      % caractères « et » sont les guillemets
-}
 \titre{Exemple d'une nomenclature mathématique avec \texttt{glossaries} et \texttt{glossnomtools} dans la classe \texttt{ulthese}}
 \auteur{Francis Gagnon}
 \programme{Doctorat en génie électrique}
@@ -33,19 +30,22 @@
 
 \pagetitre
 
-\tableofcontents
-
 \begin{SingleSpace}
 \abnormalparskip{0pt}
 \printglossary[title=Nomenclature]
-\label{chap.nomenclature}
 \end{SingleSpace}
 \cleardoublepage
-
 
 \mainmatter                     % corps du document
 
 \chapter{Test de \texttt{glosnomtools}}
+
+La compilation de ce document ce fait en exécutant les commandes dans l'ordre suivante :
+\begin{enumerate}
+	\item \texttt{pdflatex}
+	\item \texttt{makeglossaries}
+	\item \texttt{pdflatex}
+\end{enumerate}
 
 Test \glsub{d}{v} et \gls{LOOP} et \glsub{rho}{w} et \glsub{mu}{v}
 
