@@ -1,7 +1,13 @@
-\ProvidesPackage{glosnomtools}[2019/01/04 Mathematical nomenclature tools for glossaries package (Francis Gagnon)]
+\ProvidesPackage{glosnomtools}[%
+2019/01/04 Math nomenclature tools for glossaries package (Francis Gagnon)]
 \RequirePackage{glossaries,etoolbox,mathtools,siunitx,amsmath,amsfonts,amssymb}
 
-\newglossarystyle{alttree_mod_french}{%
+% ===========================================================================
+% =================== GLOSSARIES STYLES =====================================
+% ===========================================================================
+
+\newglossarystyle{nomencl_french}
+{%
 	\setglossarystyle{alttree}% based on alttree predefined style
 	\renewcommand*{\glossentry}[2]
 	{%
@@ -44,25 +50,20 @@
 }%
 
 
+% ===========================================================================
+% =================== MACROS ================================================
+% ===========================================================================
 
-
-
-
-
-
-
-
+% ---------- dif -------------------------------------------------------
+%  shortcut for upright d (differential)
+\newcommand*{\dif}{\mathrm{d}}
 
 % ---------- stkout ----------------------------------------------------
 % "strikout" line in the middle of equations
 \newcommand*{\stkout}[1] %
 {\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
 
-% ---------- dif -------------------------------------------------------
-%  shortcut for upright d (differential)
-\newcommand*{\dif}{\mathrm{d}}
-
-% ---------- sbu --------------------------------------------------------
+% ---------- sbu -------------------------------------------------------
 % "sbu" macro : shortcut for upright indices (ISO/NIST standard)
 \newcommand*{\sbu}[1]{_\mathrm{#1}}
 
@@ -74,54 +75,81 @@
 \mathchardef\qtmark=\mathcode`"
 \AtBeginDocument{\mathcode`"=\string"8000}
 
-
 % ---------- glsac ------------------------------------------------------
 % show math symbol in glossaries without subscript
 % optional first argument for adding math accents ("dot" or "tilde")
 \newcommand*{\glsac}[2][]%
 {%
-	\ifstrempty{#1}%
+	\ifstrempty{#1}{\def\@myglsmacro{\gls}}%
 	{%
-		\ensuremath{\gls{#2}}%
+		\glsadd{op.#1}% add specified operator to nomenclature
+		% dot accented symbol is provided in user1:
+		\ifstrequal{#1}{dot}{\def\@myglsmacro{\glsuseri}}{}%
+		% bar accented symbol is provided in user2:
+		\ifstrequal{#1}{bar}{\def\@myglsmacro{\glsuserii}}{}%
+		% hat accented symbol is provided in user3:
+		\ifstrequal{#1}{hat}{\def\@myglsmacro{\glsuseriii}}{}%
+		% tilde accented symbol is provided in user4:
+		\ifstrequal{#1}{tilde}{\def\@myglsmacro{\glsuseriv}}{}%
 	}%
-	{%
-		\ifstrequal{#1}{dot}%
-		{%	dot accented symbol is provided in user1 field:
-			\ensuremath{\glsuseri{#2}}%
-			\glsadd{dot}%
-		}%
-		{%	tilde accented symbol is provided in user2 field:
-			\ensuremath{\glsuserii{#2}}%
-			\glsadd{tilde}%
-		}%
-		\glsadd{#2}%
-	}%
+	\@myglsmacro{#2}
 }%
 
 % ---------- glsvi -------------------------------------------------------
 % show $a_b$ with link to "a" and variable "b" (italized indice)
-% optional first argument for adding dot accent 
-% on "a" or "b" ("dot1" or "dot2")
-\newcommand*{\glsvi}[3][]%
+% optional 1st and 2nd argument for adding accent on "a" and "b"
+\newcommand*{\glsvi}[1][]%
 {%
-	\ifstrempty{#1}%
+	\def\@firAcc{{#1}}%
+	\glsvi@RELAY%
+}%
+\newcommand*{\glsvi@RELAY}[3][]% relay macros for 2 optional args.
+{%
+	\def\@secAcc{{#1}}%
+	\ifstrempty{\@firAcc}%
 	{%
 		\ensuremath{\gls{#2}[_{\gls{#3}}]}%
 	}%
 	{%
-		\ifstrequal{#1}{dot1}%
-		{%
-			\ensuremath{\glsuseri{#2}[_{\gls{#3}}]}%
-			\glsadd{#2}%
-			\glsadd{dot}%
-		}%
+		\ifstrequal{\@firAcc}{dot}%
 		{%
 			\ensuremath{\gls{#2}[_{\glsuseri{#3}}]}%
-			\glsadd{#3}%
-			\glsadd{dot}%
+			\glsadd{op.dot}%
+		}%
+		{%
+			\ensuremath{\glsuseri{#2}[_{\gls{#3}}]}%
+			\glsadd{op.dot}%
 		}%
 	}%
 }%
+
+
+
+
+
+
+
+
+
+
+
+\newcommand{\blah}[1][]{%
+	\def\ArgI{{#1}}%
+	\blahRelay%
+}
+\newcommand{\blahRelay}[3][]{%
+	\ArgI #1$#2_#3$%
+}
+
+
+
+
+
+
+
+
+
+
 
 % ---------- glsub -------------------------------------------------------
 % show $a!b$ with link to "a" and "ss.b" (upright indice)
@@ -136,13 +164,12 @@
 		\ifstrequal{#1}{dot}%
 		{%  dot accented symbol provided user1 field:
 			\ensuremath{\glsuseri{#2}[\sbu{\gls{ss.#3}}]}%
-			\glsadd{dot}%
+			\glsadd{op.dot}%
 		}%
 		{%  tilde accented symbol in user2 field:
 			\ensuremath{\glsuserii{#2}[\sbu{\gls{ss.#3}}]}%
-			\glsadd{tilde}%
+			\glsadd{op.tilde}%
 		}%
-		\glsadd{#2}%
 	}%
 }%
 
@@ -159,13 +186,13 @@
 		\ifstrequal{#1}{dot}%
 		{%  dot accented symbol provided user1 field:
 			\ensuremath{\glsuseri{#2}[\sbu{\gls{ss.#3},\gls{ss.#4}}]}%
-			\glsadd{dot}%
+			\glsadd{op.dot}%
 		}%
 		{%  tilde accented symbol in user2 field:
 			\ensuremath{\glsuserii{#2}[\sbu{\gls{ss.#3},\gls{ss.#4}}]}%
-			\glsadd{tilde}%
+			\glsadd{op.tilde}%
 		}%
-		\glsadd{#2}%
 	}%
-	\glsadd{comma}%
+	\glsadd{op.comma}%
 }%
+

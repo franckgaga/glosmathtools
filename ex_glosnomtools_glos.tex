@@ -1,8 +1,10 @@
 % ==================================================================
 % ======================= MATH SYMBOLS =============================
 % ==================================================================
-% user1 field : accentuated symbol with dot (time rate variable)
-% user2 field : accentuated symbol with tilde (space average)
+% user1 field : accentuated symbol with dot 
+% user2 field : accentuated symbol with bar 
+% user3 field : accentuated symbol with hat 
+% user4 field : accentuated symbol with tilde 
 % symbol field : units or dimension (for matrices)
 % user6 field : description in french
 % TODO : sans dimension ou dimensionless (voir theta)
@@ -17,12 +19,11 @@
 \newglossaryentry{latin}{name={latin},
 	description={Latin symbols},user6={Symboles latins},sort=1}
 {%	
-	\newglossaryentry{t}{
-		name=\ensuremath{t},
-		description={time},
-		symbol=\si{\second},
-		user6={temps},
-		sort=t,
+	\newglossaryentry{k}{
+		name=\ensuremath{k},
+		description={discrete time},
+		user6={temps discret},
+		sort=k,
 		parent=latin,
 	}
 	\newglossaryentry{T}{
@@ -31,7 +32,7 @@
 		symbol=\si{\kelvin},
 		user6={température},
 		sort=T,
-		user2=\ensuremath{\widetilde{T}},
+		user2=\ensuremath{\overline{T}},
 		parent=latin,
 	}
 	\newglossaryentry{z}{
@@ -50,20 +51,24 @@
 		sort=d,
 		parent=latin,
 	}
-	\newglossaryentry{g}{
-		name=\ensuremath{g},
-		description={gravitational acceleration},
-		symbol=\si{\meter\per\second\squared},
-		user6={accélération gravitationnelle},
-		sort=g,
-		parent=latin,
-	}
 	\newglossaryentry{D}{
 		name=\ensuremath{D},
 		description={molecular diffusion coefficient},
 		symbol=\si{\meter\squared\per\second},
 		user6={coefficient de diffusion moléculaire},
 		sort=D,
+		parent=latin,
+	}
+	\newglossaryentry{m}{
+		name=\ensuremath{m},
+		description={mass},
+		symbol=\si{\kilogram},
+		user6={masse},
+		sort=m,
+		user1=\ensuremath{\dot{m}},
+		user2=\ensuremath{\overline{m}},
+		user3=\ensuremath{\widehat{m}},
+		user4=\ensuremath{\widetilde{m}},
 		parent=latin,
 	}
 }%
@@ -98,19 +103,11 @@
 \newglossaryentry{vecMat}{name={vecMat},
 	description={Vectors and matrices},user6={Vecteurs et matrices},sort=3}
 {%
-	\newglossaryentry{mat.y}{
-		name=\ensuremath{\mathbf{y}},
-		description={model outputs},
+	\newglossaryentry{mat.b}{
+		name=\ensuremath{\mathbf{b}},
+		description={vector},
 		symbol=$(2 \times 1)$,
-		user6={sorties du modèle},
-		sort=y,
-		parent=vecMat,
-	}
-	\newglossaryentry{mat.u}{
-		name=\ensuremath{\mathbf{u}},
-		description={model inputs},
-		symbol=$(2 \times 1)$,
-		user6={entrées du modèle},
+		user6={vecteur},
 		sort=u,
 		parent=vecMat,
 	}
@@ -155,7 +152,7 @@
 \newglossaryentry{operator}{name={operator},
 	description={Operators},user6={Opérateurs},sort=5}
 {%
-	\newglossaryentry{dot}{
+	\newglossaryentry{op.dot}{
 		name={$\dot{\bullet}$},
 		description={flow rate of $\bullet$},
 		symbol=\si{\per\second},
@@ -163,14 +160,14 @@
 		sort=01,
 		parent=operator
 	}
-	\newglossaryentry{tilde}{
-		name={$\widetilde{\bullet}$},
-		description={space-average of $\bullet$ along the expanded bed height},
-		user6={moyenne spatiale de $\bullet$ sur la hauteur du lit expansé},
+	\newglossaryentry{op.bar}{
+		name={$\overline{\bullet}$},
+		description={average of $\bullet$},
+		user6={moyenne de $\bullet$},
 		sort=02,
 		parent=operator
 	}
-	\newglossaryentry{comma}{
+	\newglossaryentry{op.comma}{
 		name={$\bullet$,$\circ$},
 		description={in subscript : from region $\bullet$ to region $\circ$},
 		user6={en indice : de la région $\bullet$ vers la région $\circ$},
