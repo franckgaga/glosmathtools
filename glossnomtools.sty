@@ -1,0 +1,169 @@
+\ProvidesPackage{glossnomtools}[2019/01/04 Mathematical nomenclature tools for glossaries package (Francis Gagnon)]
+\RequirePackage{glossaries,etoolbox,amsmath,amsfonts,amssymb}
+
+\newglossarystyle{alttree_mod_french}{%
+	\setglossarystyle{alttree}% based on alttree predefined style
+	\renewcommand*{\glossentry}[2]
+	{%
+		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
+		\glsentryitem{##1}%
+		\glstarget{##1}{\textbf{\glsuservi*{##1}}}\par%
+	}%
+	\renewcommand*{\subglossentry}[3]
+	{%
+		\settowidth{\glstreeindent}{\@glswidestname}%
+		\glstreenamebox{\glstreeindent}
+		{%
+			\glsentryitem{##2}%
+			\glstarget{##2}{\glossentryname{##2}}%
+		}%
+		\space%
+		\glsuservi*{##2}%
+		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
+		\par%
+	}%
+}%
+
+\newacronymstyle{long-short-modfr}
+{%
+	\GlsUseAcrEntryDispStyle{long-short}%
+}%
+{%
+	\GlsUseAcrStyleDefs{long-short}%	
+	\renewcommand*{\genacrfullformat}[2]{%
+		\glsuservi*{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})%
+	}%
+}%
+
+\newacronymstyle{long-short-en}
+{%
+	\GlsUseAcrEntryDispStyle{long-short}%
+}%
+{%
+	\GlsUseAcrStyleDefs{long-short}%	
+}%
+
+
+
+
+
+
+
+
+
+
+
+% ---------- stkout ----------------------------------------------------
+% "strikout" line in the middle of equations
+\newcommand*{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
+
+% ---------- dif -------------------------------------------------------
+%  shortcut for upright d (differential)
+\newcommand*{\dif}{\mathrm{d}}
+
+% ---------- sbu --------------------------------------------------------
+% "sbu" macro : shortcut for upright indices (ISO/NIST standard)
+\newcommand*{\sbu}[1]{_\mathrm{#1}}
+
+% ---------- " in math mode --------------------------------------------
+% define char '"' as shortcut for "sbu" macro in math mode
+% "qtmark" macro print an quotation mark
+\begingroup\lccode`~=`"
+\lowercase{\endgroup\def~}#1{\sbu{#1}}
+\mathchardef\qtmark=\mathcode`"
+\AtBeginDocument{\mathcode`"=\string"8000}
+
+
+% ---------- glsac ------------------------------------------------------
+% show math symbol in glossaries without subscript
+% optional first argument for adding math accents ("dot" or "tilde")
+\newcommand*{\glsac}[2][]%
+{%
+	\ifstrempty{#1}%
+	{%
+		\ensuremath{\gls{#2}}%
+	}%
+	{%
+		\ifstrequal{#1}{dot}%
+		{%	dot accented symbol is provided in user1 field:
+			\ensuremath{\glsuseri{#2}}%
+			\glsadd{dot}%
+		}%
+		{%	tilde accented symbol is provided in user2 field:
+			\ensuremath{\glsuserii{#2}}%
+			\glsadd{tilde}%
+		}%
+		\glsadd{#2}%
+	}%
+}%
+
+% ---------- glsvi -------------------------------------------------------
+% show $a_b$ with link to "a" and variable "b" (italized indice)
+% optional first argument for adding dot accent on "a" or "b" ("dot1" or "dot2")
+\newcommand*{\glsvi}[3][]%
+{%
+	\ifstrempty{#1}%
+	{%
+		\ensuremath{\gls{#2}[_{\gls{#3}}]}%
+	}%
+	{%
+		\ifstrequal{#1}{dot1}%
+		{%
+			\ensuremath{\glsuseri{#2}[_{\gls{#3}}]}%
+			\glsadd{#2}%
+			\glsadd{dot}%
+		}%
+		{%
+			\ensuremath{\gls{#2}[_{\glsuseri{#3}}]}%
+			\glsadd{#3}%
+			\glsadd{dot}%
+		}%
+	}%
+}%
+
+% ---------- glsub -------------------------------------------------------
+% show $a!b$ with link to "a" and "ss.b" (upright indice)
+% optional first argument for adding math accents on a ("dot" or "tilde")
+\newcommand*{\glsub}[3][]%
+{%
+	\ifstrempty{#1}%
+	{%
+		\ensuremath{\gls{#2}[\sbu{\gls{ss.#3}}]}%
+	}%
+	{%
+		\ifstrequal{#1}{dot}%
+		{%  dot accented symbol provided user1 field:
+			\ensuremath{\glsuseri{#2}[\sbu{\gls{ss.#3}}]}%
+			\glsadd{dot}%
+		}%
+		{%  tilde accented symbol in user2 field:
+			\ensuremath{\glsuserii{#2}[\sbu{\gls{ss.#3}}]}%
+			\glsadd{tilde}%
+		}%
+		\glsadd{#2}%
+	}%
+}%
+
+% ---------- glsubs -------------------------------------------------------
+% show $a!{b,c}$ with link "a", "ss.b", comma operator and "ss.c"
+% optional first argument for adding math accents on a ("dot" or "tilde")
+\newcommand*{\glsubs}[4][]%
+{%
+	\ifstrempty{#1}%
+	{%
+		\ensuremath{\gls{#2}[\sbu{\gls{ss.#3},\gls{ss.#4}}]}%
+	}%
+	{%
+		\ifstrequal{#1}{dot}%
+		{%  dot accented symbol provided user1 field:
+			\ensuremath{\glsuseri{#2}[\sbu{\gls{ss.#3},\gls{ss.#4}}]}%
+			\glsadd{dot}%
+		}%
+		{%  tilde accented symbol in user2 field:
+			\ensuremath{\glsuserii{#2}[\sbu{\gls{ss.#3},\gls{ss.#4}}]}%
+			\glsadd{tilde}%
+		}%
+		\glsadd{#2}%
+	}%
+	\glsadd{comma}%
+}%
