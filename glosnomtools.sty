@@ -1,11 +1,12 @@
-\ProvidesPackage{glossnomtools}[2019/01/04 Mathematical nomenclature tools for glossaries package (Francis Gagnon)]
-\RequirePackage{glossaries,etoolbox,amsmath,amsfonts,amssymb}
+\ProvidesPackage{glo
+	snomtools}[2019/01/04 Mathematical nomenclature tools for glossaries package (Francis Gagnon)]
+\RequirePackage{glossaries,etoolbox,mathtools,siunitx,amsmath,amsfonts,amssymb}
 
 \newglossarystyle{alttree_mod_french}{%
 	\setglossarystyle{alttree}% based on alttree predefined style
 	\renewcommand*{\glossentry}[2]
 	{%
-		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
+		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par\nopagebreak}%
 		\glsentryitem{##1}%
 		\glstarget{##1}{\textbf{\glsuservi*{##1}}}\par%
 	}%

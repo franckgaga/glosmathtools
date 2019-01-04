@@ -1,0 +1,53 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = fr_CA
+
+\documentclass[PhD,nohyperref,english,french]{ulthese}
+%% ===================== packages ============================================
+\ifxetex\else \usepackage[utf8]{inputenc} \fi
+\usepackage{amsmath,amsfonts,amssymb,mathtools,siunitx,etoolbox}
+\usepackage{hyperref} % dernier package chargé sauf glossaries
+\usepackage[toc,noredefwarn,numberedsection=nameref]{glossaries}
+\usepackage{glosnomtools}
+%% ===================== preamble ============================================
+%% ------------- glossaries ---------------------------------
+\makeglossaries
+\setglossarystyle{alttree_mod_french}
+\setacronymstyle{long-short-modfr}
+\loadglsentries{ex_glosnomtools_glos}
+\glssetwidest{LOOP}  % nomenclature widest name
+%% ------------- ulthese ------------------------------------
+\frenchbsetup{%
+	StandardItemizeEnv=true,        % format standard des listes
+	ThinSpaceInFrenchNumbers=true,  % espace fine dans les nombres
+	og=«, fg=»                      % caractères « et » sont les guillemets
+}
+\titre{Exemple d'une nomenclature mathématique avec \texttt{glossaries} et \texttt{glossnomtools} dans la classe \texttt{ulthese}}
+\auteur{Francis Gagnon}
+\programme{Doctorat en génie électrique}
+\annee{2018}
+%% ============================================================================
+
+\begin{document}
+
+\frontmatter                    % pages liminaires
+
+\pagetitre
+
+\tableofcontents
+
+\begin{SingleSpace}
+\abnormalparskip{0pt}
+\printglossary[title=Nomenclature]
+\label{chap.nomenclature}
+\end{SingleSpace}
+\cleardoublepage
+
+
+\mainmatter                     % corps du document
+
+\chapter{Test de \texttt{glosnomtools}}
+
+Test \glsub{d}{v} et \gls{LOOP} et \glsub{rho}{w} et \glsub{mu}{v}
+
+
+\end{document}

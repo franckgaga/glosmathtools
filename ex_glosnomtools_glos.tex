@@ -1,0 +1,225 @@
+% ==================================================================
+% ======================= MATH SYMBOLS =============================
+% ==================================================================
+% user1 field : accentuated symbol with dot (time rate variable)
+% user2 field : accentuated symbol with tilde (space average)
+% symbol field : units or dimension (for matrices)
+% user6 field : description in french
+% TODO : sans dimension ou dimensionless (voir theta)
+% TODO : nomenclature bilingue
+% TODO : permettre une longue descriptio avec indentation (voir psi)
+% TODO : natbib changement de language local
+
+
+% ------------------------------------------------------------------
+% ----------------------- LATIN SYMBOLS ----------------------------
+% ------------------------------------------------------------------
+
+\newglossaryentry{latin}{name={latin},
+	description={Latin symbols},user6={Symboles latins},sort=1}
+{%	
+	\newglossaryentry{t}{
+		name=\ensuremath{t},
+		description={time},
+		symbol=\si{\second},
+		user6={temps},
+		sort=t,
+		parent=latin,
+	}
+	\newglossaryentry{T}{
+		name=\ensuremath{T},
+		description={temperature},
+		symbol=\si{\kelvin},
+		user6={température},
+		sort=T,
+		user2=\ensuremath{\widetilde{T}},
+		parent=latin,
+	}
+	\newglossaryentry{z}{
+		name=\ensuremath{z},
+		description={height},
+		symbol=\si{\meter},
+		user6={hauteur},
+		sort=z,
+		parent=latin,
+	}
+	\newglossaryentry{d}{
+		name=\ensuremath{d},
+		description={diameter},
+		symbol=\si{\meter},
+		user6={diamètre},
+		sort=d,
+		parent=latin,
+	}
+	\newglossaryentry{g}{
+		name=\ensuremath{g},
+		description={gravitational acceleration},
+		symbol=\si{\meter\per\second\squared},
+		user6={accélération gravitationnelle},
+		sort=g,
+		parent=latin,
+	}
+	\newglossaryentry{D}{
+		name=\ensuremath{D},
+		description={molecular diffusion coefficient},
+		symbol=\si{\meter\squared\per\second},
+		user6={coefficient de diffusion moléculaire},
+		sort=D,
+		parent=latin,
+	}
+}%
+
+% ------------------------------------------------------------------
+% ---------------------- GREEK SYMBOLS -----------------------------
+% ------------------------------------------------------------------
+\newglossaryentry{greek}{name={greek},
+	description={Greek symbols},user6={Symboles grecs},sort=2}
+{%
+	\newglossaryentry{rho}{
+		name=\ensuremath{\rho},
+		description={density},
+		symbol=\si{\kilogram\per\meter\cubed},
+		user6={masse volumique},
+		sort=17,
+		parent=greek,
+	}
+	\newglossaryentry{mu}{
+		name=\ensuremath{\mu},
+		description={dynamic viscosity},
+		symbol=\si{\kilogram\per\meter\per\second},
+		user6={viscosité dynamique},
+		sort=12,
+		parent=greek,
+	}
+}%
+
+% ------------------------------------------------------------------
+% ---------------------- VECTORS AND MATRICES ----------------------
+% ------------------------------------------------------------------
+\newglossaryentry{vecMat}{name={vecMat},
+	description={Vectors and matrices},user6={Vecteurs et matrices},sort=3}
+{%
+	\newglossaryentry{mat.y}{
+		name=\ensuremath{\mathbf{y}},
+		description={model outputs},
+		symbol=$(5 \times 1)$,
+		user6={sorties du modèle},
+		sort=y,
+		parent=vecMat,
+	}
+	\newglossaryentry{mat.u}{
+		name=\ensuremath{\mathbf{u}},
+		description={model inputs},
+		symbol=$(4 \times 1)$,
+		user6={entrées du modèle},
+		sort=u,
+		parent=vecMat,
+	}
+	\newglossaryentry{mat.x}{
+		name=\ensuremath{\mathbf{x}},
+		description={model states},
+		symbol=$(5 \times 1)$,
+		user6={états du modèle},
+		sort=x,
+		parent=vecMat,
+	}
+	\newglossaryentry{mat.f}{
+		name=\ensuremath{\mathbf{f}},
+		description={model state derivative function},
+		symbol=$(5 \times 1)$,
+		user6={fonction de dérivé des états du modèle},
+		sort=f,
+		parent=vecMat,
+	}
+	\newglossaryentry{mat.h}{
+		name=\ensuremath{\mathbf{h}},
+		description={model output function},
+		symbol=$(5 \times 1)$,
+		user6={fonction de sortie du modèle},
+		sort=h,
+		parent=vecMat,
+	}
+	\newglossaryentry{mat.A}{
+		name=\ensuremath{\mathbf{A}},
+		description={equation system coefficients},
+		symbol=$(2 \times 2)$,
+		user6={coefficients du système d'équations},
+		sort=A,
+		parent=vecMat,
+	}
+	\newglossaryentry{mat.b}{
+		name=\ensuremath{\mathbf{b}},
+		description={equation system constants},
+		symbol=$(2 \times 1)$,
+		user6={constantes du système d'équations},
+		sort=b,
+		parent=vecMat,
+	}
+}%
+% ------------------------------------------------------------------
+% ---------------------- SUBSCRIPTS --------------------------------
+% ------------------------------------------------------------------
+\newglossaryentry{subscript}{name={subscript},
+	description={Subscripts},user6={Indices},sort=4}
+{%
+	\newglossaryentry{ss.w}{
+		name=w,
+		description={water},
+		user6={eau},
+		parent=subscript
+	}
+	\newglossaryentry{ss.a}{
+		name=a,
+		description={air},
+		user6={air},
+		parent=subscript
+	}
+	\newglossaryentry{ss.v}{
+		name=v,
+		description={vessel},
+		user6={réservoir},
+		parent=subscript
+	}
+}%
+
+% ------------------------------------------------------------------
+% ---------------------- OPERATORS --------------------------------
+% ------------------------------------------------------------------
+\newglossaryentry{operator}{name={operator},
+	description={Operators},user6={Opérateurs},sort=5}
+{%
+	\newglossaryentry{dot}{
+		name={$\dot{\bullet}$},
+		description={flow rate of $\bullet$},
+		symbol=\si{\per\second},
+		user6={débit de $\bullet$},
+		sort=01,
+		parent=operator
+	}
+	\newglossaryentry{tilde}{
+		name={$\widetilde{\bullet}$},
+		description={space-average of $\bullet$ along the expanded bed height},
+		user6={moyenne spatiale de $\bullet$ sur la hauteur du lit expansé},
+		sort=02,
+		parent=operator
+	}
+	\newglossaryentry{comma}{
+		name={$\bullet$,$\circ$},
+		description={in subscript : from region $\bullet$ to region $\circ$},
+		user6={en indice : de la région $\bullet$ vers la région $\circ$},
+		sort=03,
+		parent=operator
+	}
+}%
+
+% ==================================================================
+% ========================= ACRONYMS ===============================
+% ==================================================================
+\newglossaryentry{abbrv}{name={abbrv},
+	description={Abbreviations},user6={Abréviations},sort=6}
+{%
+	\newacronym[parent=abbrv,user6={équation différentielle ordinaire}]%
+		{ODE}{ODE}{ordinary differential equation}
+	\newacronym[parent=abbrv,user6={laboratoire d'observation et d'optimisation des procédés}]%
+		{LOOP}{LOOP}{process observation and optimization laboratory}
+}%
