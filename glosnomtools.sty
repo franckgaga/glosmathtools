@@ -5,9 +5,9 @@
 	\setglossarystyle{alttree}% based on alttree predefined style
 	\renewcommand*{\glossentry}[2]
 	{%
-		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par\nopagebreak}%
+		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
 		\glsentryitem{##1}%
-		\glstarget{##1}{\textbf{\glsuservi*{##1}}}\par%
+		\glstarget{##1}{\textbf{\glsuservi*{##1}}}\par\nopagebreak%
 	}%
 	\renewcommand*{\subglossentry}[3]
 	{%
@@ -55,7 +55,8 @@
 
 % ---------- stkout ----------------------------------------------------
 % "strikout" line in the middle of equations
-\newcommand*{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
+\newcommand*{\stkout}[1] %
+{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
 
 % ---------- dif -------------------------------------------------------
 %  shortcut for upright d (differential)
@@ -99,7 +100,8 @@
 
 % ---------- glsvi -------------------------------------------------------
 % show $a_b$ with link to "a" and variable "b" (italized indice)
-% optional first argument for adding dot accent on "a" or "b" ("dot1" or "dot2")
+% optional first argument for adding dot accent 
+% on "a" or "b" ("dot1" or "dot2")
 \newcommand*{\glsvi}[3][]%
 {%
 	\ifstrempty{#1}%

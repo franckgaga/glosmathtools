@@ -8,7 +8,6 @@
 % TODO : sans dimension ou dimensionless (voir theta)
 % TODO : nomenclature bilingue
 % TODO : permettre une longue descriptio avec indentation (voir psi)
-% TODO : natbib changement de language local
 
 
 % ------------------------------------------------------------------
@@ -102,7 +101,7 @@
 	\newglossaryentry{mat.y}{
 		name=\ensuremath{\mathbf{y}},
 		description={model outputs},
-		symbol=$(5 \times 1)$,
+		symbol=$(2 \times 1)$,
 		user6={sorties du modèle},
 		sort=y,
 		parent=vecMat,
@@ -110,49 +109,17 @@
 	\newglossaryentry{mat.u}{
 		name=\ensuremath{\mathbf{u}},
 		description={model inputs},
-		symbol=$(4 \times 1)$,
+		symbol=$(2 \times 1)$,
 		user6={entrées du modèle},
 		sort=u,
 		parent=vecMat,
 	}
-	\newglossaryentry{mat.x}{
-		name=\ensuremath{\mathbf{x}},
-		description={model states},
-		symbol=$(5 \times 1)$,
-		user6={états du modèle},
-		sort=x,
-		parent=vecMat,
-	}
-	\newglossaryentry{mat.f}{
-		name=\ensuremath{\mathbf{f}},
-		description={model state derivative function},
-		symbol=$(5 \times 1)$,
-		user6={fonction de dérivé des états du modèle},
-		sort=f,
-		parent=vecMat,
-	}
-	\newglossaryentry{mat.h}{
-		name=\ensuremath{\mathbf{h}},
-		description={model output function},
-		symbol=$(5 \times 1)$,
-		user6={fonction de sortie du modèle},
-		sort=h,
-		parent=vecMat,
-	}
 	\newglossaryentry{mat.A}{
 		name=\ensuremath{\mathbf{A}},
-		description={equation system coefficients},
+		description={matrix},
 		symbol=$(2 \times 2)$,
-		user6={coefficients du système d'équations},
+		user6={matrice},
 		sort=A,
-		parent=vecMat,
-	}
-	\newglossaryentry{mat.b}{
-		name=\ensuremath{\mathbf{b}},
-		description={equation system constants},
-		symbol=$(2 \times 1)$,
-		user6={constantes du système d'équations},
-		sort=b,
 		parent=vecMat,
 	}
 }%
