@@ -1,6 +1,7 @@
-\ProvidesPackage{glosnomtools}[%
-2019/01/04 Math nomenclature tools for glossaries package (Francis Gagnon)]
-\RequirePackage{glossaries,etoolbox,mathtools,siunitx,amsmath,amsfonts,amssymb}
+\ProvidesPackage{glosnomtools}%
+[2019/01/04 Math nomenclature tools for glossaries package (Francis Gagnon)]%
+\RequirePackage%
+{glossaries,etoolbox,keyval,mathtools,siunitx,amsmath,amsfonts,amssymb}%
 
 % ===========================================================================
 % =================== GLOSSARIES STYLES =====================================
@@ -51,8 +52,7 @@
 
 
 % ===========================================================================
-% =================== MACROS ================================================
-% ===========================================================================
+% =================== PUBLIC MACROS ========================================= =============================================================================
 
 % ---------- dif -------------------------------------------------------
 %  shortcut for upright d (differential)
@@ -80,47 +80,18 @@
 % optional first argument for adding math accents ("dot" or "tilde")
 \newcommand*{\glsac}[2][]%
 {%
-	\ifstrempty{#1}{\def\@myglsmacro{\gls}}%
-	{%
-		\glsadd{op.#1}% add specified operator to nomenclature
-		% dot accented symbol is provided in user1:
-		\ifstrequal{#1}{dot}{\def\@myglsmacro{\glsuseri}}{}%
-		% bar accented symbol is provided in user2:
-		\ifstrequal{#1}{bar}{\def\@myglsmacro{\glsuserii}}{}%
-		% hat accented symbol is provided in user3:
-		\ifstrequal{#1}{hat}{\def\@myglsmacro{\glsuseriii}}{}%
-		% tilde accented symbol is provided in user4:
-		\ifstrequal{#1}{tilde}{\def\@myglsmacro{\glsuseriv}}{}%
-	}%
-	\@myglsmacro{#2}
+	\glosnom@getMyGlsMacro{#1}%
+	\glosnom@MyGlsMacro{#2}%
 }%
 
 % ---------- glsvi -------------------------------------------------------
 % show $a_b$ with link to "a" and variable "b" (italized indice)
 % optional 1st and 2nd argument for adding accent on "a" and "b"
-\newcommand*{\glsvi}[1][]%
+
+\newcommand*{\glsvi}[3][]%
 {%
-	\def\@firAcc{{#1}}%
-	\glsvi@RELAY%
-}%
-\newcommand*{\glsvi@RELAY}[3][]% relay macros for 2 optional args.
-{%
-	\def\@secAcc{{#1}}%
-	\ifstrempty{\@firAcc}%
-	{%
-		\ensuremath{\gls{#2}[_{\gls{#3}}]}%
-	}%
-	{%
-		\ifstrequal{\@firAcc}{dot}%
-		{%
-			\ensuremath{\gls{#2}[_{\glsuseri{#3}}]}%
-			\glsadd{op.dot}%
-		}%
-		{%
-			\ensuremath{\glsuseri{#2}[_{\gls{#3}}]}%
-			\glsadd{op.dot}%
-		}%
-	}%
+	\glosnom@getMyGlsMacro{#1}%
+	\ensuremath{\glosnom@MyGlsMacro{#2}[_{\gls{#3}}]}%
 }%
 
 
@@ -128,18 +99,6 @@
 
 
 
-
-
-
-
-
-\newcommand{\blah}[1][]{%
-	\def\ArgI{{#1}}%
-	\blahRelay%
-}
-\newcommand{\blahRelay}[3][]{%
-	\ArgI #1$#2_#3$%
-}
 
 
 
@@ -156,21 +115,8 @@
 % optional first argument for adding math accents on a ("dot" or "tilde")
 \newcommand*{\glsub}[3][]%
 {%
-	\ifstrempty{#1}%
-	{%
-		\ensuremath{\gls{#2}[\sbu{\gls{ss.#3}}]}%
-	}%
-	{%
-		\ifstrequal{#1}{dot}%
-		{%  dot accented symbol provided user1 field:
-			\ensuremath{\glsuseri{#2}[\sbu{\gls{ss.#3}}]}%
-			\glsadd{op.dot}%
-		}%
-		{%  tilde accented symbol in user2 field:
-			\ensuremath{\glsuserii{#2}[\sbu{\gls{ss.#3}}]}%
-			\glsadd{op.tilde}%
-		}%
-	}%
+	\glosnom@getMyGlsMacro{#1}%
+	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{ss.#3}}]}
 }%
 
 % ---------- glsubs -------------------------------------------------------
@@ -178,21 +124,34 @@
 % optional first argument for adding math accents on a ("dot" or "tilde")
 \newcommand*{\glsubs}[4][]%
 {%
-	\ifstrempty{#1}%
-	{%
-		\ensuremath{\gls{#2}[\sbu{\gls{ss.#3},\gls{ss.#4}}]}%
-	}%
-	{%
-		\ifstrequal{#1}{dot}%
-		{%  dot accented symbol provided user1 field:
-			\ensuremath{\glsuseri{#2}[\sbu{\gls{ss.#3},\gls{ss.#4}}]}%
-			\glsadd{op.dot}%
-		}%
-		{%  tilde accented symbol in user2 field:
-			\ensuremath{\glsuserii{#2}[\sbu{\gls{ss.#3},\gls{ss.#4}}]}%
-			\glsadd{op.tilde}%
-		}%
-	}%
-	\glsadd{op.comma}%
+	\glosnom@getMyGlsMacro{#1}%
+	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{ss.#3},\gls{ss.#4}}]}
+	\glsadd{op.comma}
 }%
 
+
+% ===========================================================================
+% =================== PRIVATE MACROS ========================================
+% ===========================================================================
+
+% ---------- glosnom@getMyGlsMacro ------------------------------------------
+\newcommand*{\glosnom@getMyGlsMacro}[1]%
+{%
+	\ifstrempty{#1}{\def\glosnom@MyGlsMacro{\gls}}%
+	{%
+		\ifstrequal{#1}{dot}{\def\glosnom@MyGlsMacro{\glsuseri}}
+		{%
+			\ifstrequal{#1}{bar}{\def\glosnom@MyGlsMacro{\glsuserii}}%
+			{%
+				\ifstrequal{#1}{hat}{\def\glosnom@MyGlsMacro{\glsuseriii}}%
+				{%
+					\ifstrequal{#1}{tilde}{\def\glosnom@MyGlsMacro{\glsuseriv}}%
+					{%
+						\PackageError{glosnomtools}{Unknown accent: #1}{}%
+					}%
+				}%
+			}%
+		}%
+		\glsadd{op.#1}% add operator to nomenclature
+	}%
+}%
