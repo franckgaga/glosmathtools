@@ -14,7 +14,7 @@
 %% ------------- glossaries ---------------------------------
 \makeglossaries
 \setglossarystyle{nomencl_french}
-\setacronymstyle{long-short-modfr}
+\setacronymstyle{fr_acr}
 \loadglsentries{ex_glosnomtools_glos}
 \glssetwidest{LOOP}  % nomenclature widest name
 %% ------------- ulthese ------------------------------------
@@ -34,7 +34,7 @@
 \abnormalparskip{0pt}
 \printglossary[title=Nomenclature]
 \end{SingleSpace}
-\cleardoublepage
+
 
 \mainmatter                     % corps du document
 
@@ -55,7 +55,7 @@ La commande \texttt{makeglossaries} est directement accessible dans les menu de 
 Sous Windows avec MiKTeX, il est possible que le script \texttt{makeglossaries} nécessite une installation de Perl (voir \url{https://tinyurl.com/ybnoyqjp}). Une fois Perl installé, il faut exécuter le script \texttt{perltex.exe} disponible dans le dossier où MiKTeX est installé.
 
 \section{Symboles, indices et accentuation}
-L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{gls} de glossaries : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : \gls{LOOP}. 
+L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{gls} de glossaries : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : \gls{LOOP}. Les abréviations sont uniquement définies à leur première utilisation : les \gls{GMP}, abrégé \gls{GMP}.
 
 La macro \texttt{glsub} permet d'ajouter une indice : \glsub{d}{v}, \glsub{z}{v}, \glsub{T}{v}, \glsub{D}{a}, \glsub{rho}{w} et \glsub{mu}{v}. Les macros peuvent s'utiliser autant en mode \texttt{text} qu'en mode \texttt{math} avec \texttt{\$\$}. Par contre, je préfère personnellement écrire les symboles de manière explicite dans une équation (pas d'hyperlien):
 \begin{equation}
@@ -63,20 +63,27 @@ d"v + \glsub{d}{v} = \SI{10.0}{\centi\meter} = 3.937\qtmark
 \end{equation}
 Dans le standard ISO, les indices représentant l'abbréviation d'un mot s'écrivent sans italique, et, celles représentant une variable, en italique. En mode \texttt{math}, j'ai configuré le caractère \texttt{<">} comme raccourci pour l'écriture d'une indice sans italique (\texttt{<\_>} pour une indice en italique, et \texttt{qtmark} pour insérer le caractère \texttt{<">}). La macro \texttt{glsvi} permet d'ajouter une variable en indice à une autre variable (les deux en italique) : la température \gls{T} au temps discret \gls{k} noté \glsvi{T}{k}. Il est aussi possible d'ajouter deux indices séparées par une virgule avec \glsubs{D}{w}{a}. En l’occurrence, l'opérateur virgule est ajouté dans la nomenclature, qui doit donc être défini dans le glossaire sous le label \texttt{op.comma}.
 
-Il est aussi possible d'ajouter des accentuations sur l: le débit massique 
-
-
-
-
-. Les accents permis sont:
+Il est aussi possible d'ajouter des accents sur les variables : \glsdot{m} et \glsbar{T}. À leur utilisation respective, un opérateur est ajouté dans la nomenclature. Ils doivent donc être définis à leur label respectif. Les macros disponibles pour accentuer une variable sont:
 \begin{itemize} 
-	\item \texttt{dot} (label glossaire \texttt{op.dot})
-	\item \texttt{bar} (label glossaire \texttt{op.bar})
-	\item \texttt{hat} (label glossaire \texttt{op.hat})
-	\item \texttt{tilde} (label glossaire \texttt{op.tilde})
+	\item \texttt{glsdot} (définition de l'accent au label \texttt{op.dot})
+	\item \texttt{glsbar} (définition de l'accent au label \texttt{op.bar})
+	\item \texttt{glshat} (définition de l'accent au label \texttt{op.hat})
+	\item \texttt{glstilde} (définition de l'accent au label \texttt{op.tilde})
 \end{itemize}
-À leur utilisation respective, un opérateur est ajouté dans la nomenclature. Ils doivent donc être définis à leur label respectif. Un argument optionnel permet d'ajouter des accents à toutes macros précédentes : \glsub[bar]{T}{v}, \glsubs[dot]{m}{v}{a}, \glsvi[][dot]{T}{m} et \glsvi[dot]{m}{k}.
+De plus, un argument optionnel permet d'ajouter des accents à toutes les macros précédentes : \glsub[bar]{T}{v} et \glsubs[dot]{m}{v}{a}. 
 
-\glsdot{m} \glsbar{T}
+\section{Changement de langue}
+
+S'il y a des changement de langues à travers le document, il faut changer de style pour les abréviations. Il y a trois options de disponible : 
+
+\begin{itemize}
+\setacronymstyle{en_acr} \item anglais : \acrfull{GMP} 
+\setacronymstyle{fr_acr}  \item français : \acrfull{GMP} 
+\setacronymstyle{fr_en_acr} \item bilingue : \acrfull{GMP}  
+\end{itemize}
+
+
+
+
 
 \end{document}

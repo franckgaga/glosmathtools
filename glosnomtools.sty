@@ -9,7 +9,7 @@
 
 \newglossarystyle{nomencl_french}%
 {%
-	\setglossarystyle{alttree}% based on alttree predefined style
+	\setglossarystyle{alttree}% based on alttree style
 	\renewcommand*{\glossentry}[2]%
 	{%
 		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
@@ -31,44 +31,63 @@
 	}%
 }%
 
-\newacronymstyle{long-short-modfr}
-{%
-	\GlsUseAcrEntryDispStyle{long-short}%
-}%
-{%
-	\GlsUseAcrStyleDefs{long-short}%	
-	\renewcommand*{\genacrfullformat}[2]{%
-		\glsuseri*{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})%
+% ---------- accronyms english definition -----------------------------------
+\newacronymstyle{en_acr}%
+	{\GlsUseAcrEntryDispStyle{long-short}}% based on long-short style
+	{\GlsUseAcrStyleDefs{long-short}}% based on long-short style
+
+% ---------- accronyms french definition ------------------------------------
+\newacronymstyle{fr_acr}%
+	{\GlsUseAcrEntryDispStyle{long-short}}% based on long-short style
+	{%
+		\GlsUseAcrStyleDefs{long-short}% based on long-short style	
+		\renewcommand*{\genacrfullformat}[2]%
+			{\glsuseri*{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})}%
+		\renewcommand*{\genplacrfullformat}[2]%
+			{\glsuseri*{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
+		\let\Genacrfullformat\genacrfullformat
+		\let\Genplacrfullformat\genplacrfullformat
 	}%
-}%
 
-\newacronymstyle{long-short-en}
-{%
-	\GlsUseAcrEntryDispStyle{long-short}%
-}%
-{%
-	\GlsUseAcrStyleDefs{long-short}%	
-}%
+% ---------- accronyms bilangual definition ---------------------------------
+\newacronymstyle{fr_en_acr}%
+	{\GlsUseAcrEntryDispStyle{long-short}}% based on long-short style
+	{%
+		\GlsUseAcrStyleDefs{long-short}% based on long-short style	
+		\renewcommand*{\genacrfullformat}[2]%
+			{%
+				\glsuseri*{##1}##2%
+				\space(\firstacronymfont{\glsentryshort{##1}} pour %
+				\textit{\glsentrydesc{##1}})%
+			}%
+		\renewcommand*{\genplacrfullformat}[2]
+			{\glsuseri*{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
+		\let\Genacrfullformat\genacrfullformat
+		\let\Genplacrfullformat\genplacrfullformat
+	}%
 
-
+% ---------- dot accent key ------------------------------------------------
 \glsaddkey{dot}% key
 {	% default value
 	\ensuremath{\dot{\glsentrytext{\glslabel}}}%
 	\glsadd{op.dot}%
 }{\glsentrydot}{\Glsentrydot}{\glsdot}{\Glsdot}{\GLSdot}% macros
 
+% ---------- bar accent key ------------------------------------------------
 \glsaddkey{bar}% key
 {	% default value
 	\ensuremath{\overline{\glsentrytext{\glslabel}}}
 	\glsadd{op.bar}%
 }{\glsentrybar}{\Glsentrybar}{\glsbar}{\Glsbar}{\GLSbar}% macros
 
+% ---------- hat accent key ------------------------------------------------
 \glsaddkey{hat}% key
 {	% default value
 	\ensuremath{\widehat{\glsentrytext{\glslabel}}}%
 	\glsadd{op.hat}%
 }{\glsentryhat}{\Glsentryhat}{\glshat}{\Glshat}{\GLShat}% macros
 
+% ---------- tilde accent key ----------------------------------------------
 \glsaddkey{tilde}% key
 {	% default value
 	\ensuremath{\widetilde{\glsentrytext{\glslabel}}}
