@@ -2,12 +2,8 @@
 % ==================================================================
 % ======================= MATH SYMBOLS =============================
 % ==================================================================
-% user1 field : accentuated symbol with dot 
-% user2 field : accentuated symbol with bar 
-% user3 field : accentuated symbol with hat 
-% user4 field : accentuated symbol with tilde 
 % symbol field : units or dimension (for matrices)
-% user6 field : description in french
+% user1 field : description in french
 % TODO : sans dimension ou dimensionless (voir theta)
 % TODO : nomenclature bilingue
 % TODO : permettre une longue descriptio avec indentation (voir psi)
@@ -18,12 +14,12 @@
 % ------------------------------------------------------------------
 
 \newglossaryentry{latin}{name={latin},
-	description={Latin symbols},user6={Symboles latins},sort=1}
+	description={Latin symbols},user1={Symboles latins},sort=1}
 {%	
 	\newglossaryentry{k}{
 		name=\ensuremath{k},
 		description={discrete time},
-		user6={temps discret},
+		user1={temps discret},
 		sort=k,
 		parent=latin,
 	}
@@ -31,16 +27,15 @@
 		name=\ensuremath{T},
 		description={temperature},
 		symbol=\si{\kelvin},
-		user6={température},
+		user1={température},
 		sort=T,
-		user2=\ensuremath{\overline{T}},
 		parent=latin,
 	}
 	\newglossaryentry{z}{
 		name=\ensuremath{z},
 		description={height},
 		symbol=\si{\meter},
-		user6={hauteur},
+		user1={hauteur},
 		sort=z,
 		parent=latin,
 	}
@@ -48,7 +43,7 @@
 		name=\ensuremath{d},
 		description={diameter},
 		symbol=\si{\meter},
-		user6={diamètre},
+		user1={diamètre},
 		sort=d,
 		parent=latin,
 	}
@@ -56,7 +51,7 @@
 		name=\ensuremath{D},
 		description={molecular diffusion coefficient},
 		symbol=\si{\meter\squared\per\second},
-		user6={coefficient de diffusion moléculaire},
+		user1={coefficient de diffusion moléculaire},
 		sort=D,
 		parent=latin,
 	}
@@ -64,12 +59,8 @@
 		name=\ensuremath{m},
 		description={mass},
 		symbol=\si{\kilogram},
-		user6={masse},
+		user1={masse},
 		sort=m,
-		user1=\ensuremath{\dot{m}},
-		user2=\ensuremath{\overline{m}},
-		user3=\ensuremath{\widehat{m}},
-		user4=\ensuremath{\widetilde{m}},
 		parent=latin,
 	}
 }%
@@ -78,13 +69,13 @@
 % ---------------------- GREEK SYMBOLS -----------------------------
 % ------------------------------------------------------------------
 \newglossaryentry{greek}{name={greek},
-	description={Greek symbols},user6={Symboles grecs},sort=2}
+	description={Greek symbols},user1={Symboles grecs},sort=2}
 {%
 	\newglossaryentry{rho}{
 		name=\ensuremath{\rho},
 		description={density},
 		symbol=\si{\kilogram\per\meter\cubed},
-		user6={masse volumique},
+		user1={masse volumique},
 		sort=17,
 		parent=greek,
 	}
@@ -92,7 +83,7 @@
 		name=\ensuremath{\mu},
 		description={dynamic viscosity},
 		symbol=\si{\kilogram\per\meter\per\second},
-		user6={viscosité dynamique},
+		user1={viscosité dynamique},
 		sort=12,
 		parent=greek,
 	}
@@ -102,13 +93,13 @@
 % ---------------------- VECTORS AND MATRICES ----------------------
 % ------------------------------------------------------------------
 \newglossaryentry{vecMat}{name={vecMat},
-	description={Vectors and matrices},user6={Vecteurs et matrices},sort=3}
+	description={Vectors and matrices},user1={Vecteurs et matrices},sort=3}
 {%
 	\newglossaryentry{mat.b}{
 		name=\ensuremath{\mathbf{b}},
 		description={vector},
 		symbol=$(2 \times 1)$,
-		user6={vecteur},
+		user1={vecteur},
 		sort=u,
 		parent=vecMat,
 	}
@@ -116,7 +107,7 @@
 		name=\ensuremath{\mathbf{A}},
 		description={matrix},
 		symbol=$(2 \times 2)$,
-		user6={matrice},
+		user1={matrice},
 		sort=A,
 		parent=vecMat,
 	}
@@ -125,24 +116,24 @@
 % ---------------------- SUBSCRIPTS --------------------------------
 % ------------------------------------------------------------------
 \newglossaryentry{subscript}{name={subscript},
-	description={Subscripts},user6={Indices},sort=4}
+	description={Subscripts},user1={Indices},sort=4}
 {%
 	\newglossaryentry{sub.w}{
 		name=w,
 		description={water},
-		user6={eau},
+		user1={eau},
 		parent=subscript
 	}
 	\newglossaryentry{sub.a}{
 		name=a,
 		description={air},
-		user6={air},
+		user1={air},
 		parent=subscript
 	}
 	\newglossaryentry{sub.v}{
 		name=v,
 		description={vessel},
-		user6={réservoir},
+		user1={réservoir},
 		parent=subscript
 	}
 }%
@@ -151,27 +142,27 @@
 % ---------------------- OPERATORS --------------------------------
 % ------------------------------------------------------------------
 \newglossaryentry{operator}{name={operator},
-	description={Operators},user6={Opérateurs},sort=5}
+	description={Operators},user1={Opérateurs},sort=5}
 {%
 	\newglossaryentry{op.dot}{
 		name={$\dot{\bullet}$},
 		description={flow rate of $\bullet$},
 		symbol=\si{\per\second},
-		user6={débit de $\bullet$},
+		user1={débit de $\bullet$},
 		sort=01,
 		parent=operator
 	}
 	\newglossaryentry{op.bar}{
 		name={$\overline{\bullet}$},
 		description={average of $\bullet$},
-		user6={moyenne de $\bullet$},
+		user1={moyenne de $\bullet$},
 		sort=02,
 		parent=operator
 	}
 	\newglossaryentry{op.comma}{
 		name={$\bullet$,$\circ$},
 		description={in subscript : from $\bullet$ to $\circ$},
-		user6={en indice : de $\bullet$ vers $\circ$},
+		user1={en indice : de $\bullet$ vers $\circ$},
 		sort=03,
 		parent=operator
 	}
@@ -181,10 +172,10 @@
 % ========================= ACRONYMS ===============================
 % ==================================================================
 \newglossaryentry{abbrv}{name={abbrv},
-	description={Abbreviations},user6={Abréviations},sort=6}
+	description={Abbreviations},user1={Abréviations},sort=6}
 {%
-	\newacronym[parent=abbrv,user6={équation différentielle ordinaire}]%
+	\newacronym[parent=abbrv,user1={équation différentielle ordinaire}]%
 		{ODE}{ODE}{ordinary differential equation}
-	\newacronym[parent=abbrv,user6={laboratoire d'observation et d'optimisation des procédés}]%
+	\newacronym[parent=abbrv,user1={laboratoire d'observation et d'optimisation des procédés}]%
 		{LOOP}{LOOP}{process observation and optimization laboratory}
 }%

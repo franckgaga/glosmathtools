@@ -14,7 +14,7 @@
 	{%
 		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
 		\glsentryitem{##1}%
-		\glstarget{##1}{\textbf{\glsuservi*{##1}}}\par\nopagebreak%
+		\glstarget{##1}{\textbf{\glsuseri*{##1}}}\par\nopagebreak%
 	}%
 	\renewcommand*{\subglossentry}[3]%
 	{%
@@ -25,7 +25,7 @@
 			\glstarget{##2}{\glossentryname{##2}}%
 		}%
 		\space%
-		\glsuservi*{##2}%
+		\glsuseri*{##2}%
 		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
 		\par%
 	}%
@@ -38,7 +38,7 @@
 {%
 	\GlsUseAcrStyleDefs{long-short}%	
 	\renewcommand*{\genacrfullformat}[2]{%
-		\glsuservi*{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})%
+		\glsuseri*{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})%
 	}%
 }%
 
@@ -49,6 +49,31 @@
 {%
 	\GlsUseAcrStyleDefs{long-short}%	
 }%
+
+
+\glsaddkey{dot}% key
+{	% default value
+	\ensuremath{\dot{\glsentrytext{\glslabel}}}%
+	\glsadd{op.dot}%
+}{\glsentrydot}{\Glsentrydot}{\glsdot}{\Glsdot}{\GLSdot}% macros
+
+\glsaddkey{bar}% key
+{	% default value
+	\ensuremath{\overline{\glsentrytext{\glslabel}}}
+	\glsadd{op.bar}%
+}{\glsentrybar}{\Glsentrybar}{\glsbar}{\Glsbar}{\GLSbar}% macros
+
+\glsaddkey{hat}% key
+{	% default value
+	\ensuremath{\widehat{\glsentrytext{\glslabel}}}%
+	\glsadd{op.hat}%
+}{\glsentryhat}{\Glsentryhat}{\glshat}{\Glshat}{\GLShat}% macros
+
+\glsaddkey{tilde}% key
+{	% default value
+	\ensuremath{\widetilde{\glsentrytext{\glslabel}}}
+	\glsadd{op.tilde}%
+}{\glsentrytilde}{\Glsentrytilde}{\glstilde}{\Glstilde}{\GLStilde}% macros
 
 
 % ===========================================================================
@@ -74,15 +99,6 @@
 \lowercase{\endgroup\def~}#1{\sbu{#1}}%
 \mathchardef\qtmark=\mathcode`"%
 \AtBeginDocument{\mathcode`"=\string"8000}%
-
-% ---------- glsac ------------------------------------------------------
-% show math symbol in glossaries without subscript
-% optional first argument for adding math accents ("dot" or "tilde")
-\newcommand*{\glsac}[2][]%
-{%
-	\glosnom@getMyGlsMacro{#1}%
-	\glosnom@MyGlsMacro{#2}%
-}%
 
 % ---------- glsvi -------------------------------------------------------
 % show $a_b$ with link to "a" and variable "b" (italized indice)
@@ -113,7 +129,6 @@
 	\glsadd{op.comma}%
 }%
 
-
 % ===========================================================================
 % =================== PRIVATE MACROS ========================================
 % ===========================================================================
@@ -122,27 +137,26 @@
 \newcommand*{\glosnom@getMyGlsMacro}[1]%
 {%
 	\let\glosnom@MyGlsMacro\gls%
-	\ifblank{#1}{}%
+	\notblank{#1}%
 	{%
-		\glsadd{op.#1}% add operator to nomenclature
-		\ifstrequal{#1}{dot}{\let\glosnom@MyGlsMacro\glsuseri}%
+		\ifstrequal{#1}{dot}{\let\glosnom@MyGlsMacro\glsdot}%
 		{%
-			\ifstrequal{#1}{bar}{\let\glosnom@MyGlsMacro\glsuserii}%
+			\ifstrequal{#1}{bar}{\let\glosnom@MyGlsMacro\glsbar}%
 			{%
-				\ifstrequal{#1}{hat}{\let\glosnom@MyGlsMacro\glsuseriii}%
+				\ifstrequal{#1}{hat}{\let\glosnom@MyGlsMacro\glshat}%
 				{%
-					\ifstrequal{#1}{tilde}{\let\glosnom@MyGlsMacro\glsuseriv}%
+					\ifstrequal{#1}{tilde}{\let\glosnom@MyGlsMacro\glstilde}%
 					{%
 						\PackageError{glosnomtools}{Unknown accent: #1}{}%
 					}%
 				}%
 			}%
 		}%	
-	}%
+	}{}%
 }%
 
 % ---------- glosnom@glsviRelay -------------------------------------------
-% relay macro to simulate two optional aguments for the glsvi macro
+% relay macro for two optional aguments in the glsvi macro
 \newcommand*{\glosnom@glsviRelay}[3][]%
 {%
 	\expandafter\glosnom@getMyGlsMacro\expandafter{\glosnom@ArgI}%
