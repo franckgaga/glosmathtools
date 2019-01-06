@@ -1,7 +1,7 @@
 \ProvidesPackage{glosnomtools}%
 [2019/01/04 Math nomenclature tools for glossaries package (Francis Gagnon)]%
 \RequirePackage%
-{glossaries,etoolbox,keyval,mathtools,siunitx,amsmath,amsfonts,amssymb}%
+{glossaries,etoolbox,mathtools,siunitx,amsmath,amsfonts,amssymb}%
 
 % ===========================================================================
 % =================== GLOSSARIES STYLES =====================================
@@ -86,46 +86,30 @@
 
 % ---------- glsvi -------------------------------------------------------
 % show $a_b$ with link to "a" and variable "b" (italized indice)
+% 4 arguments with 2 mandatory arguments and
 % optional 1st and 2nd argument for adding accent on "a" and "b"
-
-\newcommand*{\glsvi}[3][]%
+\newcommand*{\glsvi}[1][]%
 {%
-	\glosnom@getMyGlsMacro{#1}%
-	\ensuremath{\glosnom@MyGlsMacro{#2}[_{\gls{#3}}]}%
+	\def\glosnom@ArgI{#1}%
+	\glosnom@glsviRelay
 }%
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 % ---------- glsub -------------------------------------------------------
-% show $a!b$ with link to "a" and "ss.b" (upright indice)
+% show $a!b$ with link to "a" and "sub.b" (upright indice)
 % optional first argument for adding math accents on a ("dot" or "tilde")
 \newcommand*{\glsub}[3][]%
 {%
 	\glosnom@getMyGlsMacro{#1}%
-	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{ss.#3}}]}
+	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{sub.#3}}]}
 }%
 
 % ---------- glsubs -------------------------------------------------------
-% show $a!{b,c}$ with link "a", "ss.b", comma operator and "ss.c"
+% show $a!{b,c}$ with link "a", "sub.b", comma operator and "sub.c"
 % optional first argument for adding math accents on a ("dot" or "tilde")
 \newcommand*{\glsubs}[4][]%
 {%
 	\glosnom@getMyGlsMacro{#1}%
-	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{ss.#3},\gls{ss.#4}}]}
+	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{ss.#3},\gls{sub.#4}}]}
 	\glsadd{op.comma}
 }%
 
@@ -137,21 +121,33 @@
 % ---------- glosnom@getMyGlsMacro ------------------------------------------
 \newcommand*{\glosnom@getMyGlsMacro}[1]%
 {%
-	\ifstrempty{#1}{\def\glosnom@MyGlsMacro{\gls}}%
+	\let\glosnom@MyGlsMacro\gls%
+	\ifblank{#1}{}%
 	{%
-		\ifstrequal{#1}{dot}{\def\glosnom@MyGlsMacro{\glsuseri}}
+		\glsadd{op.#1}% add operator to nomenclature
+		\ifstrequal{#1}{dot}{\let\glosnom@MyGlsMacro\glsuseri}%
 		{%
-			\ifstrequal{#1}{bar}{\def\glosnom@MyGlsMacro{\glsuserii}}%
+			\ifstrequal{#1}{bar}{\let\glosnom@MyGlsMacro\glsuserii}%
 			{%
-				\ifstrequal{#1}{hat}{\def\glosnom@MyGlsMacro{\glsuseriii}}%
+				\ifstrequal{#1}{hat}{\let\glosnom@MyGlsMacro\glsuseriii}%
 				{%
-					\ifstrequal{#1}{tilde}{\def\glosnom@MyGlsMacro{\glsuseriv}}%
+					\ifstrequal{#1}{tilde}{\let\glosnom@MyGlsMacro\glsuseriv}%
 					{%
 						\PackageError{glosnomtools}{Unknown accent: #1}{}%
 					}%
 				}%
 			}%
-		}%
-		\glsadd{op.#1}% add operator to nomenclature
+		}%	
 	}%
+}%
+
+% ---------- glosnom@glsviRelay -------------------------------------------
+% relay macro to simulate two optional aguments for the glsvi macro
+\newcommand*{\glosnom@glsviRelay}[3][]%
+{%
+	\expandafter\glosnom@getMyGlsMacro\expandafter{\glosnom@ArgI}%
+	\let\glosnom@FirGls\glosnom@MyGlsMacro%
+	\glosnom@getMyGlsMacro{#1}%
+	\let\glosnom@SecGls\glosnom@MyGlsMacro%
+	\ensuremath{\glosnom@FirGls{#2}[_{\glosnom@SecGls{#3}}]}%
 }%
