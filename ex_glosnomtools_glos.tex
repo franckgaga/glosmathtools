@@ -3,7 +3,7 @@
 % ======================= MATH SYMBOLS =============================
 % ==================================================================
 % symbol field : units or dimension (for matrices)
-% user1 field : description in french
+% descriptionfr field : description in french
 % TODO : sans dimension ou dimensionless (voir theta)
 % TODO : nomenclature bilingue
 % TODO : permettre une longue descriptio avec indentation (voir psi)
@@ -14,12 +14,12 @@
 % ------------------------------------------------------------------
 
 \newglossaryentry{latin}{name={latin},
-	description={Latin symbols},user1={Symboles latins},sort=1}
+	description={Latin symbols},descriptionfr={Symboles latins},sort=1}
 {%	
 	\newglossaryentry{k}{
 		name=\ensuremath{k},
 		description={discrete time},
-		user1={temps discret},
+		descriptionfr={temps discret},
 		sort=k,
 		parent=latin,
 	}
@@ -27,7 +27,7 @@
 		name=\ensuremath{T},
 		description={temperature},
 		symbol=\si{\kelvin},
-		user1={température},
+		descriptionfr={température},
 		sort=T,
 		parent=latin,
 	}
@@ -35,7 +35,7 @@
 		name=\ensuremath{z},
 		description={height},
 		symbol=\si{\meter},
-		user1={hauteur},
+		descriptionfr={hauteur},
 		sort=z,
 		parent=latin,
 	}
@@ -43,7 +43,7 @@
 		name=\ensuremath{d},
 		description={diameter},
 		symbol=\si{\meter},
-		user1={diamètre},
+		descriptionfr={diamètre},
 		sort=d,
 		parent=latin,
 	}
@@ -51,7 +51,7 @@
 		name=\ensuremath{D},
 		description={molecular diffusion coefficient},
 		symbol=\si{\meter\squared\per\second},
-		user1={coefficient de diffusion moléculaire},
+		descriptionfr={coefficient de diffusion moléculaire},
 		sort=D,
 		parent=latin,
 	}
@@ -59,7 +59,7 @@
 		name=\ensuremath{m},
 		description={mass},
 		symbol=\si{\kilogram},
-		user1={masse},
+		descriptionfr={masse},
 		sort=m,
 		parent=latin,
 	}
@@ -69,13 +69,13 @@
 % ---------------------- GREEK SYMBOLS -----------------------------
 % ------------------------------------------------------------------
 \newglossaryentry{greek}{name={greek},
-	description={Greek symbols},user1={Symboles grecs},sort=2}
+	description={Greek symbols},descriptionfr={Symboles grecs},sort=2}
 {%
 	\newglossaryentry{rho}{
 		name=\ensuremath{\rho},
 		description={density},
 		symbol=\si{\kilogram\per\meter\cubed},
-		user1={masse volumique},
+		descriptionfr={masse volumique},
 		sort=17,
 		parent=greek,
 	}
@@ -83,7 +83,7 @@
 		name=\ensuremath{\mu},
 		description={dynamic viscosity},
 		symbol=\si{\kilogram\per\meter\per\second},
-		user1={viscosité dynamique},
+		descriptionfr={viscosité dynamique},
 		sort=12,
 		parent=greek,
 	}
@@ -93,13 +93,13 @@
 % ---------------------- VECTORS AND MATRICES ----------------------
 % ------------------------------------------------------------------
 \newglossaryentry{vecMat}{name={vecMat},
-	description={Vectors and matrices},user1={Vecteurs et matrices},sort=3}
+	description={Vectors and matrices},descriptionfr={Vecteurs et matrices},sort=3}
 {%
 	\newglossaryentry{mat.b}{
 		name=\ensuremath{\mathbf{b}},
 		description={vector},
 		symbol=$(2 \times 1)$,
-		user1={vecteur},
+		descriptionfr={vecteur},
 		sort=u,
 		parent=vecMat,
 	}
@@ -107,7 +107,7 @@
 		name=\ensuremath{\mathbf{A}},
 		description={matrix},
 		symbol=$(2 \times 2)$,
-		user1={matrice},
+		descriptionfr={matrice},
 		sort=A,
 		parent=vecMat,
 	}
@@ -116,24 +116,24 @@
 % ---------------------- SUBSCRIPTS --------------------------------
 % ------------------------------------------------------------------
 \newglossaryentry{subscript}{name={subscript},
-	description={Subscripts},user1={Indices},sort=4}
+	description={Subscripts},descriptionfr={Indices},sort=4}
 {%
 	\newglossaryentry{sub.w}{
 		name=w,
 		description={water},
-		user1={eau},
+		descriptionfr={eau},
 		parent=subscript
 	}
 	\newglossaryentry{sub.a}{
 		name=a,
 		description={air},
-		user1={air},
+		descriptionfr={air},
 		parent=subscript
 	}
 	\newglossaryentry{sub.v}{
 		name=v,
 		description={vessel},
-		user1={réservoir},
+		descriptionfr={réservoir},
 		parent=subscript
 	}
 }%
@@ -142,27 +142,27 @@
 % ---------------------- OPERATORS --------------------------------
 % ------------------------------------------------------------------
 \newglossaryentry{operator}{name={operator},
-	description={Operators},user1={Opérateurs},sort=5}
+	description={Operators},descriptionfr={Opérateurs},sort=5}
 {%
 	\newglossaryentry{op.dot}{
 		name={$\dot{\bullet}$},
 		description={flow rate of $\bullet$},
+		descriptionfr={débit de $\bullet$},
 		symbol=\si{\per\second},
-		user1={débit de $\bullet$},
 		sort=01,
 		parent=operator
 	}
 	\newglossaryentry{op.bar}{
 		name={$\overline{\bullet}$},
 		description={average of $\bullet$},
-		user1={moyenne de $\bullet$},
+		descriptionfr={moyenne de $\bullet$},
 		sort=02,
 		parent=operator
 	}
 	\newglossaryentry{op.comma}{
 		name={$\bullet$,$\circ$},
 		description={in subscript : from $\bullet$ to $\circ$},
-		user1={en indice : de $\bullet$ vers $\circ$},
+		descriptionfr={en indice : de $\bullet$ vers $\circ$},
 		sort=03,
 		parent=operator
 	}
@@ -172,10 +172,14 @@
 % ========================= ACRONYMS ===============================
 % ==================================================================
 \newglossaryentry{abbrv}{name={abbrv},
-	description={Abbreviations},user1={Abréviations},sort=6}
+	description={Abbreviations},descriptionfr={Abréviations},sort=6}
 {%
-	\newacronym[parent=abbrv,user1={bonnes pratiques de fabrication}]%
-		{GMP}{GMP}{good manufacturing practices}
-	\newacronym[parent=abbrv,user1={laboratoire d'observation et d'optimisation des procédés}]%
-		{LOOP}{LOOP}{process observation and optimization laboratory}
+	\newacronym[%
+		descriptionfr={bonnes pratiques de fabrication},%
+		parent=abbrv
+		]{GMP}{GMP}{good manufacturing practices}
+	\newacronym[%
+		descriptionfr={laboratoire d'observation et d'optimisation des procédés},%
+		parent=abbrv
+		]{LOOP}{LOOP}{process observation and optimization laboratory}
 }%

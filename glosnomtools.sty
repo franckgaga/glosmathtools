@@ -7,14 +7,15 @@
 % =================== GLOSSARIES STYLES =====================================
 % ===========================================================================
 
-\newglossarystyle{nomencl_french}%
+% ---------- french nomenclature style -----------------------------------
+\newglossarystyle{nomencl-fr}%
 {%
 	\setglossarystyle{alttree}% based on alttree style
 	\renewcommand*{\glossentry}[2]%
 	{%
 		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
 		\glsentryitem{##1}%
-		\glstarget{##1}{\textbf{\glsuseri*{##1}}}\par\nopagebreak%
+		\glstarget{##1}{\textbf{\glsentrydescfr{##1}}}\par\nopagebreak%
 	}%
 	\renewcommand*{\subglossentry}[3]%
 	{%
@@ -25,46 +26,106 @@
 			\glstarget{##2}{\glossentryname{##2}}%
 		}%
 		\space%
-		\glsuseri*{##2}%
+		\glsentrydescfr{##2}%
+		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
+		\par%
+	}%
+}%
+
+% ---------- english nomenclature style -----------------------------------
+\newglossarystyle{nomencl-en}%
+{%
+	\setglossarystyle{alttree}% based on alttree style
+	\renewcommand*{\glossentry}[2]%
+	{%
+		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
+		\glsentryitem{##1}%
+		\glstarget{##1}{\textbf{\glsentrydesc{##1}}}\par\nopagebreak%
+	}%
+	\renewcommand*{\subglossentry}[3]%
+	{%
+		\settowidth{\glstreeindent}{\@glswidestname}%
+		\glstreenamebox{\glstreeindent}%
+		{%
+			\glsentryitem{##2}%
+			\glstarget{##2}{\glossentryname{##2}}%
+		}%
+		\space%
+		\glsentrydesc{##2}%
+		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
+		\par%
+	}%
+}%
+
+% ---------- bilingual nomenclature style -----------------------------------
+\newglossarystyle{nomencl-fr-en}%
+{%
+	\setglossarystyle{alttree}% based on alttree style
+	\renewcommand*{\glossentry}[2]%
+	{%
+		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
+		\glsentryitem{##1}%
+		\glstarget{##1}%
+		{%
+			\textbf{\glsentrydescfr{##1}\space(\textit{\glsentrydesc{##1}})}%
+		}%
+		\par\nopagebreak%
+	}%
+	\renewcommand*{\subglossentry}[3]%
+	{%
+		\settowidth{\glstreeindent}{\@glswidestname}%
+		\glstreenamebox{\glstreeindent}%
+		{%
+			\glsentryitem{##2}%
+			\glstarget{##2}{\glossentryname{##2}}%
+		}%
+		\space%
+		\glsentrydescfr{##2}\space(\textit{\glsentrydesc{##2}})%
 		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
 		\par%
 	}%
 }%
 
 % ---------- accronyms english definition -----------------------------------
-\newacronymstyle{en_acr}%
+\newacronymstyle{en-acr}%
 	{\GlsUseAcrEntryDispStyle{long-short}}% based on long-short style
 	{\GlsUseAcrStyleDefs{long-short}}% based on long-short style
 
 % ---------- accronyms french definition ------------------------------------
-\newacronymstyle{fr_acr}%
+\newacronymstyle{fr-acr}%
 	{\GlsUseAcrEntryDispStyle{long-short}}% based on long-short style
 	{%
 		\GlsUseAcrStyleDefs{long-short}% based on long-short style	
 		\renewcommand*{\genacrfullformat}[2]%
-			{\glsuseri*{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})}%
+			{\glsentrydescfr{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})}%
 		\renewcommand*{\genplacrfullformat}[2]%
-			{\glsuseri*{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
+			{\glsentrydescfr{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
 		\let\Genacrfullformat\genacrfullformat
 		\let\Genplacrfullformat\genplacrfullformat
 	}%
 
 % ---------- accronyms bilangual definition ---------------------------------
-\newacronymstyle{fr_en_acr}%
+\newacronymstyle{fr-en-acr}%
 	{\GlsUseAcrEntryDispStyle{long-short}}% based on long-short style
 	{%
 		\GlsUseAcrStyleDefs{long-short}% based on long-short style	
 		\renewcommand*{\genacrfullformat}[2]%
 			{%
-				\glsuseri*{##1}##2%
+				\glsentrydescfr{##1}##2%
 				\space(\firstacronymfont{\glsentryshort{##1}} pour %
 				\textit{\glsentrydesc{##1}})%
 			}%
 		\renewcommand*{\genplacrfullformat}[2]
-			{\glsuseri*{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
+			{\glsentrydescfr{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
 		\let\Genacrfullformat\genacrfullformat
 		\let\Genplacrfullformat\genplacrfullformat
 	}%
+
+% ---------- french description key -----------------------------------------
+\glsaddkey{descriptionfr}% key
+{	% default value 
+	\glsentrydesc{\glslabel}%
+}{\glsentrydescfr}{\Glsentrydescfr}{\glsdescfr}{\Glsdescfr}{\GLSdescfr}% macros
 
 % ---------- dot accent key ------------------------------------------------
 \glsaddkey{dot}% key
