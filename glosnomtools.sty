@@ -7,19 +7,19 @@
 % =================== GLOSSARIES STYLES =====================================
 % ===========================================================================
 
-\newglossarystyle{nomencl_french}
+\newglossarystyle{nomencl_french}%
 {%
 	\setglossarystyle{alttree}% based on alttree predefined style
-	\renewcommand*{\glossentry}[2]
+	\renewcommand*{\glossentry}[2]%
 	{%
 		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
 		\glsentryitem{##1}%
 		\glstarget{##1}{\textbf{\glsuservi*{##1}}}\par\nopagebreak%
 	}%
-	\renewcommand*{\subglossentry}[3]
+	\renewcommand*{\subglossentry}[3]%
 	{%
 		\settowidth{\glstreeindent}{\@glswidestname}%
-		\glstreenamebox{\glstreeindent}
+		\glstreenamebox{\glstreeindent}%
 		{%
 			\glsentryitem{##2}%
 			\glstarget{##2}{\glossentryname{##2}}%
@@ -56,24 +56,24 @@
 
 % ---------- dif -------------------------------------------------------
 %  shortcut for upright d (differential)
-\newcommand*{\dif}{\mathrm{d}}
+\newcommand*{\dif}{\mathrm{d}}%
 
 % ---------- stkout ----------------------------------------------------
 % "strikout" line in the middle of equations
-\newcommand*{\stkout}[1] %
-{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
+\newcommand*{\stkout}[1]%
+{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}%
 
 % ---------- sbu -------------------------------------------------------
 % "sbu" macro : shortcut for upright indices (ISO/NIST standard)
-\newcommand*{\sbu}[1]{_\mathrm{#1}}
+\newcommand*{\sbu}[1]{_\mathrm{#1}}%
 
 % ---------- " in math mode --------------------------------------------
 % define char '"' as shortcut for "sbu" macro in math mode
 % "qtmark" macro print an quotation mark
-\begingroup\lccode`~=`"
-\lowercase{\endgroup\def~}#1{\sbu{#1}}
-\mathchardef\qtmark=\mathcode`"
-\AtBeginDocument{\mathcode`"=\string"8000}
+\begingroup\lccode`~=`"%
+\lowercase{\endgroup\def~}#1{\sbu{#1}}%
+\mathchardef\qtmark=\mathcode`"%
+\AtBeginDocument{\mathcode`"=\string"8000}%
 
 % ---------- glsac ------------------------------------------------------
 % show math symbol in glossaries without subscript
@@ -91,7 +91,7 @@
 \newcommand*{\glsvi}[1][]%
 {%
 	\def\glosnom@ArgI{#1}%
-	\glosnom@glsviRelay
+	\glosnom@glsviRelay%
 }%
 
 % ---------- glsub -------------------------------------------------------
@@ -100,7 +100,7 @@
 \newcommand*{\glsub}[3][]%
 {%
 	\glosnom@getMyGlsMacro{#1}%
-	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{sub.#3}}]}
+	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{sub.#3}}]}%
 }%
 
 % ---------- glsubs -------------------------------------------------------
@@ -109,8 +109,8 @@
 \newcommand*{\glsubs}[4][]%
 {%
 	\glosnom@getMyGlsMacro{#1}%
-	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{sub.#3},\gls{sub.#4}}]}
-	\glsadd{op.comma}
+	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{sub.#3},\gls{sub.#4}}]}%
+	\glsadd{op.comma}%
 }%
 
 
