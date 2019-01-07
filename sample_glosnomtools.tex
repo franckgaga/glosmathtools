@@ -1,7 +1,7 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = fr_CA
 
-% ajout de l'option nohyperref pour charger le package manuellement 
+% nohyperref pour charger le package hyperref manuellement 
 % voir https://gitlab.com/vigou3/ulthese/issues/2
 \documentclass[PhD,nohyperref,english,french]{ulthese}
 %% ===================== packages ============================================
@@ -16,7 +16,7 @@
 \makeglossaries
 \setglossarystyle{nomencl-fr-en}
 \setacronymstyle{fr-acr}
-\loadglsentries{ex_glosnomtools_glos}
+\loadglsentries{sample_glosnomtools_glos}
 \glssetwidest{LOOP}  % nomenclature widest name
 %% ------------- ulthese ------------------------------------
 \titre{Exemple d'une nomenclature mathématique avec \texttt{glossaries} et \texttt{glossnomtools} dans la classe \texttt{ulthese}}
@@ -42,23 +42,23 @@
 \chapter{Exemple d'utilisation}
 
 \section{Compilation}
-La compilation de ce document ce fait en exécutant les commandes dans l'ordre suivante :
+De manaière similaire à BibTeX, la compilation de ce document ce fait en exécutant les commandes dans l'ordre suivante :
 \begin{enumerate}
 	\item \texttt{pdflatex}
 	\item \texttt{makeglossaries}
 	\item \texttt{pdflatex}
 \end{enumerate}
-La commande \texttt{makeglossaries} est directement accessible dans les menu de TeXstudio ou avec \texttt{F9}. Pour un autre éditeur, il faut ajouter une commande personnalisée. Par exemple, dans TexMaker c’est accessible dans le menu \texttt{Utilisateur > Commandes Utilisateur > Éditer Commandes Utilisateur}:
+La commande \texttt{makeglossaries} est directement accessible dans les menu de TeXstudio ou avec \texttt{F9}. Pour un autre éditeur, il faut ajouter une commande personnalisée. Par exemple, dans TexMaker, c’est accessible dans le menu \texttt{Utilisateur > Commandes Utilisateur > Éditer Commandes Utilisateur}:
 \begin{itemize}
 	\item \texttt{Item menu : glossaries} 
 	\item \texttt{Commande : makeglossaries \%}
 \end{itemize}
-Sous Windows avec MiKTeX, il est possible que le script \texttt{makeglossaries} nécessite une installation de Perl (voir \url{https://tinyurl.com/ybnoyqjp}). Une fois Perl installé, il faut exécuter le script \texttt{perltex.exe} disponible dans le dossier où MiKTeX est installé.
+Sous Windows avec MiKTeX, il est possible que le script \texttt{makeglossaries} nécessite une installation de Perl (voir \url{https://tinyurl.com/ybnoyqjp}). Une fois Perl installé, il faut exécuter le script \texttt{perltex.exe} disponible dans le répertoire d'installation de MiKTeX.
 
 \section{Symboles, indices et accentuation}
-L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{gls} de glossaries : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : \gls{LOOP}. Les abréviations sont uniquement définies à leur première utilisation : les \gls{GMP}, abrégé \gls{GMP}.
+L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{gls} de glossaries : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : \gls{LOOP}. Les abréviations sont uniquement définies à leur première utilisation : le \gls{LOOP}.
 
-La macro \texttt{glsub} permet d'ajouter une indice : \glsub{d}{v}, \glsub{z}{v}, \glsub{T}{v}, \glsub{D}{a}, \glsub{rho}{w} et \glsub{mu}{v}. Les macros peuvent s'utiliser autant en mode \texttt{text} qu'en mode \texttt{math} avec \texttt{\$\$}. Par contre, je préfère personnellement écrire les symboles de manière explicite dans une équation (pas d'hyperlien):
+La macro \texttt{glsub} permet d'ajouter une indice : \glsub{d}{v}, \glsub{z}{v}, \glsub{T}{v}, \glsub{D}{a}, \glsub{rho}{w} et \glsub{mu}{v}. Les macros peuvent s'utiliser autant en mode \texttt{text} qu'en mode \texttt{math} (avec \texttt{\$\$}). Par contre, je préfère personnellement écrire les symboles de manière explicite dans une équation (pas d'hyperlien):
 \begin{equation}
 d"v + \glsub{d}{v} = \SI{10.0}{\centi\meter} = 3.937\qtmark
 \end{equation}
@@ -75,17 +75,17 @@ De plus, un argument optionnel permet d'ajouter des accents à toutes les macros
 
 \section{Langue}
 
-S'il y a des changement de langues à travers le document, il faut changer de style pour les abréviations. La clé \texttt{decriptionfr} doit être préalablement définie dans le glossaire. Par la suite, il y a trois options de style disponibles : 
+S'il y a des changement de langues à travers le document, il faut changer de style pour les acronymes. La clé \texttt{decriptionfr} doit être préalablement définie dans le glossaire. Par la suite, il y a trois options de style disponibles : 
 \begin{itemize}
-\setacronymstyle{fr-acr}  \item français avec \texttt{fr-acr} : \acrfull{GMP}
-\setacronymstyle{en-acr} \item anglais avec \texttt{en-acr} : \acrfull{GMP}
 \setacronymstyle{fr-en-acr} \item bilingue  avec \texttt{fr-en-acr}  : \acrfull{GMP}
+\setacronymstyle{en-acr} \item anglais avec \texttt{en-acr} : \acrfull{GMP}
+\setacronymstyle{fr-acr}  \item français avec \texttt{fr-acr} : \acrfull{GMP}
 \end{itemize}
-Les descriptions en français sont aussi accessibles avec \texttt{glsdescfr}. De manière similaire, il est possible de changer la langue de la nomenclature avec trois options de style:
+La macro \texttt{glsfren} affiche l'acronymes en bilingue peu importe le style configuré : \glsfren{GMP}. Les descriptions en français sont aussi accessibles avec \texttt{glsdescfr} : les \glsdescfr{GMP}. De manière similaire, il est possible de changer la langue de la nomenclature avec trois options de style:
 \begin{itemize}
-\item descriptions en français avec \texttt{nomencl-fr}
-\item descriptions en anglais avec \texttt{nomencl-en}
 \item descriptions bilingues avec \texttt{nomencl-fr-en}
+\item descriptions en anglais avec \texttt{nomencl-en}
+\item descriptions en français avec \texttt{nomencl-fr}
 \end{itemize}
 L'exemple de la page ii est une nomenclature bilingue.
 

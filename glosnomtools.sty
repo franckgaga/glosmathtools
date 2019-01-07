@@ -116,7 +116,11 @@
 				\textit{\glsentrydesc{##1}})%
 			}%
 		\renewcommand*{\genplacrfullformat}[2]
-			{\glsentrydescfr{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
+			{%
+				\glsentrydescfr{##1}##2%
+				\space(\firstacronymfont{\glsentryshortpl{##1}} pour %
+				\textit{\glsentrydesc{##1}})
+			}%
 		\let\Genacrfullformat\genacrfullformat
 		\let\Genplacrfullformat\genplacrfullformat
 	}%
@@ -174,16 +178,14 @@
 
 % ---------- " in math mode --------------------------------------------
 % define char '"' as shortcut for "sbu" macro in math mode
-% "qtmark" macro print an quotation mark
-\begingroup\lccode`~=`"%
-\lowercase{\endgroup\def~}#1{\sbu{#1}}%
-\mathchardef\qtmark=\mathcode`"%
-\AtBeginDocument{\mathcode`"=\string"8000}%
+% "qtmark" macro to show a quotation mark
+\begingroup\lccode`~=`"\lowercase{\endgroup\def~}#1{\sbu{#1}}%
+\mathchardef\qtmark=\mathcode`"\AtBeginDocument{\mathcode`"=\string"8000}%
 
 % ---------- glsvi -------------------------------------------------------
-% show $a_b$ with link to "a" and variable "b" (italized indice)
-% 4 arguments with 2 mandatory arguments and
-% optional 1st and 2nd argument for adding accent on "a" and "b"
+% show $a_b$ with link to "a" and variable "b"
+% 4 arguments : 2 mandatory arguments and optional 1st and 2nd argument
+% for adding accent on "a" and "b" (dot,bar,hat or tilde)
 \newcommand*{\glsvi}[1][]%
 {%
 	\def\glosnom@ArgI{#1}%
@@ -191,8 +193,9 @@
 }%
 
 % ---------- glsub -------------------------------------------------------
-% show $a!b$ with link to "a" and "sub.b" (upright indice)
-% optional first argument for adding math accents on a ("dot" or "tilde")
+% show $a_b$ with link to "a" and subscript "sub.b"
+% 3 arguments : 2 mandatory arguments and optional 1st argument 
+% for adding accents on "a" (dot,bar,hat or tilde)
 \newcommand*{\glsub}[3][]%
 {%
 	\glosnom@getMyGlsMacro{#1}%
@@ -200,13 +203,29 @@
 }%
 
 % ---------- glsubs -------------------------------------------------------
-% show $a!{b,c}$ with link "a", "sub.b", comma operator and "sub.c"
-% optional first argument for adding math accents on a ("dot" or "tilde")
+% show $a_{b,c}$ with link "a", "sub.b" and "sub.c"
+% 4 arguments : 4 mandatory arguments and optional 1st argument 
+% for adding accents on "a" (dot,bar,hat or tilde)
 \newcommand*{\glsubs}[4][]%
 {%
 	\glosnom@getMyGlsMacro{#1}%
 	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{sub.#3},\gls{sub.#4}}]}%
 	\glsadd{op.comma}%
+}%
+
+% ---------- glsfren ---------------------------------------------------------
+% show accronyms definition in bilingual (ignoring the current style)
+\newcommand*{\glsfren}[1]%
+{%
+	\let\oldfullformat\genacrfullformat%
+	\renewcommand*{\genacrfullformat}[2]%
+	{%
+		\glsentrydescfr{##1}##2%
+		\space(\firstacronymfont{\glsentryshort{##1}} pour %
+		\textit{\glsentrydesc{##1}})%
+	}%
+	\gls{#1}%
+	\let\genacrfullformat\oldfullformat%
 }%
 
 % ===========================================================================
