@@ -1,5 +1,9 @@
 \ProvidesPackage{glosnomtools}%
-[2019/01/04 Math nomenclature tools for glossaries package (Francis Gagnon)]%
+[%
+2019/01/07 v0.1 %
+Math nomenclature tools for glossaries package %
+Francis Gagnon %
+]%
 \RequirePackage%
 {glossaries,etoolbox,mathtools,siunitx,amsmath,amsfonts,amssymb}%
 
@@ -13,19 +17,20 @@
 	\setglossarystyle{alttree}% based on alttree style
 	\renewcommand*{\glossentry}[2]%
 	{%
-		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
+		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}\glsentryitem{##1}%
 		\glsentryitem{##1}%
-		\glstarget{##1}{\textbf{\glsentrydescfr{##1}}}\par\nopagebreak%
+		\glstarget{##1}{\textbf{\glsentrydescfr{##1}}}%
+		\par\nopagebreak%
 	}%
 	\renewcommand*{\subglossentry}[3]%
 	{%
-		\settowidth{\glstreeindent}{\@glswidestname}%
+		\settowidth{\glstreeindent}{\@glswidestname\space}%
+		\hangindent\glstreeindent%
 		\glstreenamebox{\glstreeindent}%
 		{%
 			\glsentryitem{##2}%
 			\glstarget{##2}{\glossentryname{##2}}%
 		}%
-		\space%
 		\glsentrydescfr{##2}%
 		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
 		\par%
@@ -40,17 +45,18 @@
 	{%
 		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
 		\glsentryitem{##1}%
-		\glstarget{##1}{\textbf{\glsentrydesc{##1}}}\par\nopagebreak%
+		\glstarget{##1}{\textbf{\glsentrydesc{##1}}}%
+		\par\nopagebreak%
 	}%
 	\renewcommand*{\subglossentry}[3]%
 	{%
-		\settowidth{\glstreeindent}{\@glswidestname}%
+		\settowidth{\glstreeindent}{\@glswidestname\space}%
+		\hangindent\glstreeindent%
 		\glstreenamebox{\glstreeindent}%
 		{%
 			\glsentryitem{##2}%
 			\glstarget{##2}{\glossentryname{##2}}%
 		}%
-		\space%
 		\glsentrydesc{##2}%
 		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
 		\par%
@@ -63,23 +69,20 @@
 	\setglossarystyle{alttree}% based on alttree style
 	\renewcommand*{\glossentry}[2]%
 	{%
-		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
-		\glsentryitem{##1}%
-		\glstarget{##1}%
-		{%
-			\textbf{\glsentrydescfr{##1}\space(\textit{\glsentrydesc{##1}})}%
-		}%
+		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}\glsentryitem{##1}%
+		\glstarget{##1}{\textbf{\glsentrydescfr{##1}\space%
+			(\textit{\glsentrydesc{##1}})}}%
 		\par\nopagebreak%
 	}%
 	\renewcommand*{\subglossentry}[3]%
 	{%
-		\settowidth{\glstreeindent}{\@glswidestname}%
+		\settowidth{\glstreeindent}{\@glswidestname\space}%
+		\hangindent\glstreeindent%
 		\glstreenamebox{\glstreeindent}%
 		{%
 			\glsentryitem{##2}%
 			\glstarget{##2}{\glossentryname{##2}}%
 		}%
-		\space%
 		\glsentrydescfr{##2}\space(\textit{\glsentrydesc{##2}})%
 		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
 		\par%

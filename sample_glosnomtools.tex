@@ -9,7 +9,7 @@
 \usepackage{amsmath,amsfonts,amssymb,mathtools,siunitx,etoolbox}
 \usepackage{hyperref} % dernier package chargé sauf glossaries
 \usepackage[noredefwarn]{glossaries} % aucun warning pour remplacements 
-									 % de la classe memoir
+% de la classe memoir
 \usepackage{glosnomtools}
 %% ===================== preamble ============================================
 %% ------------- glossaries ------------------------------------------------
@@ -17,7 +17,7 @@
 \setglossarystyle{nomencl-fr-en}
 \setacronymstyle{fr-acr}
 \loadglsentries{sample_glosnomtools_glos}
-\glssetwidest{LOOP}  % nomenclature widest name
+\glssetwidest{LOOP}  % IMPORTANT : entrée la plus large de la nomenclature
 %% ------------- ulthese ----------------------------------------------------
 \titre{Exemple d'une nomenclature mathématique avec \texttt{glossaries} et \texttt{glossnomtools} dans \texttt{ulthese}}
 \auteur{Francis Gagnon}
@@ -26,14 +26,14 @@
 %% ============================================================================
 
 \begin{document}
-
+	
 \frontmatter                    % pages liminaires
 
-\pagetitre
+\frontispice
 
 \begin{SingleSpace}
-\abnormalparskip{0pt}
-\printglossary[title=Nomenclature]
+	\abnormalparskip{0pt}
+	\printglossary[title=Nomenclature]
 \end{SingleSpace}
 
 \mainmatter                     % corps du document
@@ -41,7 +41,7 @@
 \chapter{Exemple d'utilisation de \texttt{glosnomtools}}
 
 \section{Compilation}
-De manaière similaire à BibTeX, la compilation de ce document ce fait en exécutant les commandes dans l'ordre suivante :
+Le package \texttt{glossaries} est inclus dans MikTeX et TeX Live. Un peu comme une bibliographie, la compilation d'un glossaire ce fait en exécutant les commandes dans l'ordre suivant :
 \begin{enumerate}
 	\item \texttt{pdflatex}
 	\item \texttt{makeglossaries}
@@ -61,7 +61,7 @@ Les indices doivent être définis avec un label du format \texttt{sub.resteDuLa
 \begin{equation}
 d"v + \glsub{d}{v} = \SI{10.0}{\centi\meter} = 3.937\qtmark
 \end{equation}
-En mode \texttt{math}, j'ai configuré le caractère \texttt{<">} comme raccourci pour l'écriture d'un indice sans italique (\texttt{<\_>} pour indice en italique) \footnote{ La macro \texttt{qtmark} permet d'insérer le caractère \texttt{<">}. En ISO, les indices représentant l'abbréviation d'un mot s'écrivent sans italique, et, celles représentant une variable, en italique.}. La macro \texttt{glsvi} permet d'ajouter une variable en indice à une autre variable : \glsvi{T}{k}. Il est aussi possible d'ajouter deux indices séparés par une virgule avec \texttt{glsubs} : \glsubs{D}{w}{a}. En l’occurrence, l'opérateur virgule est ajouté dans la nomenclature, qui doit donc être défini dans le glossaire sous le label \texttt{op.comma}.
+En mode \texttt{math}, j'ai configuré le caractère \texttt{<">} comme raccourci pour l'écriture d'un indice sans italique (\texttt{<\_>} pour indice en italique) \footnote{ La macro \texttt{qtmark} permet d'insérer le caractère \texttt{<">}. En ISO, les indices représentant l'abréviation d'un mot s'écrivent sans italique, et, celles représentant une variable, en italique.}. La macro \texttt{glsvi} permet d'ajouter une variable en indice à une autre variable : \glsvi{T}{k}. Il est aussi possible d'ajouter deux indices séparés par une virgule avec \texttt{glsubs} : \glsubs{D}{w}{a}. En l’occurrence, l'opérateur virgule est ajouté dans la nomenclature, qui doit donc être défini dans le glossaire sous le label \texttt{op.comma}.
 
 Il est aussi possible d'ajouter des accents sur les variables : \glsdot{m} et \glsbar{T}. À leur utilisation respective, un opérateur est ajouté dans la nomenclature. Ils doivent donc être définis à leur label respectif. Les macros disponibles pour accentuer une variable sont:
 \begin{itemize} 
@@ -74,17 +74,18 @@ De plus, un argument optionnel permet d'ajouter des accents à toutes les macros
 
 \section{Langue, abréviations et nomenclature}
 
-S'il y a des changement de langues à travers le document, il faut changer de style pour les acronymes. La clé \texttt{decriptionfr} doit être préalablement définie dans le glossaire. Par la suite, il y a trois options de style disponibles : 
+S'il y a des changements de langues à travers le document, il faut changer de style pour les acronymes. La clé \texttt{decriptionfr} doit être préalablement définie dans le glossaire. Par la suite, il y a trois options de style disponibles : 
 \begin{itemize}
-\setacronymstyle{fr-en-acr} \item bilingue  avec \texttt{fr-en-acr}  : \acrfull{GMP}
-\setacronymstyle{en-acr} \item anglais avec \texttt{en-acr} : \acrfull{GMP}
-\setacronymstyle{fr-acr}  \item français avec \texttt{fr-acr} : \acrfull{GMP}
+	\setacronymstyle{fr-en-acr} \item bilingue  avec \texttt{fr-en-acr}  : \acrfull{ODE}
+	\setacronymstyle{en-acr} \item anglais avec \texttt{en-acr} : \acrfull{ODE}
+	\setacronymstyle{fr-acr}  \item français avec \texttt{fr-acr} : \acrfull{ODE}
 \end{itemize}
-La macro \texttt{glsfren} affiche l'acronymes en bilingue peu importe le style configuré : \glsfren{GMP}. Les descriptions en français sont aussi accessibles avec \texttt{glsdescfr} : les \glsdescfr{GMP}. De manière similaire, il est possible de changer la langue de la nomenclature avec trois options de style:
+La macro \texttt{glsfren} affiche l'acronyme en bilingue, peu importe le style configuré : \glsfren{ODE}. Les descriptions en français sont aussi accessibles avec \texttt{glsdescfr} : les \glsdescfr{ODE}. De manière similaire, il est possible de changer la langue de la nomenclature avec trois options de style:
 \begin{itemize}
-\item descriptions bilingues avec \texttt{nomencl-fr-en}
-\item descriptions en anglais avec \texttt{nomencl-en}
-\item descriptions en français avec \texttt{nomencl-fr}
+	\item descriptions bilingues avec \texttt{nomencl-fr-en}
+	\item descriptions en anglais avec \texttt{nomencl-en}
+	\item descriptions en français avec \texttt{nomencl-fr}
 \end{itemize}
-L'exemple de la page ii est une nomenclature bilingue. La clé \texttt{symbol} ne contient pas le symbole mathématique, mais bien les unités affichées dans la nomenclature.
+L'exemple de la page ii est une nomenclature bilingue. La clé \texttt{symbol} ne contient pas le symbole mathématique, mais bien les unités affichées dans la nomenclature. \gls{NA}
+
 \end{document}
