@@ -1,63 +1,51 @@
 % !TeX encoding = UTF-8
-% 
+% Glossary entries definition
+% - symbol field : units or dimension (for matrices)
+% - descriptionfr field : description in french
 
 % ==================================================================
 % ======================= MATH SYMBOLS =============================
 % ==================================================================
 
-% TODO : sans dimension ou dimensionless (voir theta)
-% TODO : nomenclature bilingue
-% TODO : permettre une longue descriptio avec indentation (voir psi)
-
-
-% ------------------------------------------------------------------
 % ----------------------- LATIN SYMBOLS ----------------------------
-% ------------------------------------------------------------------
-
 \newglossaryentry{latin}{name={latin},
 	description={Latin symbols},descriptionfr={Symboles latins},sort=1}
 {%	
-	\newglossaryentry{k}{
-		name=\ensuremath{k},
+	\newglosentrymath{k}{k}{
 		description={discrete time},
 		descriptionfr={temps discret},
 		sort=k,
 		parent=latin,
 	}
-	\newglossaryentry{T}{
-		name=\ensuremath{T},
+	\newglosentrymath{T}{T}{
 		description={temperature},
 		symbol=\si{\kelvin},
 		descriptionfr={température},
 		sort=T,
 		parent=latin,
 	}
-	\newglossaryentry{z}{
-		name=\ensuremath{z},
+	\newglosentrymath{z}{z}{
 		description={height},
 		symbol=\si{\meter},
 		descriptionfr={hauteur},
 		sort=z,
 		parent=latin,
 	}
-	\newglossaryentry{d}{
-		name=\ensuremath{d},
+	\newglosentrymath{d}{d}{
 		description={diameter},
 		symbol=\si{\meter},
 		descriptionfr={diamètre},
 		sort=d,
 		parent=latin,
 	}
-	\newglossaryentry{D}{
-		name=\ensuremath{D},
+	\newglosentrymath{D}{D}{
 		description={molecular diffusion coefficient},
 		symbol=\si{\meter\squared\per\second},
 		descriptionfr={coefficient de diffusion moléculaire},
 		sort=D,
 		parent=latin,
 	}
-	\newglossaryentry{m}{
-		name=\ensuremath{m},
+	\newglosentrymath{m}{m}{
 		description={mass},
 		symbol=\si{\kilogram},
 		descriptionfr={masse},
@@ -66,46 +54,39 @@
 	}
 }%
 
-% ------------------------------------------------------------------
 % ---------------------- GREEK SYMBOLS -----------------------------
-% ------------------------------------------------------------------
 \newglossaryentry{greek}{name={greek},
 	description={Greek symbols},descriptionfr={Symboles grecs},sort=2}
 {%
-	\newglossaryentry{rho}{
-		name=\ensuremath{\rho},
+	\newglosentrymath{rho}{\rho}{
 		description={density},
 		symbol=\si{\kilogram\per\meter\cubed},
 		descriptionfr={masse volumique},
-		sort=17,
+		sort=17,      % rho : 17th in greek alphabet order
 		parent=greek,
 	}
-	\newglossaryentry{mu}{
-		name=\ensuremath{\mu},
+	\newglosentrymath{mu}{\mu}{
 		description={dynamic viscosity},
 		symbol=\si{\kilogram\per\meter\per\second},
 		descriptionfr={viscosité dynamique},
-		sort=12,
+		sort=12,	% mu  : 12th in greek alphabet order
 		parent=greek,
 	}
 }%
 
-% ------------------------------------------------------------------
+
 % ---------------------- VECTORS AND MATRICES ----------------------
-% ------------------------------------------------------------------
 \newglossaryentry{vecMat}{name={vecMat},
 	description={Vectors and matrices},descriptionfr={Vecteurs et matrices},sort=3}
 {%
-	\newglossaryentry{mat.b}{
-		name=\ensuremath{\mathbf{b}},
+	\newglosentrymath{mat.b}{\mathbf{b}}{
 		description={vector},
 		symbol=$(2 \times 1)$,
 		descriptionfr={vecteur},
-		sort=u,
+		sort=b,
 		parent=vecMat,
 	}
-	\newglossaryentry{mat.A}{
-		name=\ensuremath{\mathbf{A}},
+	\newglosentrymath{mat.A}{\mathbf{A}}{
 		description={matrix},
 		symbol=$(2 \times 2)$,
 		descriptionfr={matrice},
@@ -113,55 +94,47 @@
 		parent=vecMat,
 	}
 }%
-% ------------------------------------------------------------------
+
 % ---------------------- SUBSCRIPTS --------------------------------
-% ------------------------------------------------------------------
 \newglossaryentry{subscript}{name={subscript},
 	description={Subscripts},descriptionfr={Indices},sort=4}
 {%
-	\newglossaryentry{sub.w}{
-		name=w,
+	\newglosentrymath{sub.w}{\mathrm{w}}{
 		description={water},
 		descriptionfr={eau},
 		parent=subscript
 	}
-	\newglossaryentry{sub.a}{
-		name=a,
+	\newglosentrymath{sub.a}{\mathrm{a}}{
 		description={air},
 		descriptionfr={air},
 		parent=subscript
 	}
-	\newglossaryentry{sub.v}{
-		name=v,
+	\newglosentrymath{sub.v}{\mathrm{v}}{
 		description={vessel},
 		descriptionfr={réservoir},
 		parent=subscript
 	}
 }%
 
-% ------------------------------------------------------------------
+
 % ---------------------- OPERATORS --------------------------------
-% ------------------------------------------------------------------
 \newglossaryentry{operator}{name={operator},
 	description={Operators},descriptionfr={Opérateurs},sort=5}
 {%
-	\newglossaryentry{op.dot}{
-		name={\ensuremath{\dot{\bullet}}},
+	\newglosentrymath{op.dot}{\dot{\bullet}}{
 		description={flow rate of $\bullet$},
 		descriptionfr={débit de $\bullet$},
 		symbol=\si{\per\second},
 		sort=01,
 		parent=operator
 	}
-	\newglossaryentry{op.bar}{
-		name={\ensuremath{\overline{\bullet}}},
+	\newglosentrymath{op.bar}{\overline{\bullet}}{
 		description={average of $\bullet$},
 		descriptionfr={moyenne de $\bullet$},
 		sort=02,
 		parent=operator
 	}
-	\newglossaryentry{op.comma}{
-		name={\ensuremath{\bullet,\!\circ}},
+	\newglosentrymath{op.comma}{\bullet,\!\circ}{
 		description={in subscript : from $\bullet$ to $\circ$},
 		descriptionfr={en indice : de $\bullet$ vers $\circ$},
 		sort=03,
@@ -172,6 +145,7 @@
 % ==================================================================
 % ========================= ACRONYMS ===============================
 % ==================================================================
+
 \newglossaryentry{abbrv}{name={abbrv},
 	description={Abbreviations},descriptionfr={Abréviations},sort=6}
 {%
