@@ -182,6 +182,13 @@
 \begingroup\lccode`~=`"\lowercase{\endgroup\def~}#1{\sbu{#1}}%
 \mathchardef\qtmark=\mathcode`"\AtBeginDocument{\mathcode`"=\string"8000}%
 
+% ---------- newglosentrymath --------------------------------------------
+% new glossary entry by adding ensuremath in the name field
+% 3 arguments : glossary label, math symbol and {key=value list}
+\newcommand*{\newglosentrymath}[3]{%
+	\newglossaryentry{#1}{name={\ensuremath{#2}},#3}%
+}%
+
 % ---------- glsvi -------------------------------------------------------
 % show $a_b$ with link to "a" and variable "b"
 % 4 arguments : 2 mandatory arguments and optional 1st and 2nd argument
@@ -199,7 +206,7 @@
 \newcommand*{\glsub}[3][]%
 {%
 	\glosnom@getMyGlsMacro{#1}%
-	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{sub.#3}}]}%
+	\ensuremath{\glosnom@MyGlsMacro{#2}[_{\gls{sub.#3}}]}%
 }%
 
 % ---------- glsubs -------------------------------------------------------
@@ -226,10 +233,6 @@
 	}%
 	\gls{#1}%
 	\let\genacrfullformat\oldfullformat%
-}%
-
-\newcommand*{\newglosentrymath}[3]{%
-	\newglossaryentry{#1}{name={\ensuremath{#2}},#3}%
 }%
 
 
