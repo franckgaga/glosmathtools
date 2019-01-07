@@ -1,20 +1,23 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = fr_CA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Document principal pour l'exemple d'utilisation de glosnomtools
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % nohyperref pour charger le package hyperref manuellement 
 % voir https://gitlab.com/vigou3/ulthese/issues/2
 \documentclass[PhD,nohyperref,english,french]{ulthese}
 %% ===================== packages ============================================
 \ifxetex\else \usepackage[utf8]{inputenc} \fi
-\usepackage{amsmath,amsfonts,amssymb,mathtools,siunitx,etoolbox}
+\usepackage{mathtools,siunitx,amsmath,amsfonts,amssymb,etoolbox}
 \usepackage{hyperref} % dernier package chargé sauf glossaries
 \usepackage[noredefwarn]{glossaries} % aucun warning pour remplacements 
-% de la classe memoir
-\usepackage{glosnomtools}
+								     % de la classe memoir
+\usepackage{glosnomtools}			 % package de francis gagnon
 %% ===================== preamble ============================================
 %% ------------- glossaries ------------------------------------------------
 \makeglossaries
-\setglossarystyle{nomencl-fr-en}
+\setglossarystyle{nomencl-en}
 \setacronymstyle{fr-acr}
 \loadglsentries{sample_glosnomtools_glos}
 \glssetwidest{LOOP}  % IMPORTANT : entrée la plus large de la nomenclature
@@ -28,16 +31,15 @@
 
 \begin{document}
 	
-\frontmatter                    % pages liminaires
-
+\frontmatter  
+           
 \frontispice
 
-\begin{SingleSpace}
-	\abnormalparskip{0pt}
-	\printglossary[title=Nomenclature]
-\end{SingleSpace}
+\tableofcontents
 
-\mainmatter                     % corps du document
+\printglossary[title=Nomenclature]
+
+\mainmatter                     
 
 \chapter{Exemple d'utilisation de \texttt{glosnomtools}}
 
@@ -62,14 +64,14 @@ Les indices doivent être définis avec un label du format \texttt{sub.resteDuLa
 \begin{equation}
 d"v + \glsub{d}{v} = \SI{10.0}{\centi\meter} = 3.937\qtmark
 \end{equation}
-En mode \texttt{math}, j'ai configuré le caractère \texttt{<">} comme raccourci pour l'écriture d'un indice sans italique (\texttt{<\_>} pour indice en italique) \footnote{ La macro \texttt{qtmark} permet d'insérer le caractère \texttt{<">}. En ISO, les indices représentant l'abréviation d'un mot s'écrivent sans italique, et, celles représentant une variable, en italique.}. La macro \texttt{glsvi} permet d'ajouter une variable en indice à une autre variable : \glsvi{T}{k}. Il est aussi possible d'ajouter deux indices séparés par une virgule avec \texttt{glsubs} : \glsubs{D}{w}{a}. En l’occurrence, l'opérateur virgule est ajouté dans la nomenclature, qui doit donc être défini dans le glossaire sous le label \texttt{op.comma}.
+En mode \texttt{math}, le caractère \texttt{<">} est configuré comme raccourci pour l'écriture d'un indice sans italique (\texttt{<\_>} pour indice en italique) \footnote{ La macro \texttt{qtmark} permet d'insérer le caractère \texttt{<">}. En ISO, les indices représentant l'abréviation d'un mot s'écrivent sans italique, et, celles représentant une variable, en italique.}. La macro \texttt{glsvi} permet d'ajouter une variable en indice à une autre variable : \glsvi{T}{k}. Il est aussi possible d'ajouter deux indices séparés par une virgule avec \texttt{glsubs} : \glsubs{D}{w}{a}. En l’occurrence, l'opérateur virgule est ajouté dans la nomenclature, qui doit donc être défini dans le glossaire sous le label \texttt{op.comma}.
 
 Il est aussi possible d'ajouter des accents sur les variables : \glsdot{m} et \glsbar{T}. À leur utilisation respective, un opérateur est ajouté dans la nomenclature. Ils doivent donc être définis à leur label respectif. Les macros disponibles pour accentuer une variable sont:
 \begin{itemize} 
-	\item \texttt{glsdot} (définition de l'accent au label \texttt{op.dot})
-	\item \texttt{glsbar} (définition de l'accent au label \texttt{op.bar})
-	\item \texttt{glshat} (définition de l'accent au label \texttt{op.hat})
-	\item \texttt{glstilde} (définition de l'accent au label \texttt{op.tilde})
+	\item \texttt{glsdot} (défini au label \texttt{op.dot})
+	\item \texttt{glsbar} (défini au label \texttt{op.bar})
+	\item \texttt{glshat} (défini au label \texttt{op.hat})
+	\item \texttt{glstilde} (défini au label \texttt{op.tilde})
 \end{itemize}
 De plus, un argument optionnel permet d'ajouter des accents à toutes les macros précédentes : \glsub[bar]{T}{v} et \glsubs[dot]{m}{v}{a}. Il y a deux arguments optionnels dans le cas de \texttt{glsvi} : \glsvi[dot]{m}{k}, \glsvi[][dot]{k}{m} et \glsvi[bar][dot]{T}{m}.
 

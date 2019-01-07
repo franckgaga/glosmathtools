@@ -5,7 +5,7 @@ Math nomenclature tools for glossaries package %
 Francis Gagnon %
 ]%
 \RequirePackage%
-{glossaries,etoolbox,mathtools,siunitx,amsmath,amsfonts,amssymb}%
+{glossaries,mathtools,siunitx,amsmath,amsfonts,amssymb,etoolbox}%
 
 % ===========================================================================
 % =================== GLOSSARIES STYLES =====================================
@@ -15,6 +15,11 @@ Francis Gagnon %
 \newglossarystyle{nomencl-fr}%
 {%
 	\setglossarystyle{alttree}% based on alttree style
+	\renewenvironment{theglossary}%
+		{\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}}%
+		{\setlength{\parskip}{\glosnom@oldparskip}}%
+	\renewcommand*{\glossaryheader}%
+		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
 	\renewcommand*{\glossentry}[2]%
 	{%
 		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}\glsentryitem{##1}%
@@ -41,6 +46,11 @@ Francis Gagnon %
 \newglossarystyle{nomencl-en}%
 {%
 	\setglossarystyle{alttree}% based on alttree style
+	\renewenvironment{theglossary}%
+		{\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}}%
+		{\setlength{\parskip}{\glosnom@oldparskip}}%
+	\renewcommand*{\glossaryheader}%
+		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
 	\renewcommand*{\glossentry}[2]%
 	{%
 		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
@@ -67,6 +77,11 @@ Francis Gagnon %
 \newglossarystyle{nomencl-fr-en}%
 {%
 	\setglossarystyle{alttree}% based on alttree style
+	\renewenvironment{theglossary}%
+		{\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}}%
+		{\setlength{\parskip}{\glosnom@oldparskip}}%
+	\renewcommand*{\glossaryheader}%
+		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
 	\renewcommand*{\glossentry}[2]%
 	{%
 		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}\glsentryitem{##1}%
