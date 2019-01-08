@@ -16,20 +16,26 @@ Francis Gagnon %
 {%
 	\setglossarystyle{alttree}% based on alttree style
 	\renewenvironment{theglossary}%
-		{\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}}%
-		{\setlength{\parskip}{\glosnom@oldparskip}}%
+	{%
+		\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}%
+		\let\glosnom@oldparindent\parindent\setlength{\parindent}{0pt}%
+	}%
+	{%
+		\setlength{\parskip}{\glosnom@oldparskip}%
+		\setlength{\parindent}{\glosnom@oldparindent}%
+	}%
 	\renewcommand*{\glossaryheader}%
 		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
 	\renewcommand*{\glossentry}[2]%
 	{%
 		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}\glsentryitem{##1}%
 		\glsentryitem{##1}%
-		\glstarget{##1}{\textbf{\glsentrydescfr{##1}}}%
+		\glstarget{##1}{\glstreenamefmt{\glsentrydescfr{##1}}}%
 		\par\nopagebreak%
 	}%
 	\renewcommand*{\subglossentry}[3]%
 	{%
-		\settowidth{\glstreeindent}{\@glswidestname\space}%
+		\settowidth{\glstreeindent}{\@glswidestname\glstreepredesc}%
 		\hangindent\glstreeindent%
 		\glstreenamebox{\glstreeindent}%
 		{%
@@ -47,20 +53,26 @@ Francis Gagnon %
 {%
 	\setglossarystyle{alttree}% based on alttree style
 	\renewenvironment{theglossary}%
-		{\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}}%
-		{\setlength{\parskip}{\glosnom@oldparskip}}%
+	{%
+		\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}%
+		\let\glosnom@oldparindent\parindent\setlength{\parindent}{0pt}%
+	}%
+	{%
+		\setlength{\parskip}{\glosnom@oldparskip}%
+		\setlength{\parindent}{\glosnom@oldparindent}%
+	}%
 	\renewcommand*{\glossaryheader}%
 		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
 	\renewcommand*{\glossentry}[2]%
 	{%
 		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
 		\glsentryitem{##1}%
-		\glstarget{##1}{\textbf{\glsentrydesc{##1}}}%
+		\glstarget{##1}{\glstreenamefmt{\glsentrydesc{##1}}}%
 		\par\nopagebreak%
 	}%
 	\renewcommand*{\subglossentry}[3]%
 	{%
-		\settowidth{\glstreeindent}{\@glswidestname\space}%
+		\settowidth{\glstreeindent}{\@glswidestname\glstreepredesc}%
 		\hangindent\glstreeindent%
 		\glstreenamebox{\glstreeindent}%
 		{%
@@ -78,20 +90,26 @@ Francis Gagnon %
 {%
 	\setglossarystyle{alttree}% based on alttree style
 	\renewenvironment{theglossary}%
-		{\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}}%
-		{\setlength{\parskip}{\glosnom@oldparskip}}%
+	{%
+		\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}%
+		\let\glosnom@oldparindent\parindent\setlength{\parindent}{0pt}%
+	}%
+	{%
+		\setlength{\parskip}{\glosnom@oldparskip}%
+		\setlength{\parindent}{\glosnom@oldparindent}%
+	}%
 	\renewcommand*{\glossaryheader}%
 		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
 	\renewcommand*{\glossentry}[2]%
 	{%
 		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}\glsentryitem{##1}%
-		\glstarget{##1}{\textbf{\glsentrydescfr{##1}\space%
+		\glstarget{##1}{\glstreenamefmt{\glsentrydescfr{##1}\space%
 			(\textit{\glsentrydesc{##1}})}}%
 		\par\nopagebreak%
 	}%
 	\renewcommand*{\subglossentry}[3]%
 	{%
-		\settowidth{\glstreeindent}{\@glswidestname\space}%
+		\settowidth{\glstreeindent}{\@glswidestname\glstreepredesc}%
 		\hangindent\glstreeindent%
 		\glstreenamebox{\glstreeindent}%
 		{%
@@ -201,7 +219,7 @@ Francis Gagnon %
 \mathchardef\qtmark=\mathcode`"\AtBeginDocument{\mathcode`"=\string"8000}%
 
 % ---------- newglosentrymath --------------------------------------------
-% new glossary entry by adding ensuremath in the name field
+% new glossary entry by adding ensuremath macro in the name field
 % 3 arguments : glossary label, math symbol and {key=value list}
 \newcommand*{\newglosentrymath}[3]{%
 	\newglossaryentry{#1}{name={\ensuremath{#2}},#3}%
