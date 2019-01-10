@@ -201,7 +201,8 @@ Francis Gagnon %
 
 % ---------- dif -------------------------------------------------------
 %  shortcut for upright d (differential)
-\newcommand*{\dif}{\mathrm{d}}%
+% textnormal for main document math font (serif or sans)
+\newcommand*{\dif}{\textnormal{d}}%
 
 % ---------- stkout ----------------------------------------------------
 % "strikout" line in the middle of equations
@@ -209,8 +210,10 @@ Francis Gagnon %
 {\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}%
 
 % ---------- sbu -------------------------------------------------------
-% "sbu" macro : shortcut for upright indices (ISO/NIST standard)
-\newcommand*{\sbu}[1]{_\textnormal{#1}}%
+% "sbu" macro : shortcut for upright indices (ISO/NIST standard
+% textnormal for main document math font (serif or sans)
+\newcommand*{\sbu}[1]{_{\operatorfont{#1}}}
+
 
 % ---------- " in math mode --------------------------------------------
 % define char '"' as shortcut for "sbu" macro in math mode
