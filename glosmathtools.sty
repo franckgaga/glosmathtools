@@ -135,8 +135,8 @@ Francis Gagnon %
 			{\glsentrydescfr{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})}%
 		\renewcommand*{\genplacrfullformat}[2]%
 			{\glsentrydescfr{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
-		\let\Genacrfullformat\genacrfullformat
-		\let\Genplacrfullformat\genplacrfullformat
+		\let\Genacrfullformat\genacrfullformat%
+		\let\Genplacrfullformat\genplacrfullformat%
 	}%
 
 % ---------- accronyms bilangual definition ---------------------------------
@@ -150,14 +150,14 @@ Francis Gagnon %
 				\space(\firstacronymfont{\glsentryshort{##1}} pour %
 				\textit{\glsentrydesc{##1}})%
 			}%
-		\renewcommand*{\genplacrfullformat}[2]
+		\renewcommand*{\genplacrfullformat}[2]%
 			{%
 				\glsentrydescfr{##1}##2%
 				\space(\firstacronymfont{\glsentryshortpl{##1}} pour %
-				\textit{\glsentrydesc{##1}})
+				\textit{\glsentrydesc{##1}})%
 			}%
-		\let\Genacrfullformat\genacrfullformat
-		\let\Genplacrfullformat\genplacrfullformat
+		\let\Genacrfullformat\genacrfullformat%
+		\let\Genplacrfullformat\genplacrfullformat%
 	}%
 
 % ---------- french description key -----------------------------------------
@@ -169,29 +169,29 @@ Francis Gagnon %
 % ---------- dot accent key ------------------------------------------------
 \glsaddkey{dot}% key
 {	% default value
-	\ensuremath{\dot{\glsentrytext{\glslabel}}}%
 	\glsadd{op.dot}%
+	\ensuremath{\dot{\glsentrytext{\glslabel}}}%
 }{\glsentrydot}{\Glsentrydot}{\glsdot}{\Glsdot}{\GLSdot}% macros
 
 % ---------- bar accent key ------------------------------------------------
 \glsaddkey{bar}% key
 {	% default value
-	\ensuremath{\overline{\glsentrytext{\glslabel}}}
 	\glsadd{op.bar}%
+	\ensuremath{\bar{\glsentrytext{\glslabel}}}%
 }{\glsentrybar}{\Glsentrybar}{\glsbar}{\Glsbar}{\GLSbar}% macros
 
 % ---------- hat accent key ------------------------------------------------
 \glsaddkey{hat}% key
 {	% default value
-	\ensuremath{\widehat{\glsentrytext{\glslabel}}}%
 	\glsadd{op.hat}%
+	\ensuremath{\widehat{\glsentrytext{\glslabel}}}%
 }{\glsentryhat}{\Glsentryhat}{\glshat}{\Glshat}{\GLShat}% macros
 
 % ---------- tilde accent key ----------------------------------------------
 \glsaddkey{tilde}% key
 {	% default value
-	\ensuremath{\widetilde{\glsentrytext{\glslabel}}}
 	\glsadd{op.tilde}%
+	\ensuremath{\widetilde{\glsentrytext{\glslabel}}}%
 }{\glsentrytilde}{\Glsentrytilde}{\glstilde}{\Glstilde}{\GLStilde}% macros
 
 
@@ -255,8 +255,8 @@ Francis Gagnon %
 \newcommand*{\glsubs}[4][]%
 {%
 	\glosnom@getMyGlsMacro{#1}%
-	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{sub.#3},\gls{sub.#4}}]}%
 	\glsadd{op.comma}%
+	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{sub.#3},\gls{sub.#4}}]}%
 }%
 
 % ---------- glsfren ---------------------------------------------------------
