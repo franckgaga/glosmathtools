@@ -6,6 +6,88 @@ Francis Gagnon %
 ]%
 \RequirePackage{glossaries,mathtools,amsmath,amsfonts,amssymb,etoolbox}%
 
+% define char '"' as shortcut for "sbu" macro in math mode
+% and qtmark macro to show a quotation mark
+\DeclareOption{qtmarkupright}{%
+	\begingroup\lccode`~=`"\lowercase{\endgroup\def~}#1{\sbu{#1}}%
+	\mathchardef\qtmark=\mathcode`"\AtBeginDocument{\mathcode`"=\string"8000}%
+}%
+
+\ProcessOptions\relax%
+
+% ===========================================================================
+% =================== PUBLIC MACROS =========================================
+% ===========================================================================
+
+% ---------- dif -------------------------------------------------------
+%  shortcut for upright d (differential)
+% textnormal for main document math font (serif or sans)
+\newcommand*{\dif}{\textnormal{d}}%
+
+% ---------- stkout ----------------------------------------------------
+% "strikout" line in the middle of equations
+\newcommand*{\stkout}[1]%
+{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}%
+
+% ---------- sbu -------------------------------------------------------
+% "sbu" macro : shortcut for upright indices (ISO/NIST standard
+% operatorfont for main document math font (serif or sans)
+\newcommand*{\sbu}[1]{_{\operatorfont{#1}}}%
+
+% ---------- newglosentrymath --------------------------------------------
+% new glossary entry by adding ensuremath macro in the name field
+% 3 arguments : glossary label, math symbol and {key=value list}
+\newcommand*{\newglosentrymath}[3]{%
+	\newglossaryentry{#1}{name={\ensuremath{#2}},#3}%
+}%
+
+% ---------- glsvi -------------------------------------------------------
+% show $a_b$ with link to "a" and variable "b"
+% 4 arguments : 2 mandatory arguments and optional 1st and 2nd argument
+% for adding accent on "a" and "b" (dot,bar,hat or tilde)
+\newcommand*{\glsvi}[1][]%
+{%
+	\def\glosmath@ArgI{#1}%
+	\glosmath@glsviRelay%
+}%
+
+% ---------- glsub -------------------------------------------------------
+% show $a_b$ with link to "a" and subscript "sub.b"
+% 3 arguments : 2 mandatory arguments and optional 1st argument 
+% for adding accents on "a" (dot,bar,hat or tilde)
+\newcommand*{\glsub}[3][]%
+{%
+	\glosmath@getMyGlsMacro{#1}%
+	\ensuremath{\glosmath@MyGlsMacro{#2}[_{\gls{sub.#3}}]}%
+}%
+
+% ---------- glsubs -------------------------------------------------------
+% show $a_{b,c}$ with link "a", "sub.b" and "sub.c"
+% 4 arguments : 4 mandatory arguments and optional 1st argument 
+% for adding accents on "a" (dot,bar,hat or tilde)
+\newcommand*{\glsubs}[4][]%
+{%
+	\glosmath@getMyGlsMacro{#1}%
+	\glsadd{op.comma}%
+	\ensuremath{\glosmath@MyGlsMacro{#2}[\sbu{\gls{sub.#3},\gls{sub.#4}}]}%
+}%
+
+% ---------- glsfren ---------------------------------------------------------
+% show accronyms definition in bilingual (ignoring the current style)
+\newcommand*{\glsfren}[1]%
+{%
+	\let\oldfullformat\genacrfullformat%
+	\renewcommand*{\genacrfullformat}[2]%
+	{%
+		\glsentrydescfr{##1}##2%
+		\space(\firstacronymfont{\glsentryshort{##1}} pour %
+		\textit{\glsentrydesc{##1}})%
+	}%
+	\gls{#1}%
+	\let\genacrfullformat\oldfullformat%
+}%
+
+
 % ===========================================================================
 % =================== GLOSSARIES STYLES =====================================
 % ===========================================================================
@@ -16,12 +98,12 @@ Francis Gagnon %
 	\setglossarystyle{alttree}% based on alttree style
 	\renewenvironment{theglossary}%
 	{%
-		\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}%
-		\let\glosnom@oldparindent\parindent\setlength{\parindent}{0pt}%
+		\let\glosmath@oldparskip\parskip\setlength{\parskip}{0pt}%
+		\let\glosmath@oldparindent\parindent\setlength{\parindent}{0pt}%
 	}%
 	{%
-		\setlength{\parskip}{\glosnom@oldparskip}%
-		\setlength{\parindent}{\glosnom@oldparindent}%
+		\setlength{\parskip}{\glosmath@oldparskip}%
+		\setlength{\parindent}{\glosmath@oldparindent}%
 	}%
 	\renewcommand*{\glossaryheader}%
 		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
@@ -36,6 +118,9 @@ Francis Gagnon %
 	{%
 		\settowidth{\glstreeindent}{\@glswidestname\glstreepredesc}%
 		\hangindent\glstreeindent%
+		\settowidth{\glosmath@curNameLen}{\glossentryname{##2}\glstreepredesc}%
+		\ifdimless{\glstreeindent}{\glosmath@curNameLen}{%
+			\setlength{\glstreeindent}{\glosmath@curNameLen}}{}%
 		\glstreenamebox{\glstreeindent}%
 		{%
 			\glsentryitem{##2}%
@@ -53,12 +138,12 @@ Francis Gagnon %
 	\setglossarystyle{alttree}% based on alttree style
 	\renewenvironment{theglossary}%
 	{%
-		\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}%
-		\let\glosnom@oldparindent\parindent\setlength{\parindent}{0pt}%
+		\let\glosmath@oldparskip\parskip\setlength{\parskip}{0pt}%
+		\let\glosmath@oldparindent\parindent\setlength{\parindent}{0pt}%
 	}%
 	{%
-		\setlength{\parskip}{\glosnom@oldparskip}%
-		\setlength{\parindent}{\glosnom@oldparindent}%
+		\setlength{\parskip}{\glosmath@oldparskip}%
+		\setlength{\parindent}{\glosmath@oldparindent}%
 	}%
 	\renewcommand*{\glossaryheader}%
 		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
@@ -73,6 +158,9 @@ Francis Gagnon %
 	{%
 		\settowidth{\glstreeindent}{\@glswidestname\glstreepredesc}%
 		\hangindent\glstreeindent%
+		\settowidth{\glosmath@curNameLen}{\glossentryname{##2}\glstreepredesc}%
+		\ifdimless{\glstreeindent}{\glosmath@curNameLen}{%
+			\setlength{\glstreeindent}{\glosmath@curNameLen}}{}%
 		\glstreenamebox{\glstreeindent}%
 		{%
 			\glsentryitem{##2}%
@@ -90,12 +178,12 @@ Francis Gagnon %
 	\setglossarystyle{alttree}% based on alttree style
 	\renewenvironment{theglossary}%
 	{%
-		\let\glosnom@oldparskip\parskip\setlength{\parskip}{0pt}%
-		\let\glosnom@oldparindent\parindent\setlength{\parindent}{0pt}%
+		\let\glosmath@oldparskip\parskip\setlength{\parskip}{0pt}%
+		\let\glosmath@oldparindent\parindent\setlength{\parindent}{0pt}%
 	}%
 	{%
-		\setlength{\parskip}{\glosnom@oldparskip}%
-		\setlength{\parindent}{\glosnom@oldparindent}%
+		\setlength{\parskip}{\glosmath@oldparskip}%
+		\setlength{\parindent}{\glosmath@oldparindent}%
 	}%
 	\renewcommand*{\glossaryheader}%
 		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
@@ -110,6 +198,9 @@ Francis Gagnon %
 	{%
 		\settowidth{\glstreeindent}{\@glswidestname\glstreepredesc}%
 		\hangindent\glstreeindent%
+		\settowidth{\glosmath@curNameLen}{\glossentryname{##2}\glstreepredesc}%
+		\ifdimless{\glstreeindent}{\glosmath@curNameLen}{%
+			\setlength{\glstreeindent}{\glosmath@curNameLen}}{}%
 		\glstreenamebox{\glstreeindent}%
 		{%
 			\glsentryitem{##2}%
@@ -196,104 +287,24 @@ Francis Gagnon %
 
 
 % ===========================================================================
-% =================== PUBLIC MACROS =========================================
-% ===========================================================================
-
-% ---------- dif -------------------------------------------------------
-%  shortcut for upright d (differential)
-% textnormal for main document math font (serif or sans)
-\newcommand*{\dif}{\textnormal{d}}%
-
-% ---------- stkout ----------------------------------------------------
-% "strikout" line in the middle of equations
-\newcommand*{\stkout}[1]%
-{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}%
-
-% ---------- sbu -------------------------------------------------------
-% "sbu" macro : shortcut for upright indices (ISO/NIST standard
-% textnormal for main document math font (serif or sans)
-\newcommand*{\sbu}[1]{_{\operatorfont{#1}}}
-
-
-% ---------- " in math mode --------------------------------------------
-% define char '"' as shortcut for "sbu" macro in math mode
-% "qtmark" macro to show a quotation mark
-\begingroup\lccode`~=`"\lowercase{\endgroup\def~}#1{\sbu{#1}}%
-\mathchardef\qtmark=\mathcode`"\AtBeginDocument{\mathcode`"=\string"8000}%
-
-% ---------- newglosentrymath --------------------------------------------
-% new glossary entry by adding ensuremath macro in the name field
-% 3 arguments : glossary label, math symbol and {key=value list}
-\newcommand*{\newglosentrymath}[3]{%
-	\newglossaryentry{#1}{name={\ensuremath{#2}},#3}%
-}%
-
-% ---------- glsvi -------------------------------------------------------
-% show $a_b$ with link to "a" and variable "b"
-% 4 arguments : 2 mandatory arguments and optional 1st and 2nd argument
-% for adding accent on "a" and "b" (dot,bar,hat or tilde)
-\newcommand*{\glsvi}[1][]%
-{%
-	\def\glosnom@ArgI{#1}%
-	\glosnom@glsviRelay%
-}%
-
-% ---------- glsub -------------------------------------------------------
-% show $a_b$ with link to "a" and subscript "sub.b"
-% 3 arguments : 2 mandatory arguments and optional 1st argument 
-% for adding accents on "a" (dot,bar,hat or tilde)
-\newcommand*{\glsub}[3][]%
-{%
-	\glosnom@getMyGlsMacro{#1}%
-	\ensuremath{\glosnom@MyGlsMacro{#2}[_{\gls{sub.#3}}]}%
-}%
-
-% ---------- glsubs -------------------------------------------------------
-% show $a_{b,c}$ with link "a", "sub.b" and "sub.c"
-% 4 arguments : 4 mandatory arguments and optional 1st argument 
-% for adding accents on "a" (dot,bar,hat or tilde)
-\newcommand*{\glsubs}[4][]%
-{%
-	\glosnom@getMyGlsMacro{#1}%
-	\glsadd{op.comma}%
-	\ensuremath{\glosnom@MyGlsMacro{#2}[\sbu{\gls{sub.#3},\gls{sub.#4}}]}%
-}%
-
-% ---------- glsfren ---------------------------------------------------------
-% show accronyms definition in bilingual (ignoring the current style)
-\newcommand*{\glsfren}[1]%
-{%
-	\let\oldfullformat\genacrfullformat%
-	\renewcommand*{\genacrfullformat}[2]%
-	{%
-		\glsentrydescfr{##1}##2%
-		\space(\firstacronymfont{\glsentryshort{##1}} pour %
-		\textit{\glsentrydesc{##1}})%
-	}%
-	\gls{#1}%
-	\let\genacrfullformat\oldfullformat%
-}%
-
-
-% ===========================================================================
 % =================== PRIVATE MACROS ========================================
 % ===========================================================================
 
-% ---------- glosnom@getMyGlsMacro ------------------------------------------
-\newcommand*{\glosnom@getMyGlsMacro}[1]%
+% ---------- glosmath@getMyGlsMacro ------------------------------------------
+\newcommand*{\glosmath@getMyGlsMacro}[1]%
 {%
-	\let\glosnom@MyGlsMacro\gls%
+	\let\glosmath@MyGlsMacro\gls%
 	\notblank{#1}%
 	{%
-		\ifstrequal{#1}{dot}{\let\glosnom@MyGlsMacro\glsdot}%
+		\ifstrequal{#1}{dot}{\let\glosmath@MyGlsMacro\glsdot}%
 		{%
-			\ifstrequal{#1}{bar}{\let\glosnom@MyGlsMacro\glsbar}%
+			\ifstrequal{#1}{bar}{\let\glosmath@MyGlsMacro\glsbar}%
 			{%
-				\ifstrequal{#1}{hat}{\let\glosnom@MyGlsMacro\glshat}%
+				\ifstrequal{#1}{hat}{\let\glosmath@MyGlsMacro\glshat}%
 				{%
-					\ifstrequal{#1}{tilde}{\let\glosnom@MyGlsMacro\glstilde}%
+					\ifstrequal{#1}{tilde}{\let\glosmath@MyGlsMacro\glstilde}%
 					{%
-						\PackageError{glosnomtools}{Unknown accent: #1}{}%
+						\PackageError{glosmathhtools}{Unknown accent: #1}{}%
 					}%
 				}%
 			}%
@@ -301,13 +312,20 @@ Francis Gagnon %
 	}{}%
 }%
 
-% ---------- glosnom@glsviRelay -------------------------------------------
+% ---------- glosmath@glsviRelay -------------------------------------------
 % relay macro for two optional aguments in the glsvi macro
-\newcommand*{\glosnom@glsviRelay}[3][]%
+\newcommand*{\glosmath@glsviRelay}[3][]%
 {%
-	\expandafter\glosnom@getMyGlsMacro\expandafter{\glosnom@ArgI}%
-	\let\glosnom@FirGls\glosnom@MyGlsMacro%
-	\glosnom@getMyGlsMacro{#1}%
-	\let\glosnom@SecGls\glosnom@MyGlsMacro%
-	\ensuremath{\glosnom@FirGls{#2}[_{\glosnom@SecGls{#3}}]}%
+	\expandafter\glosmath@getMyGlsMacro\expandafter{\glosmath@ArgI}%
+	\let\glosmath@FirGls\glosmath@MyGlsMacro%
+	\glosmath@getMyGlsMacro{#1}%
+	\let\glosmath@SecGls\glosmath@MyGlsMacro%
+	\ensuremath{\glosmath@FirGls{#2}[_{\glosmath@SecGls{#3}}]}%
 }%
+
+% ---------- glosmath@curNameLen -------------------------------------------
+% variable to store current entry length (for nomenclature styles)
+\newlength{\glosmath@curNameLen}%
+\setlength{\glosmath@curNameLen}{\glstreeindent}
+
+\endinput%
