@@ -4,7 +4,7 @@
 Mathematical nomenclature tools for glossaries package %
 Francis Gagnon %
 ]%
-\RequirePackage{glossaries,mathtools,amsmath,etoolbox}%
+\RequirePackage{glossaries,amsmath,amsfonts,etoolbox}%
 
 % ===========================================================================
 % =================== PACKAGE OPTIONS =======================================
@@ -30,14 +30,23 @@ Francis Gagnon %
 % ---------- newglosentrymath --------------------------------------------
 % new glossary entry by adding ensuremath macro in the name field
 % 3 arguments : glossary label, math symbol and {key=value list}
-\newcommand*{\newglosentrymath}[3]{%
+\newcommand*{\newglosentrymath}[3]%
+{%
 	\newglossaryentry{#1}{name={\ensuremath{#2}},#3}%
+}%
+
+% ---------- glsac ----------------------------------------------------------
+% show $a$ with optionnal argument for accents
+\newcommand*{\glsac}[2][]%
+{%
+	\glosmath@getMyGlsMacro{#1}%
+	\ensuremath{\glsdisp{#2}{\glosmath@MyGlsMacro{#2}}}%
 }%
 
 % ---------- glsvi -------------------------------------------------------
 % show $a_b$ with link to "a" and variable "b"
 % 4 arguments : 2 mandatory arguments and optional 1st and 2nd argument
-% for adding accent on "a" and "b" (dot,bar,hat or tilde)
+% for adding accent on "a" and "b"
 \newcommand*{\glsvi}[1][]%
 {%
 	\def\glosmath@ArgI{#1}%
@@ -47,11 +56,11 @@ Francis Gagnon %
 % ---------- glsub -------------------------------------------------------
 % show $a_b$ with link to "a" and subscript "sub.b"
 % 3 arguments : 2 mandatory arguments and optional 1st argument 
-% for adding accents on "a" (dot,bar,hat or tilde)
+% for adding accents on "a"
 \newcommand*{\glsub}[3][]%
 {%
 	\glosmath@getMyGlsMacro{#1}%
-	\ensuremath{\glosmath@MyGlsMacro{#2}[_{\gls{sub.#3}}]}%
+	\ensuremath{\glsdisp{#2}{\glosmath@MyGlsMacro{#2}_{\gls{sub.#3}}}}%
 }%
 
 % ---------- glsubs -------------------------------------------------------
@@ -62,7 +71,12 @@ Francis Gagnon %
 {%
 	\glosmath@getMyGlsMacro{#1}%
 	\glsadd{op.comma}%
-	\ensuremath{\glosmath@MyGlsMacro{#2}[\sbu{\gls{sub.#3},\gls{sub.#4}}]}%
+	\ensuremath{%
+		\glsdisp{#2}{%
+			\glosmath@MyGlsMacro{#2}_{\gls{sub.#3},\gls{sub.#4}}%
+		}%
+	}%
+	%\ensuremath{\glosmath@MyGlsMacro{#2}[\sbu{\gls{sub.#3},\gls{sub.#4}}]}%
 }%
 
 % ---------- glsfren ---------------------------------------------------------
@@ -244,6 +258,11 @@ Francis Gagnon %
 		\let\Genplacrfullformat\genplacrfullformat%
 	}%
 
+
+% ===========================================================================
+% =================== GLOSSARIES KEYS =======================================
+% ===========================================================================
+
 % ---------- french description key -----------------------------------------
 \glsaddkey{descriptionfr}% key
 {	% default value 
@@ -251,61 +270,70 @@ Francis Gagnon %
 }{\glsentrydescfr}{\Glsentrydescfr}{\glsdescfr}{\Glsdescfr}{\GLSdescfr}% macros
 
 % ---------- dot accent key ------------------------------------------------
-\glsaddkey{dot}% key
+\glsaddstoragekey{dot}% key
 {	% default value
 	\glsadd{op.dot}%
-	\ensuremath{\dot{\glsentrytext{\glslabel}}}%
-}{\glsentrydot}{\Glsentrydot}{\glsdot}{\Glsdot}{\GLSdot}% macros
-
+	\ensuremath{\dot{\glsentrytext{\glslabel}}}
+}{\glsentrydot}
+% ---------- ddot accent key -----------------------------------------------
+\glsaddstoragekey{ddot}% key
+{	% default value
+	\glsadd{op.ddot}%
+	\ensuremath{\ddot{\glsentrytext{\glslabel}}}%
+}{\glsentryddot}
 % ---------- bar accent key ------------------------------------------------
-\glsaddkey{bar}% key
+\glsaddstoragekey{bar}% key
 {	% default value
 	\glsadd{op.bar}%
 	\ensuremath{\bar{\glsentrytext{\glslabel}}}%
-}{\glsentrybar}{\Glsentrybar}{\glsbar}{\Glsbar}{\GLSbar}% macros
-
+}{\glsentrybar}
 % ---------- hat accent key ------------------------------------------------
-\glsaddkey{hat}% key
+\glsaddstoragekey{hat}% key
 {	% default value
 	\glsadd{op.hat}%
 	\ensuremath{\widehat{\glsentrytext{\glslabel}}}%
-}{\glsentryhat}{\Glsentryhat}{\glshat}{\Glshat}{\GLShat}% macros
-
+}{\glsentryhat}
+% ---------- vec accent key ------------------------------------------------
+\glsaddstoragekey{vec}% key
+{	% default value
+	\glsadd{op.vec}%
+	\ensuremath{\vec{\glsentrytext{\glslabel}}}%
+}{\glsentryvec}
 % ---------- tilde accent key ----------------------------------------------
-\glsaddkey{tilde}% key
+\glsaddstoragekey{tilde}% key
 {	% default value
 	\glsadd{op.tilde}%
 	\ensuremath{\widetilde{\glsentrytext{\glslabel}}}%
-}{\glsentrytilde}{\Glsentrytilde}{\glstilde}{\Glstilde}{\GLStilde}% macros
-
+}{\glsentrytilde}
 
 % ===========================================================================
 % =================== PRIVATE MACROS ========================================
 % ===========================================================================
 
-% ---------- glosmath@getMyGlsMacro ------------------------------------------
+% ---------- glosmath@getMyGlsMacro -----------------------------------------
 \newcommand*{\glosmath@getMyGlsMacro}[1]%
 {%
-	\let\glosmath@MyGlsMacro\gls%
+	\let\glosmath@MyGlsMacro\glsentrytext%
 	\notblank{#1}%
 	{%
-		\ifstrequal{#1}{dot}{\let\glosmath@MyGlsMacro\glsdot}%
+		\ifstrequal{#1}{dot}{\let\glosmath@MyGlsMacro\glsentrydot}%
 		{%
-			\ifstrequal{#1}{bar}{\let\glosmath@MyGlsMacro\glsbar}%
-			{%
-				\ifstrequal{#1}{hat}{\let\glosmath@MyGlsMacro\glshat}%
-				{%
-					\ifstrequal{#1}{tilde}{\let\glosmath@MyGlsMacro\glstilde}%
-					{%
-						\PackageError{glosmathhtools}{Unknown accent: #1}{}%
-					}%
-				}%
-			}%
-		}%	
+		\ifstrequal{#1}{ddot}{\let\glosmath@MyGlsMacro\glsentryddot}%
+		{%
+		\ifstrequal{#1}{bar}{\let\glosmath@MyGlsMacro\glsentrybar}%
+		{%
+		\ifstrequal{#1}{hat}{\let\glosmath@MyGlsMacro\glsentryhat}%
+		{%
+		\ifstrequal{#1}{vec}{\let\glosmath@MyGlsMacro\glsentryvec}%
+		{%
+		\ifstrequal{#1}{tilde}{\let\glosmath@MyGlsMacro\glsentrytilde}%
+		{%
+			\PackageError{glosmathtools}{Unknown accent: #1}{}%
+		}}}}}}%	
 	}{}%
 }%
 
-% ---------- glosmath@glsviRelay -------------------------------------------
+% ---------- glosmath@glsviRelay ------------------------------------------
 % relay macro for two optional aguments in the glsvi macro
 \newcommand*{\glosmath@glsviRelay}[3][]%
 {%
@@ -313,12 +341,16 @@ Francis Gagnon %
 	\let\glosmath@FirGls\glosmath@MyGlsMacro%
 	\glosmath@getMyGlsMacro{#1}%
 	\let\glosmath@SecGls\glosmath@MyGlsMacro%
-	\ensuremath{\glosmath@FirGls{#2}[_{\glosmath@SecGls{#3}}]}%
+	\ensuremath{%
+		\glsdisp{#2}{%
+			\glosmath@FirGls{#2}_{\glsdisp{#3}{\glosmath@SecGls{#3}}}%
+		}%
+	}%
 }%
 
-% ---------- glosmath@curNameLen -------------------------------------------
+% ---------- glosmath@curNameLen ------------------------------------------
 % variable to store current entry length (for nomenclature styles)
 \newlength{\glosmath@curNameLen}%
-\setlength{\glosmath@curNameLen}{\glstreeindent}
+\setlength{\glosmath@curNameLen}{\glstreeindent}%
 
 \endinput%
