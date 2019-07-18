@@ -1,13 +1,16 @@
 \ProvidesPackage{glosmathtools}%
 [%
-2019/01/10 v0.2 %
-Math nomenclature tools for glossaries package %
+2019/07/18 v0.3 %
+Mathematical nomenclature tools for glossaries package %
 Francis Gagnon %
 ]%
-\RequirePackage{glossaries,mathtools,amsmath,amsfonts,amssymb,etoolbox}%
+\RequirePackage{glossaries,mathtools,amsmath,etoolbox}%
 
+% ===========================================================================
+% =================== PACKAGE OPTIONS =======================================
+% ===========================================================================
 % define char '"' as shortcut for "sbu" macro in math mode
-% and qtmark macro to show a quotation mark
+% define qtmark macro to show the quotation mark character
 \DeclareOption{qtmarkupright}{%
 	\begingroup\lccode`~=`"\lowercase{\endgroup\def~}#1{\sbu{#1}}%
 	\mathchardef\qtmark=\mathcode`"\AtBeginDocument{\mathcode`"=\string"8000}%
@@ -18,16 +21,6 @@ Francis Gagnon %
 % ===========================================================================
 % =================== PUBLIC MACROS =========================================
 % ===========================================================================
-
-% ---------- dif -------------------------------------------------------
-%  shortcut for upright d (differential)
-% textnormal for main document math font (serif or sans)
-\newcommand*{\dif}{\textnormal{d}}%
-
-% ---------- stkout ----------------------------------------------------
-% "strikout" line in the middle of equations
-\newcommand*{\stkout}[1]%
-{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}%
 
 % ---------- sbu -------------------------------------------------------
 % "sbu" macro : shortcut for upright indices (ISO/NIST standard
