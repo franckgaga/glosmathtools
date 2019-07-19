@@ -1,7 +1,9 @@
+% !TeX spellcheck = en_US
+% !TeX encoding = UTF-8
 \ProvidesPackage{glosmathtools}%
 [%
 2019/07/18 v0.3 %
-Mathematical nomenclature tools for glossaries package %
+Mathematical nomenclature tools based on glossaries package %
 Francis Gagnon %
 ]%
 \RequirePackage{glossaries,amsmath,amsfonts,etoolbox}%
@@ -76,7 +78,6 @@ Francis Gagnon %
 			\glosmath@MyGlsMacro{#2}_{\gls{sub.#3},\gls{sub.#4}}%
 		}%
 	}%
-	%\ensuremath{\glosmath@MyGlsMacro{#2}[\sbu{\gls{sub.#3},\gls{sub.#4}}]}%
 }%
 
 % ---------- glsfren ---------------------------------------------------------
@@ -86,7 +87,7 @@ Francis Gagnon %
 	\let\oldfullformat\genacrfullformat%
 	\renewcommand*{\genacrfullformat}[2]%
 	{%
-		\glsentrydescfr{##1}##2%
+		\glsentrydescsec{##1}##2%
 		\space(\firstacronymfont{\glsentryshort{##1}} pour %
 		\textit{\glsentrydesc{##1}})%
 	}%
@@ -99,124 +100,23 @@ Francis Gagnon %
 % =================== GLOSSARIES STYLES =====================================
 % ===========================================================================
 
-% ---------- french nomenclature style -----------------------------------
-\newglossarystyle{nomencl-fr}%
-{%
-	\setglossarystyle{alttree}% based on alttree style
-	\renewenvironment{theglossary}%
-	{%
-		\let\glosmath@oldparskip\parskip\setlength{\parskip}{0pt}%
-		\let\glosmath@oldparindent\parindent\setlength{\parindent}{0pt}%
-	}%
-	{%
-		\setlength{\parskip}{\glosmath@oldparskip}%
-		\setlength{\parindent}{\glosmath@oldparindent}%
-	}%
-	\renewcommand*{\glossaryheader}%
-		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
-	\renewcommand*{\glossentry}[2]%
-	{%
-		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}\glsentryitem{##1}%
-		\glsentryitem{##1}%
-		\glstarget{##1}{\glstreenamefmt{\glsentrydescfr{##1}}}%
-		\par\nopagebreak%
-	}%
-	\renewcommand*{\subglossentry}[3]%
-	{%
-		\settowidth{\glstreeindent}{\@glswidestname\glstreepredesc}%
-		\hangindent\glstreeindent%
-		\settowidth{\glosmath@curNameLen}{\glossentryname{##2}\glstreepredesc}%
-		\ifdimless{\glstreeindent}{\glosmath@curNameLen}{%
-			\setlength{\glstreeindent}{\glosmath@curNameLen}}{}%
-		\glstreenamebox{\glstreeindent}%
-		{%
-			\glsentryitem{##2}%
-			\glstarget{##2}{\glossentryname{##2}}%
-		}%
-		\glsentrydescfr{##2}%
-		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
-		\par%
-	}%
+% ---------- main language nomenclature style -------------------------------
+\newglossarystyle{nomencl}{\setglossarystyle{glosmath@basestyle}}%
+% ---------- main language style (synonym) ----------------------------------
+\newglossarystyle{nomencl-L1}{\setglossarystyle{glosmath@basestyle}}%
+% ---------- second language nomenclature style -----------------------------
+\newglossarystyle{nomencl-L2}{\setglossarystyle{glosmath@basestyle}%
+	\renewcommand*{\glosstyledesc}[1]{\glsentrydescsec{##1}}%
 }%
-
-% ---------- english nomenclature style -----------------------------------
-\newglossarystyle{nomencl-en}%
-{%
-	\setglossarystyle{alttree}% based on alttree style
-	\renewenvironment{theglossary}%
-	{%
-		\let\glosmath@oldparskip\parskip\setlength{\parskip}{0pt}%
-		\let\glosmath@oldparindent\parindent\setlength{\parindent}{0pt}%
-	}%
-	{%
-		\setlength{\parskip}{\glosmath@oldparskip}%
-		\setlength{\parindent}{\glosmath@oldparindent}%
-	}%
-	\renewcommand*{\glossaryheader}%
-		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
-	\renewcommand*{\glossentry}[2]%
-	{%
-		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}%
-		\glsentryitem{##1}%
-		\glstarget{##1}{\glstreenamefmt{\glsentrydesc{##1}}}%
-		\par\nopagebreak%
-	}%
-	\renewcommand*{\subglossentry}[3]%
-	{%
-		\settowidth{\glstreeindent}{\@glswidestname\glstreepredesc}%
-		\hangindent\glstreeindent%
-		\settowidth{\glosmath@curNameLen}{\glossentryname{##2}\glstreepredesc}%
-		\ifdimless{\glstreeindent}{\glosmath@curNameLen}{%
-			\setlength{\glstreeindent}{\glosmath@curNameLen}}{}%
-		\glstreenamebox{\glstreeindent}%
-		{%
-			\glsentryitem{##2}%
-			\glstarget{##2}{\glossentryname{##2}}%
-		}%
-		\glsentrydesc{##2}%
-		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
-		\par%
-	}%
+% ------ bilingual nomenclature style : descseclan (description) -------------
+\newglossarystyle{nomencl-L1L2}{\setglossarystyle{glosmath@basestyle}%
+	\renewcommand*{\glosstyledesc}[1]%
+		{\glsentrydesc{##1}\space(\textit{\glsentrydescsec{##1}})}%
 }%
-
-% ---------- bilingual nomenclature style -----------------------------------
-\newglossarystyle{nomencl-fr-en}%
-{%
-	\setglossarystyle{alttree}% based on alttree style
-	\renewenvironment{theglossary}%
-	{%
-		\let\glosmath@oldparskip\parskip\setlength{\parskip}{0pt}%
-		\let\glosmath@oldparindent\parindent\setlength{\parindent}{0pt}%
-	}%
-	{%
-		\setlength{\parskip}{\glosmath@oldparskip}%
-		\setlength{\parindent}{\glosmath@oldparindent}%
-	}%
-	\renewcommand*{\glossaryheader}%
-		{\ifcsname SingleSpacing\endcsname\SingleSpacing\fi}%
-	\renewcommand*{\glossentry}[2]%
-	{%
-		\ifglsfieldeq{##1}{sort}{1}{}{\leavevmode\par}\glsentryitem{##1}%
-		\glstarget{##1}{\glstreenamefmt{\glsentrydescfr{##1}\space%
-			(\textit{\glsentrydesc{##1}})}}%
-		\par\nopagebreak%
-	}%
-	\renewcommand*{\subglossentry}[3]%
-	{%
-		\settowidth{\glstreeindent}{\@glswidestname\glstreepredesc}%
-		\hangindent\glstreeindent%
-		\settowidth{\glosmath@curNameLen}{\glossentryname{##2}\glstreepredesc}%
-		\ifdimless{\glstreeindent}{\glosmath@curNameLen}{%
-			\setlength{\glstreeindent}{\glosmath@curNameLen}}{}%
-		\glstreenamebox{\glstreeindent}%
-		{%
-			\glsentryitem{##2}%
-			\glstarget{##2}{\glossentryname{##2}}%
-		}%
-		\glsentrydescfr{##2}\space(\textit{\glsentrydesc{##2}})%
-		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
-		\par%
-	}%
+% ------ bilingual nomenclature style : description (descseclan) -------------
+\newglossarystyle{nomencl-L2L1}{\setglossarystyle{glosmath@basestyle}%
+	\renewcommand*{\glosstyledesc}[1]%
+		{\glsentrydescsec{##1}\space(\textit{\glsentrydesc{##1}})}%
 }%
 
 % ---------- accronyms english definition -----------------------------------
@@ -230,9 +130,9 @@ Francis Gagnon %
 	{%
 		\GlsUseAcrStyleDefs{long-short}% based on long-short style	
 		\renewcommand*{\genacrfullformat}[2]%
-			{\glsentrydescfr{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})}%
+			{\glsentrydescsec{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})}%
 		\renewcommand*{\genplacrfullformat}[2]%
-			{\glsentrydescfr{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
+			{\glsentrydescsec{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
 		\let\Genacrfullformat\genacrfullformat%
 		\let\Genplacrfullformat\genplacrfullformat%
 	}%
@@ -244,13 +144,13 @@ Francis Gagnon %
 		\GlsUseAcrStyleDefs{long-short}% based on long-short style	
 		\renewcommand*{\genacrfullformat}[2]%
 			{%
-				\glsentrydescfr{##1}##2%
+				\glsentrydescsec{##1}##2%
 				\space(\firstacronymfont{\glsentryshort{##1}} pour %
 				\textit{\glsentrydesc{##1}})%
 			}%
 		\renewcommand*{\genplacrfullformat}[2]%
 			{%
-				\glsentrydescfr{##1}##2%
+				\glsentrydescsec{##1}##2%
 				\space(\firstacronymfont{\glsentryshortpl{##1}} pour %
 				\textit{\glsentrydesc{##1}})%
 			}%
@@ -263,52 +163,95 @@ Francis Gagnon %
 % =================== GLOSSARIES KEYS =======================================
 % ===========================================================================
 
-% ---------- french description key -----------------------------------------
-\glsaddkey{descriptionfr}% key
-{	% default value 
-	\glsentrydesc{\glslabel}%
-}{\glsentrydescfr}{\Glsentrydescfr}{\glsdescfr}{\Glsdescfr}{\GLSdescfr}% macros
+% ---------- second language description key -------------------------------
+\glsaddkey*{descseclang}{%
+	\glsentrydesc{\glslabel}% default value 
+}{\glsentrydescsec}{\Glsentrydescsec}{\glsdescsec}{\Glsdescsec}{\GLSdescsec}
+
 
 % ---------- dot accent key ------------------------------------------------
-\glsaddstoragekey{dot}% key
-{	% default value
-	\glsadd{op.dot}%
-	\ensuremath{\dot{\glsentrytext{\glslabel}}}
-}{\glsentrydot}
+\glsaddstoragekey*{dot}{%
+	\glsadd{op.dot}%  default value
+	\ensuremath{\dot{\glsentrytext{\glslabel}}}%
+}{\glsentrydot}%
 % ---------- ddot accent key -----------------------------------------------
-\glsaddstoragekey{ddot}% key
-{	% default value
-	\glsadd{op.ddot}%
+\glsaddstoragekey*{ddot}{%
+	\glsadd{op.ddot}%  default value
 	\ensuremath{\ddot{\glsentrytext{\glslabel}}}%
-}{\glsentryddot}
+}{\glsentryddot}%
 % ---------- bar accent key ------------------------------------------------
-\glsaddstoragekey{bar}% key
-{	% default value
-	\glsadd{op.bar}%
+\glsaddstoragekey*{bar}{%
+	\glsadd{op.bar}%  default value
 	\ensuremath{\bar{\glsentrytext{\glslabel}}}%
-}{\glsentrybar}
+}{\glsentrybar}%
 % ---------- hat accent key ------------------------------------------------
-\glsaddstoragekey{hat}% key
-{	% default value
-	\glsadd{op.hat}%
+\glsaddstoragekey*{hat}{%
+	\glsadd{op.hat}% default value
 	\ensuremath{\widehat{\glsentrytext{\glslabel}}}%
-}{\glsentryhat}
+}{\glsentryhat}%
 % ---------- vec accent key ------------------------------------------------
-\glsaddstoragekey{vec}% key
-{	% default value
-	\glsadd{op.vec}%
+\glsaddstoragekey*{vec}{%
+	\glsadd{op.vec}% default value
 	\ensuremath{\vec{\glsentrytext{\glslabel}}}%
-}{\glsentryvec}
+}{\glsentryvec}%
 % ---------- tilde accent key ----------------------------------------------
-\glsaddstoragekey{tilde}% key
-{	% default value
-	\glsadd{op.tilde}%
+\glsaddstoragekey*{tilde}{%
+	\glsadd{op.tilde}% default value
 	\ensuremath{\widetilde{\glsentrytext{\glslabel}}}%
-}{\glsentrytilde}
+}{\glsentrytilde}%
 
 % ===========================================================================
-% =================== PRIVATE MACROS ========================================
+% =================== PRIVATE STUFF =========================================
 % ===========================================================================
+
+% ---------- nomenclature base style ----------------------------------------
+\newglossarystyle{glosmath@basestyle}%
+{%
+	\setglossarystyle{alttree} % based on alttree style
+	\renewenvironment{theglossary}%
+	{%
+		\let\glosmath@oldparskip\parskip%
+		\setlength{\parskip}{0pt}%
+		\let\glosmath@oldparindent\parindent%
+		\setlength{\parindent}{0pt}%
+	}%
+	{%
+		\setlength{\parskip}{\glosmath@oldparskip}%
+		\setlength{\parindent}{\glosmath@oldparindent}%
+	}%
+	\renewcommand*{\glossaryheader}%
+	{%
+		\ifcsname SingleSpacing\endcsname\SingleSpacing\fi% memoir class
+		\ifcsname singlespacing\endcsname\singlespacing\fi% setspace package
+	}%
+	\newcounter{mainGlosEntryCounter}% init at 0
+	\newlength{\curNameLen}%
+	\setlength{\curNameLen}{\glstreeindent}%
+	% all the languages define by the style (default to main language) :
+	\newcommand*{\glosstyledesc}[1]{\glsentrydesc{##1}}%
+	\renewcommand*{\glossentry}[2]%
+	{%
+		\ifnum\value{mainGlosEntryCounter}>0\leavevmode\par\fi%
+		\glstarget{##1}{\glstreenamefmt{\glosstyledesc{##1}}}%
+		\par\nopagebreak%
+		\stepcounter{mainGlosEntryCounter}%
+	}%
+	\renewcommand*{\subglossentry}[3]%
+	{%
+		\settowidth{\glstreeindent}{\@glswidestname\glstreepredesc}%
+		\hangindent\glstreeindent%
+		\settowidth{\curNameLen}{\glossentryname{##2}\glstreepredesc}%
+		% larger namebox for entries longer than @glswidestname :
+		\ifdimgreater{\curNameLen}{\glstreeindent}{%
+			\setlength{\glstreeindent}{\curNameLen}}{}%
+		\glstreenamebox{\glstreeindent}{%
+			\glstarget{##2}{\glossentryname{##2}}%
+		}%
+		\glosstyledesc{##2}%
+		\ifglshassymbol{##2}{,\space\glossentrysymbol{##2}}{}%
+		\par%
+	}%
+}%
 
 % ---------- glosmath@getMyGlsMacro -----------------------------------------
 \newcommand*{\glosmath@getMyGlsMacro}[1]%
@@ -338,19 +281,14 @@ Francis Gagnon %
 \newcommand*{\glosmath@glsviRelay}[3][]%
 {%
 	\expandafter\glosmath@getMyGlsMacro\expandafter{\glosmath@ArgI}%
-	\let\glosmath@FirGls\glosmath@MyGlsMacro%
+	\let \glosmath@FirGls \glosmath@MyGlsMacro%
 	\glosmath@getMyGlsMacro{#1}%
-	\let\glosmath@SecGls\glosmath@MyGlsMacro%
+	\let \glosmath@SecGls \glosmath@MyGlsMacro%
 	\ensuremath{%
 		\glsdisp{#2}{%
 			\glosmath@FirGls{#2}_{\glsdisp{#3}{\glosmath@SecGls{#3}}}%
 		}%
 	}%
 }%
-
-% ---------- glosmath@curNameLen ------------------------------------------
-% variable to store current entry length (for nomenclature styles)
-\newlength{\glosmath@curNameLen}%
-\setlength{\glosmath@curNameLen}{\glstreeindent}%
 
 \endinput%
