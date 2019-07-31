@@ -3,7 +3,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{glosmathtools}%
 [%
-2019/07/19 v0.4 %
+2019/07/31 v0.5 %
 Mathematical nomenclature tools based on glossaries package %
 Francis Gagnon %
 ]%
@@ -13,17 +13,19 @@ Francis Gagnon %
 % =================== PACKAGE OPTIONS =======================================
 % ===========================================================================
 % define char '"' as shortcut for "sbu" macro in math mode
-% define qtmark macro to show the quotation mark character
+% and define qtmark macro to show the quotation mark character
 \DeclareOption{qtmarkupright}{%
 	\begingroup\lccode`~=`"\lowercase{\endgroup\def~}#1{\sbu{#1}}%
 	\mathchardef\qtmark=\mathcode`"\AtBeginDocument{\mathcode`"=\string"8000}%
 }%
 
-% single line spacing glossaries (memoir class or linespace package needed) 
-\newif\if@singlespaceglos\@singlespaceglosfalse
-\DeclareOption{singlespaceglos}{%
-	\@singlespaceglostrue%
-}%
+% single lineskip nomenclature (memoir/linespace package required) 
+\newtoggle{glosmath@singlelineskip}%
+\DeclareOption{singlelineskip}{\toggletrue{glosmath@singlelineskip}}%
+
+%% using opperators/accents without nomenclature definitions
+\newtoggle{glosmath@nodefop}%
+\DeclareOption{nodefop}{\toggletrue{glosmath@nodefop}}%
 
 \ProcessOptions\relax%
 
@@ -79,7 +81,7 @@ Francis Gagnon %
 \newcommand*{\glsubs}[4][]%
 {%
 	\glosmath@getMyGlsMacro{#1}%
-	\glsadd{op.comma}%
+	\nottoggle{glosmath@nodefop}{\glsadd{op.comma}}{}%
 	\ensuremath{%
 		\glsdisp{#2}{%
 			\glosmath@MyGlsMacro{#2}_{\gls{sub.#3},\gls{sub.#4}}%
@@ -87,19 +89,26 @@ Francis Gagnon %
 	}%
 }%
 
-% ---------- glsfren ---------------------------------------------------------
-% show accronyms definition in bilingual (ignoring the current style)
-\newcommand*{\glsfren}[1]%
+% ---------- glslang -----------------------------------------------------
+% show full accronyms definition in specified languages
+\newcommand*{\glslang}[2][]%
 {%
-	\let\oldfullformat\genacrfullformat%
-	\renewcommand*{\genacrfullformat}[2]%
+	\let\glosmath@oldacrstyle\glosmath@acrstyle%
+	\notblank{#1}%
 	{%
-		\glsentrydescsec{##1}##2%
-		\space(\firstacronymfont{\glsentryshort{##1}} pour %
-		\textit{\glsentrydesc{##1}})%
-	}%
-	\gls{#1}%
-	\let\genacrfullformat\oldfullformat%
+		\ifstrequal{#1}{L1}{\setacronymstyle{acr-L1}}%
+		{%
+		\ifstrequal{#1}{L2}{\setacronymstyle{acr-L2}}%
+		{%
+		\ifstrequal{#1}{L1L2}{\setacronymstyle{acr-L1L2}}%
+		{%
+		\ifstrequal{#1}{L2L1}{\setacronymstyle{acr-L2L1}}%
+		{%
+			\PackageError{glosmathtools}{Unknown language style: #1}{}%
+		}}}}%
+	}{}%
+	\gls{#2}%
+	\setacronymstyle{\glosmath@oldacrstyle}%
 }%
 
 
@@ -107,104 +116,119 @@ Francis Gagnon %
 % =================== GLOSSARIES STYLES =====================================
 % ===========================================================================
 
+
 % ---------- main language nomenclature style -------------------------------
 \newglossarystyle{nomencl}{\setglossarystyle{glosmath@basestyle}}%
-
 % ---------- main language style (synonym) ----------------------------------
 \newglossarystyle{nomencl-L1}{\setglossarystyle{glosmath@basestyle}}%
-
 % ---------- second language nomenclature style -----------------------------
 \newglossarystyle{nomencl-L2}{\setglossarystyle{glosmath@basestyle}%
 	\renewcommand*{\glosstyledesc}[1]{\glsentrydescsec{##1}}}%
-
-% ------ bilingual nomenclature style : descseclan (description) -------------
+% ------ bilingual nomenclature style : descseclan (description) ------------
 \newglossarystyle{nomencl-L1L2}{\setglossarystyle{glosmath@basestyle}%
 	\renewcommand*{\glosstyledesc}[1]%
 		{\glsentrydesc{##1}\space(\textit{\glsentrydescsec{##1}})}}%
-	
-% ------ bilingual nomenclature style : description (descseclan) -------------
+% ------ bilingual nomenclature style : description (descseclan) ------------
 \newglossarystyle{nomencl-L2L1}{\setglossarystyle{glosmath@basestyle}%
 	\renewcommand*{\glosstyledesc}[1]%
 		{\glsentrydescsec{##1}\space(\textit{\glsentrydesc{##1}})}}%
 
-% ---------- accronyms english definition -----------------------------------
-\newacronymstyle{en-acr}%
-	{\GlsUseAcrEntryDispStyle{long-short}}% based on long-short style
-	{\GlsUseAcrStyleDefs{long-short}}% based on long-short style
 
-% ---------- accronyms french definition ------------------------------------
-\newacronymstyle{fr-acr}%
-	{\GlsUseAcrEntryDispStyle{long-short}}% based on long-short style
+% ---------- main language accronym style ------------------------------------
+\newacronymstyle{acr}%
+	{\GlsUseAcrEntryDispStyle{glosmath@acrstyle}}%
+	{\GlsUseAcrStyleDefs{glosmath@acrstyle}}%
+% ---------- main language style (synonym) -----------------------------------
+\newacronymstyle{acr-L1}%
+	{\GlsUseAcrEntryDispStyle{glosmath@acrstyle}}%
+	{\GlsUseAcrStyleDefs{glosmath@acrstyle}}%
+% ---------- second language accronym style ----------------------------------
+\newacronymstyle{acr-L2}%
+	{\GlsUseAcrEntryDispStyle{glosmath@acrstyle}}%
 	{%
-		\GlsUseAcrStyleDefs{long-short}% based on long-short style	
-		\renewcommand*{\genacrfullformat}[2]%
-			{\glsentrydescsec{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})}%
-		\renewcommand*{\genplacrfullformat}[2]%
-			{\glsentrydescsec{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
-		\let\Genacrfullformat\genacrfullformat%
-		\let\Genplacrfullformat\genplacrfullformat%
+		\GlsUseAcrStyleDefs{glosmath@acrstyle}%
+		\renewcommand*{\glosmath@acrstyle}{acr-L2}%
+		\renewcommand*{\glosmath@acrmain}[1]{\glsentrydescsec{##1}}%
+		\renewcommand*{\glosmath@Acrmain}[1]{\Glsentrydescsec{##1}}%
+		\renewcommand*{\glosmath@acrmainpl}[1]{\glsentrydescsec{##1}}%
+		\renewcommand*{\glosmath@Acrmainpl}[1]{\Glsentrydescsec{##1}}%
 	}%
-
-% ---------- accronyms bilangual definition ---------------------------------
-\newacronymstyle{fr-en-acr}%
-	{\GlsUseAcrEntryDispStyle{long-short}}% based on long-short style
+% ---------- bilangual accronyms : description (abbrv, descseclan) ---------
+\newacronymstyle{acr-L1L2}%
+	{\GlsUseAcrEntryDispStyle{glosmath@acrstyle}}%
 	{%
-		\GlsUseAcrStyleDefs{long-short}% based on long-short style	
-		\renewcommand*{\genacrfullformat}[2]%
-			{%
-				\glsentrydescsec{##1}##2%
-				\space(\firstacronymfont{\glsentryshort{##1}} pour %
-				\textit{\glsentrydesc{##1}})%
-			}%
-		\renewcommand*{\genplacrfullformat}[2]%
-			{%
-				\glsentrydescsec{##1}##2%
-				\space(\firstacronymfont{\glsentryshortpl{##1}} pour %
-				\textit{\glsentrydesc{##1}})%
-			}%
-		\let\Genacrfullformat\genacrfullformat%
-		\let\Genplacrfullformat\genplacrfullformat%
+		\GlsUseAcrStyleDefs{glosmath@acrstyle}%
+		\renewcommand*{\glosmath@acrstyle}{acr-L1L2}%
+		\renewcommand*{\glosmath@acrpar}[1]%
+			{\protect\firstacronymfont{\glsentryshort{##1}}%
+			,\space\textit{\glsentrydescsec{##1}}}%
+		\renewcommand*{\glosmath@Acrpar}[1]%
+			{\protect\firstacronymfont{\glsentryshortpl{##1}}%
+			,\space\textit{\Glsentrydescsec{##1}}}%
+		\renewcommand*{\glosmath@acrparpl}[1]%
+			{\protect\firstacronymfont{\glsentryshort{##1}}%
+			,\space\textit{\glsentrydescsec{##1}}}%
+		\renewcommand*{\glosmath@Acrparpl}[1]%
+			{\protect\firstacronymfont{\glsentryshortpl{##1}}%
+			,\space\textit{\Glsentrydescsec{##1}}}%
 	}%
-
+% ---------- bilangual accronyms : descseclan (abbrv, description) ---------
+\newacronymstyle{acr-L2L1}%
+{\GlsUseAcrEntryDispStyle{glosmath@acrstyle}}%
+{%
+	\GlsUseAcrStyleDefs{acr-L2}%
+	\renewcommand*{\glosmath@acrstyle}{acr-L2L1}%
+	\renewcommand*{\glosmath@acrpar}[1]%
+		{\protect\firstacronymfont{\glsentryshort{##1}}%
+		,\space\textit{\glsentrydesc{##1}}}%
+	\renewcommand*{\glosmath@Acrpar}[1]%
+		{\protect\firstacronymfont{\glsentryshortpl{##1}}%
+		,\space\textit{\Glsentrydesc{##1}}}%
+	\renewcommand*{\glosmath@acrparpl}[1]%
+		{\protect\firstacronymfont{\glsentryshort{##1}}%
+		,\space\textit{\glsentrydescpl{##1}}}%
+	\renewcommand*{\glosmath@Acrparpl}[1]%
+		{\protect\firstacronymfont{\glsentryshortpl{##1}}%
+		,\space\textit{\Glsentrydescpl{##1}}}%
+}%
 
 % ===========================================================================
 % =================== GLOSSARIES KEYS =======================================
 % ===========================================================================
 
 % ---------- second language description key -------------------------------
-\glsaddkey{descseclang}{%
-	\glsentrydesc{\glslabel}% default value 
+\glsaddkey{descseclang}{%  default value :
+	{\color{red}no second description at \texttt{descseclang}}%
 }{\glsentrydescsec}{\Glsentrydescsec}{\glsdescsec}{\Glsdescsec}{\GLSdescsec}
 
-
 % ---------- dot accent key ------------------------------------------------
-\glsaddstoragekey{dot}{%
-	\glsadd{op.dot}%  default value
+\glsaddstoragekey*{dot}{%  default value :
+	\nottoggle{glosmath@nodefop}{\glsadd{op.dot}}{}%
 	\ensuremath{\dot{\glsentrytext{\glslabel}}}%
 }{\glsentrydot}%
 % ---------- ddot accent key -----------------------------------------------
-\glsaddstoragekey{ddot}{%
-	\glsadd{op.ddot}%  default value
+\glsaddstoragekey*{ddot}{%  default value :
+	\nottoggle{glosmath@nodefop}{\glsadd{op.ddot}}{}%
 	\ensuremath{\ddot{\glsentrytext{\glslabel}}}%
 }{\glsentryddot}%
 % ---------- bar accent key ------------------------------------------------
-\glsaddstoragekey{bar}{%
-	\glsadd{op.bar}%  default value
+\glsaddstoragekey*{bar}{%  default value :
+	\nottoggle{glosmath@nodefop}{\glsadd{op.bar}}{}%
 	\ensuremath{\bar{\glsentrytext{\glslabel}}}%
 }{\glsentrybar}%
 % ---------- hat accent key ------------------------------------------------
-\glsaddstoragekey{hat}{%
-	\glsadd{op.hat}% default value
+\glsaddstoragekey*{hat}{% default value :
+	\nottoggle{glosmath@nodefop}{\glsadd{op.hat}}{}%
 	\ensuremath{\widehat{\glsentrytext{\glslabel}}}%
 }{\glsentryhat}%
 % ---------- vec accent key ------------------------------------------------
-\glsaddstoragekey{vec}{%
-	\glsadd{op.vec}% default value
+\glsaddstoragekey*{vec}{% default value :
+	\nottoggle{glosmath@nodefop}{\glsadd{op.vec}}{}%
 	\ensuremath{\vec{\glsentrytext{\glslabel}}}%
 }{\glsentryvec}%
 % ---------- tilde accent key ----------------------------------------------
-\glsaddstoragekey{tilde}{%
-	\glsadd{op.tilde}% default value
+\glsaddstoragekey*{tilde}{% default value :
+	\nottoggle{glosmath@nodefop}{\glsadd{op.tilde}}{}%
 	\ensuremath{\widetilde{\glsentrytext{\glslabel}}}%
 }{\glsentrytilde}%
 
@@ -229,15 +253,15 @@ Francis Gagnon %
 	}%
 	\renewcommand*{\glossaryheader}%
 	{%
-		\if@singlespaceglos%
-			\ifcsname SingleSpacing\endcsname\SingleSpacing\fi% memoir class
-			\ifcsname singlespacing\endcsname\singlespacing\fi% setspace package
-		\fi%
+		\iftoggle{glosmath@singlelineskip}{%
+			\ifdefined\SingleSpacing \SingleSpacing \fi% memoir class
+			\ifdefined\singlespacing \singlespacing \fi% setspace package
+		}{}%
 	}%
 	\newcounter{glosmath@mainEntryCtr}% init at 0
 	\newlength{\glosmath@curNameLen}%
 	\setlength{\glosmath@curNameLen}{\glstreeindent}%
-	% desc in all languages of the style (default to main only) :
+	% desc in all languages of the style (default to main language only) :
 	\newcommand*{\glosstyledesc}[1]{\glsentrydesc{##1}}%
 	\renewcommand*{\glossentry}[2]%
 	{%
@@ -263,19 +287,53 @@ Francis Gagnon %
 	}%
 }%
 
-
+% ---------- accronyms base style ----------------------------------------
+\newcommand*{\glosmath@acrstyle}{}%
+\newcommand*{\glosmath@acrmain}[1]{}%
+\newcommand*{\glosmath@Acrmain}[1]{}%
+\newcommand*{\glosmath@acrmainpl}[1]{}%
+\newcommand*{\glosmath@Acrmainpl}[1]{}%
+\newcommand*{\glosmath@acrpar}[1]{}%
+\newcommand*{\glosmath@Acrpar}[1]{}%
+\newcommand*{\glosmath@acrparpl}[1]{}%
+\newcommand*{\glosmath@Acrparpl}[1]{}%
 \newacronymstyle{glosmath@acrstyle}%
-	{\GlsUseAcrEntryDispStyle{long-short}}% based on long-short style
-	{%
-		\GlsUseAcrStyleDefs{long-short}% based on long-short style
-		\renewcommand*{\genacrfullformat}[2]%
-		{\glsentrydescsec{##1}##2\space(\firstacronymfont{\glsentryshort{##1}})}%
-		\renewcommand*{\genplacrfullformat}[2]%
-		{\glsentrydescsec{##1}##2\space(\firstacronymfont{\glsentryshortpl{##1}})}%
-		\let\Genacrfullformat\genacrfullformat%
-		\let\Genplacrfullformat\genplacrfullformat%
+{\GlsUseAcrEntryDispStyle{long-short}}% based on long-short disp style
+{%
+	% --- my custom macros for styles -------
+	\renewcommand*{\glosmath@acrstyle}{acr}
+	% outside parenthesis full text (default to entrylong macros) :
+	\renewcommand*{\glosmath@acrmain}[1]{\glsentrylong{##1}}%
+	\renewcommand*{\glosmath@Acrmain}[1]{\Glsentrylong{##1}}%
+	\renewcommand*{\glosmath@acrmainpl}[1]{\glsentrylongpl{##1}}%
+	\renewcommand*{\glosmath@Acrmainpl}[1]{\Glsentrylongpl{##1}}%
+	% inside parenthesis full text (default to entryshort) :
+	\renewcommand*{\glosmath@acrpar}[1]%
+		{\protect\firstacronymfont{\glsentryshort{##1}}}%
+	\renewcommand*{\glosmath@Acrpar}[1]%
+		{\protect\firstacronymfont{\glsentryshort{##1}}}%
+	\renewcommand*{\glosmath@acrparpl}[1]%
+		{\protect\firstacronymfont{\glsentryshortpl{##1}}}%
+	\renewcommand*{\glosmath@Acrparpl}[1]%
+		{\protect\firstacronymfont{\glsentryshortpl{##1}}}%
+	% --- glossaries standard macro redefinitions ---
+	% Singular, no case change:
+	\renewcommand*{\genacrfullformat}[2]{%
+		\glosmath@acrmain{##1}##2\space(\glosmath@acrpar{##1})%
 	}%
-
+	% Singular, first letter upper case:
+	\renewcommand*{\Genacrfullformat}[2]{%
+		\glosmath@Acrmain{##1}##2\space(\glosmath@Acrpar{##1})%
+	}%
+	% Plural, no case change:
+	\renewcommand*{\genplacrfullformat}[2]{%
+		\glosmath@acrmainpl{##1}##2\space(\glosmath@acrparpl{##1})%
+	}%
+	% Plural, first letter upper case:
+	\renewcommand*{\Genplacrfullformat}[2]{%
+		\glosmath@Acrmainpl{##1}##2\space(\glosmath@Acrparpl{##1})%
+	}%
+}%
 
 % ---------- glosmath@getMyGlsMacro -----------------------------------------
 \newcommand*{\glosmath@getMyGlsMacro}[1]%
