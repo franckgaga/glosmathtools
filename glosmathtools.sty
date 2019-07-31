@@ -27,6 +27,11 @@ Francis Gagnon %
 \newtoggle{glosmath@nodefop}%
 \DeclareOption{nodefop}{\toggletrue{glosmath@nodefop}}%
 
+%% unknown options
+\DeclareOption*{
+	\PackageWarning{glosmathtools}{Unknown option '\CurrentOption'}
+}
+
 \ProcessOptions\relax%
 
 % ===========================================================================
