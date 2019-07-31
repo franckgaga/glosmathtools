@@ -1,0 +1,103 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = fr_CA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Document principal pour l'exemple d'utilisation de glosmathtools
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% nohyperref pour charger le package hyperref manuellement 
+% voir https://gitlab.com/vigou3/ulthese/issues/2
+\documentclass[projet,nohyperref,english,french]{ulthese}
+%% ===================== packages ============================================
+\ifxetex\else \usepackage[utf8]{inputenc} \fi
+\usepackage{mathtools,siunitx,amsmath,amsfonts}
+\usepackage{hyperref} % dernier package chargé sauf glossaries
+\usepackage[noredefwarn]{glossaries} % aucun warning pour remplacements dans memoir
+\usepackage[qtmarkupright,singlelineskip]{glosmathtools}
+%% ===================== preamble ============================================
+%% ------------- glossaries ------------------------------------------------
+\makeglossaries
+\setacronymstyle{acr-L2}
+\setglossarystyle{nomencl-L2L1}
+\loadglsentries{sample_glosmathtools_glos}
+\glssetwidest{LOOP}  % IMPORTANT : entrée la plus large de la nomenclature
+\renewcommand*{\glstreenamefmt}[1]{\textbf{#1}} % formattage des catégories
+%% ------------- ulthese ----------------------------------------------------
+\titre{Documentation et exemple de \texttt{glosmathtools} dans \texttt{ulthese}}
+\auteur{Francis Gagnon}
+%% ============================================================================
+
+
+\begin{document}
+\frontmatter  
+           
+\frontispice
+\printglossary[title=Nomenclature]
+
+\mainmatter                     
+
+\chapter{Documentation et exemple de \texttt{glosmathtools}}
+
+\section{Compilation}
+Le package \texttt{glosmathtools} se base sur \texttt{glossaries} inclus dans MiKTeX et TeX Live. Un peu comme une bibliographie, la compilation du glossaire se fait en exécutant les commandes dans l'ordre suivant :
+\begin{enumerate}
+	\item \texttt{pdflatex}
+	\item \texttt{makeglossaries}
+	\item \texttt{pdflatex}
+\end{enumerate}
+La commande \texttt{makeglossaries} est directement accessible dans les menu de TeXstudio ou avec \texttt{F9}. Pour un autre éditeur, il faut ajouter une commande personnalisée. Par exemple, dans TexMaker, c’est accessible dans le menu \texttt{Utilisateur > Commandes Utilisateur > Éditer Commandes Utilisateur}:
+\begin{itemize}
+	\item Item menu : \texttt{glossaries} 
+	\item Commande : \texttt{makeglossaries \%}
+\end{itemize}
+Sous Windows avec MiKTeX, il est possible que le script \texttt{makeglossaries} nécessite une installation de Perl (voir \url{https://tinyurl.com/ybnoyqjp}). Une fois Perl installé, il faut exécuter le script \texttt{perltex.exe} disponible dans le répertoire d'installation de MiKTeX.
+
+\section{Symboles, indices et accentuations}
+
+L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{\textbackslash gls} de glossaries : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : le \gls{LOOP}. Les abréviations sont uniquement définies à leur première utilisation : le \gls{LOOP}.
+
+Les indices doivent être définis avec un label du format \texttt{sub.resteDuLabel}: l'indice \gls{sub.a} désigne l'air. La macro \texttt{\textbackslash glsub} permet d'ajouter un indice à une variable : \glsub{d}{v}, \glsub{z}{v}, \glsub{T}{v}, \glsub{D}{a}, \glsub{rho}{w} et \glsub{mu}{v}. En définissant les symboles mathématiques avec \texttt{\textbackslash newglosentrymath}, toutes les macros peuvent s'utiliser autant en mode \texttt{text} qu'en mode \texttt{math} (avec \texttt{\$\$}). Par contre, il est mieux d'écrire explicitement les symboles dans une équation afin d'alléger le code (pas d'hyperlien):
+\begin{equation}
+d"v + \glsub{d}{v} = \SI{10.0}{\centi\meter} = 3.937\qtmark
+\end{equation}
+Le package peut être chargé avec l'option \texttt{qtmarkupright}. Le caractère \texttt{<">} est alors configuré comme raccourci pour l'écriture d'un indice sans italique en mode \texttt{math} (\texttt{<\_>} pour indice italique) \footnote{ La macro \texttt{\textbackslash qtmark} permet d'insérer le caractère \texttt{<">}. En ISO, les indices représentant l'abréviation d'un mot s'écrivent sans italique, et, celles représentant une variable, en italique.}. 
+
+La macro \texttt{\textbackslash glsvi} permet d'ajouter une variable en indice à une autre variable : \glsvi{T}{k}. Il est aussi possible d'ajouter deux indices séparés par une virgule avec \texttt{\textbackslash glsubs} : \glsubs{D}{w}{a}. En l’occurrence, l'opérateur virgule est ajouté dans la nomenclature, qui doit donc être défini dans le glossaire sous le label \texttt{op.comma}.
+
+Il est aussi possible d'ajouter des accents sur les variables avec la macro \texttt{\textbackslash glsac} : \glsac[dot]{m} et \glsac[bar]{T}. À leur utilisation respective, un opérateur est ajouté dans la nomenclature. Ils doivent donc être définis à leur label respectif. Les accents disponibles sont:
+\begin{description} 
+\item[dot] $\dot{\bullet}$ (défini au label \texttt{op.dot})
+\item[ddot] $\ddot{\bullet}$ (défini au label \texttt{op.ddot})
+\item[bar] $\bar{\bullet}$ (défini au label \texttt{op.bar})
+\item[hat] $\widehat{\bullet}$ (défini au label \texttt{op.hat})
+\item[vec] $\vec{\bullet}$ (défini au label \texttt{op.vec})
+\item[tilde] $\widetilde{\bullet}$ (défini au label \texttt{op.tilde})
+\end{description}
+De plus, un argument optionnel permet d'ajouter des accents à toutes les macros précédentes : \glsub[bar]{T}{v} et \glsubs[dot]{m}{v}{a}. Il y a deux arguments optionnels dans le cas de \texttt{\textbackslash glsvi} : \glsvi[dot]{m}{k}, \glsvi[][dot]{k}{m} et \glsvi[bar][dot]{T}{m}. Finalement, il est possible d'utiliser les accents sans définition dans la nomenclature avec l'option \texttt{nodefop}.
+
+\section{Langue, abréviations et nomenclature}
+
+S'il y a des changements de langues à travers le document, il faut changer de style pour les acronymes. La clé \texttt{descseclang} doit être préalablement définie dans le glossaire. Par la suite, il y a 4 options de style pour \texttt{\textbackslash setacronymstyle} : 
+\begin{description}
+	\item[acr-L1] (ou \textbf{acr}) description langue principale : \setacronymstyle{acr-L1} \acrfull{ODE}
+	\item[acr-L2] description langue seconde : \setacronymstyle{acr-L2}\acrfull{ODE}
+	\item[acr-L1L2] description bilingue, langue principale (abréviations, \textit{langue seconde}) : \setacronymstyle{acr-L1L2}\acrfull{ODE}
+	\item[acr-L2L1] description bilingue, langue seconde (abréviations, \textit{langue principale}) : \setacronymstyle{acr-L2L1}\acrfull{ODE}
+\end{description}
+La macro \texttt{\textbackslash glslang} affiche l'acronyme dans le style spécifié : \glslang[L2L1]{ODE}. Les secondes descriptions sont aussi accessibles avec \texttt{\textbackslash glsdescsec} : une \glsdescsec{ODE}. 
+
+Pour la nomenclature (ou liste des symboles), il est important de définir la plus longue entrée avec \texttt{\textbackslash glssetwidest} au préambule.
+Comme les abréviations, il est possible de changer sa langue avec 4 options de style pour \texttt{\textbackslash setglossarystyle}:
+\begin{description}
+	\item[nomencl-L1] (ou \textbf{nomencl}) descriptions langue principale
+	\item[nomencl-L2] descriptions langue seconde
+	\item[nomencl-L1L2] descriptions bilingues, langue principale (\textit{langue seconde})
+	\item[nomencl-L2L1] descriptions bilingues, langue seconde (\textit{langue principale})
+\end{description}
+L'option \texttt{singlespaceglos} du package permet de forcer un interligne simple pour la nomenclature (nécessite \texttt{ulthese}/\texttt{memoir} ou le package \texttt{linespace}). L'exemple de la page ii est une nomenclature bilingue \textbf{nomencl-L2L1} en interligne simple.
+
+Si défini, le contenu de la clé \texttt{symbol} est ajouté a la fin de la description (pour les unités ou dimensions). À noter que les symboles mathématiques ne sont pas enregistrés dans cette clé, mais bien dans la clé \texttt{name}.
+
+
+
+
+\end{document}

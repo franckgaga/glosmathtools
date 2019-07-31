@@ -11,8 +11,7 @@ The main features are:
 - easy accentuation managment
 - abbreviation support (with first use definition)
 - bilangual nomenclatures (for bilangual documents)
-- bilangual abbreviation
-
+- bilangual abbreviations
 
 At the time being, the documentation is based on `ulthese` class and
 in french only.
