@@ -3,7 +3,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{glosmathtools}%
 [%
-2019/07/31 v0.5 %
+2019/08/01 v0.5 %
 Mathematical nomenclature tools based on glossaries package %
 Francis Gagnon %
 ]%
@@ -30,16 +30,15 @@ Francis Gagnon %
 \DeclareOption{nodefop}{\toggletrue{glosmath@nodefop}}%
 
 %% unknown options
-\DeclareOption*{
-	\PackageWarning{glosmathtools}{Unknown option '\CurrentOption'}
-}
+\DeclareOption*{%
+	\PackageWarning{glosmathtools}{Unknown option '\CurrentOption'}%
+}%
 
 \ProcessOptions\relax%
 
 % ===========================================================================
 % =================== PUBLIC MACROS =========================================
 % ===========================================================================
-
 % ---------- sbu -------------------------------------------------------
 % "sbu" macro : shortcut for upright indices (ISO/NIST standard
 % operatorfont for main document math font (serif or sans)
@@ -100,104 +99,53 @@ Francis Gagnon %
 % show full accronyms definition in specified languages
 \newcommand*{\glslang}[2][]%
 {%
-	\let\glosmath@oldacrstyle\glosmath@acrstyle%
-	\notblank{#1}%
-	{%
-		\ifstrequal{#1}{L1}{\setacronymstyle{acr-L1}}%
-		{%
-		\ifstrequal{#1}{L2}{\setacronymstyle{acr-L2}}%
-		{%
-		\ifstrequal{#1}{L1L2}{\setacronymstyle{acr-L1L2}}%
-		{%
-		\ifstrequal{#1}{L2L1}{\setacronymstyle{acr-L2L1}}%
-		{%
-			\PackageError{glosmathtools}{Unknown language style: #1}{}%
-		}}}}%
-	}{}%
+	\let\glosmath@oldacrlang\glosmath@acrlang%
+	\notblank{#1}{\setacronymlang{#1}}{}%
 	\gls{#2}%
-	\setacronymstyle{\glosmath@oldacrstyle}%
+	\expandafter\setacronymlang\expandafter{\glosmath@oldacrlang}%
 }%
+
+% ---------- setacronymlang -----------------------------------------------
+% set accronym definition to specified language(s)
+\newcommand*{\setacronymlang}[1]%
+{%
+	\ifstrequal{#1}{L1}{\glosmath@setLone}%
+	{%
+	\ifstrequal{#1}{L2}{\glosmath@setLtwo}%
+	{%
+	\ifstrequal{#1}{L1L2}{\glosmath@setLoneLtwo}%
+	{%
+	\ifstrequal{#1}{L2L1}{\glosmath@setLtwoLone}%
+	{%
+		\PackageError{glosmathtools}{Unknown accronym language: #1}{}%
+	}}}}%
+}%
+
+% ===========================================================================
+% =================== PUBLIC ENVIRONMENTS ===================================
+% ===========================================================================
+
 
 
 % ===========================================================================
 % =================== GLOSSARIES STYLES =====================================
 % ===========================================================================
 
-
 % ---------- main language nomenclature style -------------------------------
-\newglossarystyle{nomencl}{\setglossarystyle{glosmath@basestyle}}%
+\newglossarystyle{nomencl}{\setglossarystyle{glosmath@glostyle}}%
 % ---------- main language style (synonym) ----------------------------------
-\newglossarystyle{nomencl-L1}{\setglossarystyle{glosmath@basestyle}}%
+\newglossarystyle{nomencl-L1}{\setglossarystyle{glosmath@glostyle}}%
 % ---------- second language nomenclature style -----------------------------
-\newglossarystyle{nomencl-L2}{\setglossarystyle{glosmath@basestyle}%
+\newglossarystyle{nomencl-L2}{\setglossarystyle{glosmath@glostyle}%
 	\renewcommand*{\glosstyledesc}[1]{\glsentrydescsec{##1}}}%
 % ------ bilingual nomenclature style : descseclan (description) ------------
-\newglossarystyle{nomencl-L1L2}{\setglossarystyle{glosmath@basestyle}%
+\newglossarystyle{nomencl-L1L2}{\setglossarystyle{glosmath@glostyle}%
 	\renewcommand*{\glosstyledesc}[1]%
 		{\glsentrydesc{##1}\space(\textit{\glsentrydescsec{##1}})}}%
 % ------ bilingual nomenclature style : description (descseclan) ------------
-\newglossarystyle{nomencl-L2L1}{\setglossarystyle{glosmath@basestyle}%
+\newglossarystyle{nomencl-L2L1}{\setglossarystyle{glosmath@glostyle}%
 	\renewcommand*{\glosstyledesc}[1]%
 		{\glsentrydescsec{##1}\space(\textit{\glsentrydesc{##1}})}}%
-
-
-% ---------- main language accronym style ------------------------------------
-\newacronymstyle{acr}%
-	{\GlsUseAcrEntryDispStyle{glosmath@acrstyle}}%
-	{\GlsUseAcrStyleDefs{glosmath@acrstyle}}%
-% ---------- main language style (synonym) -----------------------------------
-\newacronymstyle{acr-L1}%
-	{\GlsUseAcrEntryDispStyle{glosmath@acrstyle}}%
-	{\GlsUseAcrStyleDefs{glosmath@acrstyle}}%
-% ---------- second language accronym style ----------------------------------
-\newacronymstyle{acr-L2}%
-	{\GlsUseAcrEntryDispStyle{glosmath@acrstyle}}%
-	{%
-		\GlsUseAcrStyleDefs{glosmath@acrstyle}%
-		\renewcommand*{\glosmath@acrstyle}{acr-L2}%
-		\renewcommand*{\glosmath@acrmain}[1]{\glsentrydescsec{##1}}%
-		\renewcommand*{\glosmath@Acrmain}[1]{\Glsentrydescsec{##1}}%
-		\renewcommand*{\glosmath@acrmainpl}[1]{\glsentrydescsec{##1}}%
-		\renewcommand*{\glosmath@Acrmainpl}[1]{\Glsentrydescsec{##1}}%
-	}%
-% ---------- bilangual accronyms : description (abbrv, descseclan) ---------
-\newacronymstyle{acr-L1L2}%
-	{\GlsUseAcrEntryDispStyle{glosmath@acrstyle}}%
-	{%
-		\GlsUseAcrStyleDefs{glosmath@acrstyle}%
-		\renewcommand*{\glosmath@acrstyle}{acr-L1L2}%
-		\renewcommand*{\glosmath@acrpar}[1]%
-			{\protect\firstacronymfont{\glsentryshort{##1}}%
-			,\space\textit{\glsentrydescsec{##1}}}%
-		\renewcommand*{\glosmath@Acrpar}[1]%
-			{\protect\firstacronymfont{\glsentryshortpl{##1}}%
-			,\space\textit{\Glsentrydescsec{##1}}}%
-		\renewcommand*{\glosmath@acrparpl}[1]%
-			{\protect\firstacronymfont{\glsentryshort{##1}}%
-			,\space\textit{\glsentrydescsec{##1}}}%
-		\renewcommand*{\glosmath@Acrparpl}[1]%
-			{\protect\firstacronymfont{\glsentryshortpl{##1}}%
-			,\space\textit{\Glsentrydescsec{##1}}}%
-	}%
-% ---------- bilangual accronyms : descseclan (abbrv, description) ---------
-\newacronymstyle{acr-L2L1}%
-{\GlsUseAcrEntryDispStyle{glosmath@acrstyle}}%
-{%
-	\GlsUseAcrStyleDefs{acr-L2}%
-	\renewcommand*{\glosmath@acrstyle}{acr-L2L1}%
-	\renewcommand*{\glosmath@acrpar}[1]%
-		{\protect\firstacronymfont{\glsentryshort{##1}}%
-		,\space\textit{\glsentrydesc{##1}}}%
-	\renewcommand*{\glosmath@Acrpar}[1]%
-		{\protect\firstacronymfont{\glsentryshortpl{##1}}%
-		,\space\textit{\Glsentrydesc{##1}}}%
-	\renewcommand*{\glosmath@acrparpl}[1]%
-		{\protect\firstacronymfont{\glsentryshort{##1}}%
-		,\space\textit{\glsentrydescpl{##1}}}%
-	\renewcommand*{\glosmath@Acrparpl}[1]%
-		{\protect\firstacronymfont{\glsentryshortpl{##1}}%
-		,\space\textit{\Glsentrydescpl{##1}}}%
-}%
 
 % ===========================================================================
 % =================== GLOSSARIES KEYS =======================================
@@ -244,7 +192,10 @@ Francis Gagnon %
 % ===========================================================================
 
 % ---------- nomenclature base style ----------------------------------------
-\newglossarystyle{glosmath@basestyle}%
+\newcounter{glosmath@mainEntryCtr}% 
+\newlength{\glosmath@curNameLen}%	
+\newcommand*{\glosstyledesc}[1]{}%
+\newglossarystyle{glosmath@glostyle}%
 {%
 	\setglossarystyle{alttree}% based on alttree style
 	\renewenvironment{theglossary}%
@@ -265,11 +216,10 @@ Francis Gagnon %
 			\ifdefined\singlespacing \singlespacing \fi% setspace package
 		}{}%
 	}%
-	\newcounter{glosmath@mainEntryCtr}% init at 0
-	\newlength{\glosmath@curNameLen}%
+	\setcounter{glosmath@mainEntryCtr}{0}%
 	\setlength{\glosmath@curNameLen}{\glstreeindent}%
 	% desc in all languages of the style (default to main language only) :
-	\newcommand*{\glosstyledesc}[1]{\glsentrydesc{##1}}%
+	\renewcommand*{\glosstyledesc}[1]{\glsentrydesc{##1}}%
 	\renewcommand*{\glossentry}[2]%
 	{%
 		\ifnum\value{glosmath@mainEntryCtr}>0\leavevmode\par\fi%
@@ -295,7 +245,7 @@ Francis Gagnon %
 }%
 
 % ---------- accronyms base style ----------------------------------------
-\newcommand*{\glosmath@acrstyle}{}%
+\newcommand*{\glosmath@acrlang}{}%
 \newcommand*{\glosmath@acrmain}[1]{}%
 \newcommand*{\glosmath@Acrmain}[1]{}%
 \newcommand*{\glosmath@acrmainpl}[1]{}%
@@ -308,21 +258,7 @@ Francis Gagnon %
 {\GlsUseAcrEntryDispStyle{long-short}}% based on long-short disp style
 {%
 	% --- my custom macros for styles -------
-	\renewcommand*{\glosmath@acrstyle}{acr}
-	% outside parenthesis full text (default to entrylong macros) :
-	\renewcommand*{\glosmath@acrmain}[1]{\glsentrylong{##1}}%
-	\renewcommand*{\glosmath@Acrmain}[1]{\Glsentrylong{##1}}%
-	\renewcommand*{\glosmath@acrmainpl}[1]{\glsentrylongpl{##1}}%
-	\renewcommand*{\glosmath@Acrmainpl}[1]{\Glsentrylongpl{##1}}%
-	% inside parenthesis full text (default to entryshort) :
-	\renewcommand*{\glosmath@acrpar}[1]%
-		{\protect\firstacronymfont{\glsentryshort{##1}}}%
-	\renewcommand*{\glosmath@Acrpar}[1]%
-		{\protect\firstacronymfont{\glsentryshort{##1}}}%
-	\renewcommand*{\glosmath@acrparpl}[1]%
-		{\protect\firstacronymfont{\glsentryshortpl{##1}}}%
-	\renewcommand*{\glosmath@Acrparpl}[1]%
-		{\protect\firstacronymfont{\glsentryshortpl{##1}}}%
+	\glosmath@setLone% default to main language
 	% --- glossaries standard macro redefinitions ---
 	% Singular, no case change:
 	\renewcommand*{\genacrfullformat}[2]{%
@@ -379,5 +315,79 @@ Francis Gagnon %
 		}%
 	}%
 }%
+
+% ---------- glosmath@setLone --------------------------------------------
+\newcommand*{\glosmath@setLone}%
+{%
+	\renewcommand*{\glosmath@acrmain}[1]{\glsentrylong{##1}}%
+	\renewcommand*{\glosmath@Acrmain}[1]{\Glsentrylong{##1}}%
+	\renewcommand*{\glosmath@acrmainpl}[1]{\glsentrylongpl{##1}}%
+	\renewcommand*{\glosmath@Acrmainpl}[1]{\Glsentrylongpl{##1}}%
+	\renewcommand*{\glosmath@acrpar}[1]%
+	{\protect\firstacronymfont{\glsentryshort{##1}}}%
+	\renewcommand*{\glosmath@Acrpar}[1]%
+	{\protect\firstacronymfont{\glsentryshort{##1}}}%
+	\renewcommand*{\glosmath@acrparpl}[1]%
+	{\protect\firstacronymfont{\glsentryshortpl{##1}}}%
+	\renewcommand*{\glosmath@Acrparpl}[1]%
+	{\protect\firstacronymfont{\glsentryshortpl{##1}}}%
+	\renewcommand*{\glosmath@acrlang}{L1}% 
+}%
+
+% ---------- glosmath@setLtwo --------------------------------------------
+\newcommand*{\glosmath@setLtwo}%
+{%
+	\glosmath@setLone % base defintions
+	\renewcommand*{\glosmath@acrmain}[1]{\glsentrydescsec{##1}}%
+	\renewcommand*{\glosmath@Acrmain}[1]{\Glsentrydescsec{##1}}%
+	\renewcommand*{\glosmath@acrmainpl}[1]{\glsentrydescsec{##1}}%
+	\renewcommand*{\glosmath@Acrmainpl}[1]{\Glsentrydescsec{##1}}%
+	\renewcommand*{\glosmath@acrlang}{L2}%
+}%
+
+% ---------- glosmath@setLoneLtwo ---------------------------------------
+\newcommand*{\glosmath@setLoneLtwo}%
+{%
+	\glosmath@setLone % base defintions
+	\renewcommand*{\glosmath@acrpar}[1]%
+	{\protect\firstacronymfont{\glsentryshort{##1}}%
+		,\space\textit{\glsentrydescsec{##1}}}%
+	\renewcommand*{\glosmath@Acrpar}[1]%
+	{\protect\firstacronymfont{\glsentryshortpl{##1}}%
+		,\space\textit{\Glsentrydescsec{##1}}}%
+	\renewcommand*{\glosmath@acrparpl}[1]%
+	{\protect\firstacronymfont{\glsentryshort{##1}}%
+		,\space\textit{\glsentrydescsec{##1}}}%
+	\renewcommand*{\glosmath@Acrparpl}[1]%
+	{\protect\firstacronymfont{\glsentryshortpl{##1}}%
+		,\space\textit{\Glsentrydescsec{##1}}}%
+	\renewcommand*{\glosmath@acrlang}{L1L2}%
+}%
+
+% ---------- glosmath@setLtwoLone ----------------------------------------
+\newcommand*{\glosmath@setLtwoLone}%
+{%
+	\glosmath@setLtwo % base defintions
+	\renewcommand*{\glosmath@acrpar}[1]%
+	{\protect\firstacronymfont{\glsentryshort{##1}}%
+		,\space\textit{\glsentrydesc{##1}}}%
+	\renewcommand*{\glosmath@Acrpar}[1]%
+	{\protect\firstacronymfont{\glsentryshortpl{##1}}%
+		,\space\textit{\Glsentrydesc{##1}}}%
+	\renewcommand*{\glosmath@acrparpl}[1]%
+	{\protect\firstacronymfont{\glsentryshort{##1}}%
+		,\space\textit{\glsentrydescpl{##1}}}%
+	\renewcommand*{\glosmath@Acrparpl}[1]%
+	{\protect\firstacronymfont{\glsentryshortpl{##1}}%
+		,\space\textit{\Glsentrydescpl{##1}}}%
+	\renewcommand*{\glosmath@acrlang}{L2L1}%
+}%
+
+% ===========================================================================
+% =================== FINAL CODE EXECUTION ==================================
+% ===========================================================================
+
+\setglossarystyle{glosmath@glostyle}% default to main language only
+\setacronymstyle{glosmath@acrstyle}% default to main language only
 
 \endinput%

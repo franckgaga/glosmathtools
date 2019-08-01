@@ -13,11 +13,11 @@
 \usepackage{hyperref} % dernier package chargé sauf glosmathtools
 \usepackage[qtmarkupright,singlelineskip]{glosmathtools}
 %% ===================== preamble ============================================
-%% ------------- glossaries ------------------------------------------------
-\makeglossaries
-\setacronymstyle{acr-L2}
-\setglossarystyle{nomencl-L2L1}
-\loadglsentries{sample_glosmathtools_glos}
+%% ------------- glosmathtools -----------------------------------------------
+\makeglossaries% executé en premier
+\setacronymlang{L2}% abbréviation en langue seconde
+\setglossarystyle{nomencl-L2L1}% description bilingue
+\loadglsentries{sample_glosmathtools_glos} % fichier des définitions
 \glssetwidest{LOOP}  % IMPORTANT : entrée la plus large de la nomenclature
 \renewcommand*{\glstreenamefmt}[1]{\textbf{#1}} % formattage des catégories
 %% ------------- ulthese ----------------------------------------------------
@@ -52,7 +52,7 @@ Sous Windows avec MiKTeX, il est possible que le script \texttt{makeglossaries} 
 
 \section{Symboles, indices et accentuations}
 
-L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{\textbackslash gls} de glossaries : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : le \gls{LOOP}. Les abréviations sont uniquement définies à leur première utilisation : le \gls{LOOP}.
+L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{\textbackslash gls} de glossaries : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : le \Glspl{LOOP}. Les abréviations sont uniquement définies à leur première utilisation : le \gls{LOOP}.
 
 Les indices doivent être définis avec un label du format \texttt{sub.resteDuLabel}: l'indice \gls{sub.a} désigne l'air. La macro \texttt{\textbackslash glsub} permet d'ajouter un indice à une variable : \glsub{d}{v}, \glsub{z}{v}, \glsub{T}{v}, \glsub{D}{a}, \glsub{rho}{w} et \glsub{mu}{v}. En définissant les symboles mathématiques avec \texttt{\textbackslash newglosentrymath}, toutes les macros peuvent s'utiliser autant en mode \texttt{text} qu'en mode \texttt{math} (avec \texttt{\$\$}). Par contre, il est mieux d'écrire explicitement les symboles dans une équation afin d'alléger le code (pas d'hyperlien):
 \begin{equation}
@@ -75,14 +75,14 @@ De plus, un argument optionnel permet d'ajouter des accents à toutes les macros
 
 \section{Langue, abréviations et nomenclature}
 
-S'il y a des changements de langues à travers le document, il faut changer de style pour les acronymes. La clé \texttt{descseclang} doit être préalablement définie dans le glossaire. Par la suite, il y a 4 options de style pour \texttt{\textbackslash setacronymstyle} : 
+S'il y a des changements de langues à travers le document, il faut changer de langue pour les acronymes. La clé \texttt{descseclang} doit être préalablement définie dans le glossaire. Par la suite, la macro \texttt{\textbackslash setacronymlang} permet de choisir 4 options de langue: 
 \begin{description}
-	\item[acr-L1] (ou \textbf{acr}) description langue principale : \setacronymstyle{acr-L1} \acrfull{ODE}
-	\item[acr-L2] description langue seconde : \setacronymstyle{acr-L2}\acrfull{ODE}
-	\item[acr-L1L2] description bilingue, langue principale (abréviations, \textit{langue seconde}) : \setacronymstyle{acr-L1L2}\acrfull{ODE}
-	\item[acr-L2L1] description bilingue, langue seconde (abréviations, \textit{langue principale}) : \setacronymstyle{acr-L2L1}\acrfull{ODE}
+	\item[L1] description langue principale (abréviations) : \setacronymlang{L1}\acrfull{ODE}
+	\item[L2] description langue seconde (abréviations) : \setacronymlang{L2}\acrfull{ODE}
+	\item[L1L2] description bilingue, langue principale (abréviations, \textit{langue seconde}) : \setacronymlang{L1L2}\acrfull{ODE}
+	\item[L2L1] description bilingue, langue seconde (abréviations, \textit{langue principale}) : \setacronymlang{L2L1}\acrfull{ODE}
 \end{description}
-La macro \texttt{\textbackslash glslang} affiche l'acronyme dans le style spécifié : \glslang[L2L1]{ODE}. Les secondes descriptions sont aussi accessibles avec \texttt{\textbackslash glsdescsec} : une \glsdescsec{ODE}. 
+La macro \texttt{\textbackslash glslang} affiche l'acronyme dans le style spécifié : \setacronymlang{L2}\glslang[L2L1]{ODE}. Les secondes descriptions sont aussi accessibles avec \texttt{\textbackslash glsdescsec} : une \glsdescsec{ODE}. 
 
 Pour la nomenclature (ou liste des symboles), il est important de définir la plus longue entrée avec \texttt{\textbackslash glssetwidest} au préambule.
 Comme les abréviations, il est possible de changer sa langue avec 4 options de style pour \texttt{\textbackslash setglossarystyle}:
