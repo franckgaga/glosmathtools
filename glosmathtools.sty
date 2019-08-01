@@ -125,7 +125,11 @@ Francis Gagnon %
 % =================== PUBLIC ENVIRONMENTS ===================================
 % ===========================================================================
 
-
+\newenvironment{acronymlang}[1]%
+{%
+	\let\glosmath@oldacrlang\glosmath@acrlang%
+	\setacronymlang{#1}%
+}{\expandafter\setacronymlang\expandafter{\glosmath@oldacrlang}}%
 
 % ===========================================================================
 % =================== GLOSSARIES STYLES =====================================

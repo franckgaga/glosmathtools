@@ -82,7 +82,8 @@ S'il y a des changements de langues à travers le document, il faut changer de l
 	\item[L1L2] description bilingue, langue principale (abréviations, \textit{langue seconde}) : \setacronymlang{L1L2}\acrfull{ODE}
 	\item[L2L1] description bilingue, langue seconde (abréviations, \textit{langue principale}) : \setacronymlang{L2L1}\acrfull{ODE}
 \end{description}
-La macro \texttt{\textbackslash glslang} affiche l'acronyme dans le style spécifié : \setacronymlang{L2}\glslang[L2L1]{ODE}. Les secondes descriptions sont aussi accessibles avec \texttt{\textbackslash glsdescsec} : une \glsdescsec{ODE}. 
+\setacronymlang{L2}% retour à la langue du document
+L'environnement \texttt{acronymlang} fonctionne de manière similaire : \begin{acronymlang}{L2L1}\acrfull{ODE}\end{acronymlang}. La macro \texttt{\textbackslash glslang} affiche l'acronyme dans la langue spécifiée : \glslang[L2L1]{ODE}. Les secondes descriptions sont aussi accessibles avec \texttt{\textbackslash glsdescsec} : une \glsdescsec{ODE}.
 
 Pour la nomenclature (ou liste des symboles), il est important de définir la plus longue entrée avec \texttt{\textbackslash glssetwidest} au préambule.
 Comme les abréviations, il est possible de changer sa langue avec 4 options de style pour \texttt{\textbackslash setglossarystyle}:
