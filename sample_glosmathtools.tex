@@ -51,7 +51,7 @@ Sous Windows avec MiKTeX, il est possible que le script \texttt{makeglossaries} 
 
 \section{Symboles, indices et accentuations}
 
-L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{\textbackslash gls} de glossaries : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : le \Glspl{LOOP}. Les abréviations sont uniquement définies à leur première utilisation : le \gls{LOOP}.
+L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{\textbackslash gls} de glossaries : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : le \gls{LOOP}. Les abréviations sont uniquement définies à leur première utilisation : le \gls{LOOP}.
 
 Les indices doivent être définis avec un label du format \texttt{sub.resteDuLabel}: l'indice \gls{sub.a} désigne l'air. La macro \texttt{\textbackslash glsub} permet d'ajouter un indice à une variable : \glsub{d}{v}, \glsub{z}{v}, \glsub{T}{v}, \glsub{D}{a}, \glsub{rho}{w} et \glsub{mu}{v}. En définissant les symboles mathématiques avec \texttt{\textbackslash newglosentrymath}, toutes les macros peuvent s'utiliser autant en mode \texttt{text} qu'en mode \texttt{math} (avec \texttt{\$\$}). Par contre, il est mieux d'écrire explicitement les symboles dans une équation afin d'alléger le code (pas d'hyperlien):
 \begin{equation}
