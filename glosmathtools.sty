@@ -52,7 +52,12 @@ Francis Gagnon %
 	\newglossaryentry{#1}{name={\ensuremath{#2}},#3}%
 }%
 
-% ---------- glsac ----------------------------------------------------------
+% ---------- glscatnamefmt ------------------------------------------------
+% symbol category title format, default to glstreenamefmt
+% redefine to change the format style
+\newcommand*{\glscatnamefmt}[1]{\glstreenamefmt{#1}}
+
+% ---------- glsac --------------------------------------------------------
 % show $a$ with optionnal argument for accents
 \newcommand*{\glsac}[2][]%
 {%
@@ -229,7 +234,7 @@ Francis Gagnon %
 	\renewcommand*{\glossentry}[2]%
 	{%
 		\ifnum\value{glosmath@mainEntryCtr}>0\leavevmode\par\fi%
-		\glstarget{##1}{\glstreenamefmt{\glosstyledesc{##1}}}%
+		\glstarget{##1}{\glscatnamefmt{\glosstyledesc{##1}}}%
 		\par\nopagebreak%
 		\stepcounter{glosmath@mainEntryCtr}%
 	}%
