@@ -3,13 +3,11 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{glosmathtools}%
 [%
-2019/08/01 v0.5 %
+2019/08/02 v0.5.1 %
 Mathematical nomenclature tools based on glossaries package %
 Francis Gagnon %
 ]%
 \RequirePackage{amsmath,amsfonts,etoolbox}%
-% noredefwarn to supress warnings with memoir class redifintion :
-\RequirePackage[noredefwarn]{glossaries}%
 
 % ===========================================================================
 % =================== PACKAGE OPTIONS =======================================
@@ -21,7 +19,7 @@ Francis Gagnon %
 	\mathchardef\qtmark=\mathcode`"\AtBeginDocument{\mathcode`"=\string"8000}%
 }%
 
-% single lineskip nomenclature (memoir/linespace package required) 
+% single lineskip nomenclature (memoir/setspace package required) 
 \newtoggle{glosmath@singlelineskip}%
 \DeclareOption{singlelineskip}{\toggletrue{glosmath@singlelineskip}}%
 
@@ -29,12 +27,22 @@ Francis Gagnon %
 \newtoggle{glosmath@nodefop}%
 \DeclareOption{nodefop}{\toggletrue{glosmath@nodefop}}%
 
-%% unknown options
-\DeclareOption*{%
-	\PackageWarning{glosmathtools}{Unknown option '\CurrentOption'}%
-}%
+%% other options are passed to glossaires package
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{glossaries}}%
 
 \ProcessOptions\relax%
+% noredefwarn to supress warnings with memoir class redifintion
+\RequirePackage[noredefwarn]{glossaries}%
+
+\iftoggle{glosmath@singlelineskip}{%
+	\@ifclassloaded{memoir}{\relax}{%
+		\@ifpackageloaded{setspace}{\relax}{%
+			 \PackageError{glosmathtools}%
+			 	{memoir class ot setspace package must be %
+			    loaded for singlelineskip option}{}%
+		}%
+	}%
+}%
 
 % ===========================================================================
 % =================== PUBLIC MACROS =========================================

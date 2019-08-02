@@ -49,9 +49,20 @@ La commande \texttt{makeglossaries} est directement accessible dans les menu de 
 \end{itemize}
 Sous Windows avec MiKTeX, il est possible que le script \texttt{makeglossaries} nécessite une installation de Perl (voir \url{https://tinyurl.com/ybnoyqjp}). Une fois Perl installé, il faut exécuter le script \texttt{perltex.exe} disponible dans le répertoire d'installation de MiKTeX.
 
-\section{Symboles, indices et accentuations}
+\section{Options du package}
+Les options du package \texttt{glosmathtools} se résument par :
+\begin{description}
+	\item[qtmarkupright] caractère \texttt{<">} raccourci pour indice sans italique
+	\item[singlelineskip] force interligne simple pour la nomenclature
+	\item[nodefop] utilisation des opérateurs et accents sans définition
+	\item[{[autres options]}] passés au package \texttt{glossaries}
+\end{description}
+De plus amples informations sont fournies ci-dessous.
 
-L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{\textbackslash gls} de glossaries : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : le \gls{LOOP}. Les abréviations sont uniquement définies à leur première utilisation : le \gls{LOOP}.
+\section{Utilisation du package}
+\subsection{Symboles, indices et accentuations}
+
+L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{\textbackslash gls} de \texttt{glossaries} : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : le \gls{LOOP}. Les abréviations sont uniquement définies à leur première utilisation : le \gls{LOOP}.
 
 Les indices doivent être définis avec un label du format \texttt{sub.resteDuLabel}: l'indice \gls{sub.a} désigne l'air. La macro \texttt{\textbackslash glsub} permet d'ajouter un indice à une variable : \glsub{d}{v}, \glsub{z}{v}, \glsub{T}{v}, \glsub{D}{a}, \glsub{rho}{w} et \glsub{mu}{v}. En définissant les symboles mathématiques avec \texttt{\textbackslash newglosentrymath}, toutes les macros peuvent s'utiliser autant en mode \texttt{text} qu'en mode \texttt{math} (avec \texttt{\$\$}). Par contre, il est mieux d'écrire explicitement les symboles dans une équation afin d'alléger le code (pas d'hyperlien):
 \begin{equation}
@@ -72,7 +83,7 @@ Il est aussi possible d'ajouter des accents sur les variables avec la macro \tex
 \end{description}
 De plus, un argument optionnel permet d'ajouter des accents à toutes les macros précédentes : \glsub[bar]{T}{v} et \glsubs[dot]{m}{v}{a}. Il y a deux arguments optionnels dans le cas de \texttt{\textbackslash glsvi} : \glsvi[dot]{m}{k}, \glsvi[][dot]{k}{m} et \glsvi[bar][dot]{T}{m}. Finalement, il est possible d'utiliser les accents sans définition dans la nomenclature avec l'option \texttt{nodefop}.
 
-\section{Langue, abréviations et nomenclature}
+\subsection{Langue, abréviations et nomenclature}
 
 S'il y a des changements de langues à travers le document, il faut changer de langue pour les acronymes. La clé \texttt{descseclang} doit être préalablement définie dans le glossaire. Par la suite, la macro \texttt{\textbackslash setacronymlang} permet de choisir 4 options de langue: 
 \begin{description}
@@ -92,7 +103,7 @@ Comme les abréviations, il est possible de changer sa langue avec 4 options de 
 	\item[nomencl-L1L2] descriptions bilingues, langue principale (\textit{langue seconde})
 	\item[nomencl-L2L1] descriptions bilingues, langue seconde (\textit{langue principale})
 \end{description}
-L'option \texttt{singlespaceglos} du package permet de forcer un interligne simple pour la nomenclature (nécessite \texttt{ulthese}/\texttt{memoir} ou le package \texttt{linespace}). La macro \texttt{\textbackslash glscatnamefmt} peut être redéfinie au préambule afin de modifier le style de l'en-tête des catégories. L'exemple de la page ii est une nomenclature bilingue \textbf{nomencl-L2L1} en interligne simple.
+L'option \texttt{singlespaceglos} du package permet de forcer un interligne simple pour la nomenclature (nécessite \texttt{ulthese}/\texttt{memoir} ou le package \texttt{setspace}). La macro \texttt{\textbackslash glscatnamefmt} peut être redéfinie au préambule afin de modifier le style de l'en-tête des catégories. L'exemple de la page ii est une nomenclature bilingue \textbf{nomencl-L2L1} en interligne simple.
 
 Si défini, le contenu de la clé \texttt{symbol} est ajouté a la fin de la description (pour les unités ou dimensions). À noter que les symboles mathématiques ne sont pas enregistrés dans cette clé, mais bien dans la clé \texttt{name}.
 
