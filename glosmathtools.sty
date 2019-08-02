@@ -34,6 +34,7 @@ Francis Gagnon %
 % noredefwarn to supress warnings with memoir class redifintion
 \RequirePackage[noredefwarn]{glossaries}%
 
+% checkup if memoir or setspace is loaded with singlelineskip option
 \iftoggle{glosmath@singlelineskip}{%
 	\@ifclassloaded{memoir}{\relax}{%
 		\@ifpackageloaded{setspace}{\relax}{%
