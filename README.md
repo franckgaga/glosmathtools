@@ -23,7 +23,7 @@ later version.
 
 ## Version
 
-0.5.1 (2019-08-02)
+0.5.2 (2020-03-20)
 
 ## Author
 
