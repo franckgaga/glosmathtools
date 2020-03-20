@@ -74,16 +74,6 @@ Francis Gagnon %
 	\ensuremath{\glsdisp{#2}{\glosmath@MyGlsMacro{#2}}}%
 }%
 
-% ---------- glsvi -------------------------------------------------------
-% show $a_b$ with link to "a" and variable "b"
-% 4 arguments : 2 mandatory arguments and optional 1st and 2nd argument
-% for adding accent on "a" and "b"
-\newcommand*{\glsvi}[1][]%
-{%
-	\def\glosmath@ArgI{#1}%
-	\glosmath@glsviRelay%
-}%
-
 % ---------- glsub -------------------------------------------------------
 % show $a_b$ with link to "a" and subscript "sub.b"
 % 3 arguments : 2 mandatory arguments and optional 1st argument 
@@ -108,6 +98,26 @@ Francis Gagnon %
 		}%
 	}%
 }%
+
+% ---------- glsvi -------------------------------------------------------
+% show $a_b$ with link to "a" and variable "b"
+% 4 arguments : 2 mandatory arguments and optional 1st and 2nd argument
+% for adding accent on "a" and "b"
+\newcommand*{\glsvi}[1][]%
+{%
+	\def\glosmath@ArgI{#1}%
+	\glosmath@glsviRelay%
+}%
+
+% ---------- glsvisub ----------------------------------------------------
+% show $a_{b_c}$ with link to "a", variable "b" and subscript "sub.c"
+% 4 arguments : 3 mandatory arguments and optional 1st and 2nd argument
+% for adding accent on "a" and "b"
+\newcommand*{\glsvisub}[1][]%
+{%
+	\def\glosmath@ArgI{#1}%
+	\glosmath@glsvisubRelay%
+}%s
 
 % ---------- glslang -----------------------------------------------------
 % show full accronyms definition in specified languages
@@ -331,7 +341,24 @@ Francis Gagnon %
 	\let \glosmath@SecGls \glosmath@MyGlsMacro%
 	\ensuremath{%
 		\glsdisp{#2}{%
-			\glosmath@FirGls{#2}_{\glsdisp{#3}{\glosmath@SecGls{#3}}}%
+			\glosmath@FirGls{#2}_{%
+				\glsdisp{#3}{\glosmath@SecGls{#3}}}%
+		}%
+	}%
+}%
+
+% ---------- glosmath@glsvisubRelay ---------------------------------------
+% relay macro for two optional aguments in the glsvisub macro
+\newcommand*{\glosmath@glsvisubRelay}[4][]%
+{%
+	\expandafter\glosmath@getMyGlsMacro\expandafter{\glosmath@ArgI}%
+	\let \glosmath@FirGls \glosmath@MyGlsMacro%
+	\glosmath@getMyGlsMacro{#1}%
+	\let \glosmath@SecGls \glosmath@MyGlsMacro%
+	\ensuremath{%
+		\glsdisp{#2}{%
+			\glosmath@FirGls{#2}_{%
+				\glsdisp{#3}{\glosmath@SecGls{#3}_{\gls{sub.#4}}}}%
 		}%
 	}%
 }%

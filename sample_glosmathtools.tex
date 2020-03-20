@@ -11,7 +11,8 @@
 \ifxetex\else \usepackage[utf8]{inputenc} \fi
 \usepackage{mathtools,siunitx,amsmath,amsfonts}
 \usepackage{hyperref} % dernier package chargé sauf glosmathtools
-\usepackage[qtmarkupright,singlelineskip]{glosmathtools}
+% option "toc" passé à glossaries : ajout nomenclature dans signets du PDF :
+\usepackage[qtmarkupright,singlelineskip,toc]{glosmathtools}
 %% ===================== preamble ============================================
 %% ------------- glosmathtools -----------------------------------------------
 \makeglossaries% executé en premier
@@ -22,7 +23,7 @@
 \renewcommand*{\glscatnamefmt}[1]{\textbf{#1}} % format des catégories
 %% ------------- ulthese ----------------------------------------------------
 \titre{Documentation et exemple de \texttt{glosmathtools} dans \texttt{ulthese}}
-\soustitre{v0.5.1}
+\soustitre{v0.5.2}
 \auteur{Francis Gagnon}
 %% ============================================================================
 
@@ -58,7 +59,7 @@ Les options du package \texttt{glosmathtools} se résument par :
 	\item[nodefop] utilisation des opérateurs et accents sans définition
 	\item[{[autres options]}] passés au package \texttt{glossaries}
 \end{description}
-De plus amples informations sont fournies ci-dessous.
+Par exemple, l'option \textbf{toc} du package \texttt{glossaries} peut être ajouté afin d'inclure la nomenclature dans la table des matières. De plus amples informations sont fournies ci-dessous (voir .
 
 \section{Utilisation du package}
 \subsection{Symboles, indices et accentuations}
@@ -71,9 +72,9 @@ d"v + \glsub{d}{v} = \SI{10.0}{\centi\meter} = 3.937\qtmark
 \end{equation}
 Le package peut être chargé avec l'option \texttt{qtmarkupright}. Le caractère \texttt{<">} est alors configuré comme raccourci pour l'écriture d'un indice sans italique en mode \texttt{math} (\texttt{<\_>} pour indice italique) \footnote{ La macro \texttt{\textbackslash qtmark} permet d'insérer le caractère \texttt{<">}. En ISO, les indices représentant l'abréviation d'un mot s'écrivent sans italique, et, celles représentant une variable, en italique.}. 
 
-La macro \texttt{\textbackslash glsvi} permet d'ajouter une variable en indice à une autre variable : \glsvi{T}{k}. Il est aussi possible d'ajouter deux indices séparés par une virgule avec \texttt{\textbackslash glsubs} : \glsubs{D}{w}{a}. En l’occurrence, l'opérateur virgule est ajouté dans la nomenclature, qui doit donc être défini dans le glossaire sous le label \texttt{op.comma}.
+La macro \texttt{\textbackslash glsvi} permet d'ajouter une variable en indice à une autre variable, et \texttt{\textbackslash glsvisub}, une variable indicée à une autre variable : \glsvi{T}{k} et \glsvisub{T}{z}{v}. Finalement, il est possible d'ajouter deux indices séparés par une virgule avec \texttt{\textbackslash glsubs} : \glsubs{D}{w}{a}. En l’occurrence, l'opérateur virgule est ajouté dans la nomenclature, qui doit donc être défini dans le glossaire sous le label \texttt{op.comma}.
 
-Il est aussi possible d'ajouter des accents sur les variables avec la macro \texttt{\textbackslash glsac} : \glsac[dot]{m} et \glsac[bar]{T}. À leur utilisation respective, un opérateur est ajouté dans la nomenclature. Ils doivent donc être définis à leur label respectif. Les accents disponibles sont:
+Des accents peuvent aussi s'ajouter sur les variables avec la macro \texttt{\textbackslash glsac} : \glsac[dot]{m} et \glsac[bar]{T}. À leur utilisation respective, un opérateur est ajouté dans la nomenclature. Ils doivent donc être définis à leur label respectif. Les accents disponibles sont:
 \begin{description} 
 \item[dot] $\dot{\bullet}$ (défini au label \texttt{op.dot})
 \item[ddot] $\ddot{\bullet}$ (défini au label \texttt{op.ddot})
@@ -82,7 +83,7 @@ Il est aussi possible d'ajouter des accents sur les variables avec la macro \tex
 \item[vec] $\vec{\bullet}$ (défini au label \texttt{op.vec})
 \item[tilde] $\widetilde{\bullet}$ (défini au label \texttt{op.tilde})
 \end{description}
-De plus, un argument optionnel permet d'ajouter des accents à toutes les macros précédentes : \glsub[bar]{T}{v} et \glsubs[dot]{m}{v}{a}. Il y a deux arguments optionnels dans le cas de \texttt{\textbackslash glsvi} : \glsvi[dot]{m}{k}, \glsvi[][dot]{k}{m} et \glsvi[bar][dot]{T}{m}. Finalement, il est possible d'utiliser les accents sans définition dans la nomenclature avec l'option \texttt{nodefop}.
+De plus, un argument optionnel permet d'ajouter des accents à toutes les macros précédentes : \glsub[bar]{T}{v} et \glsubs[dot]{m}{v}{a}. Il y a deux arguments optionnels dans le cas de \texttt{\textbackslash glsvi} et \texttt{\textbackslash glsvisub} : \glsvi[dot]{m}{k}, \glsvi[bar][dot]{T}{m} et \glsvisub[][dot]{T}{m}{w}. Finalement, il est possible d'utiliser les accents sans définition dans la nomenclature avec l'option \texttt{nodefop}.
 
 \subsection{Langue, abréviations et nomenclature}
 
