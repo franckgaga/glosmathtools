@@ -252,7 +252,9 @@ Francis Gagnon %
 	\renewcommand*{\glosstyledesc}[1]{\glsentrydesc{##1}}%
 	\renewcommand*{\glossentry}[2]%
 	{%
-		\ifnum\value{glosmath@mainEntryCtr}>0\leavevmode\par\fi%
+		\ifnum\value{glosmath@mainEntryCtr}>0%
+			\leavevmode\par\nointerlineskip%
+		\fi%
 		\glstarget{##1}{\glscatnamefmt{\glosstyledesc{##1}}}%
 		\par\nopagebreak%
 		\stepcounter{glosmath@mainEntryCtr}%
