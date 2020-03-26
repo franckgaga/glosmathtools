@@ -5,8 +5,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % nohyperref pour charger le package hyperref manuellement 
-% voir https://gitlab.com/vigou3/ulthese/issues/2
-\documentclass[projet,nohyperref,english,french]{ulthese}
+\documentclass[projet,nohyperref,article,english,french]{ulthese}
 %% ===================== packages ============================================
 \ifxetex\else \usepackage[utf8]{inputenc} \fi
 \usepackage{mathtools,siunitx,amsmath,amsfonts}
@@ -23,14 +22,16 @@
 \renewcommand*{\glscatnamefmt}[1]{\textbf{#1}} % format des catégories
 %% ------------- ulthese ----------------------------------------------------
 \titre{Documentation et exemple de \texttt{glosmathtools} dans \texttt{ulthese}}
-\soustitre{v0.5.2}
+\soustitre{v1.0.0}
 \auteur{Francis Gagnon}
+\makeatletter\renewcommand*{\UL@typeofdoc}{}\makeatother
 %% ============================================================================
 
 \begin{document}
-\frontmatter  
-           
+\selectlanguage{french} % pour babel (pas glosmathtool)
+\frontmatter         
 \frontispice
+
 \printglossary[title=Nomenclature]
 
 \mainmatter                     
@@ -62,9 +63,10 @@ Les options du package \texttt{glosmathtools} se résument par :
 Par exemple, l'option \textbf{toc} du package \texttt{glossaries} peut être ajouté afin d'inclure la nomenclature dans la table des matières.
 
 \section{Utilisation du package}
-\subsection{Symboles, indices et accentuations}
+Par défaut, les symboles mathématiques doivent être utilisés dans le texte pour qu'ils soient ajoutés à la nomenclature, ce qui incite l'auteur à introduire ses variables. Il est tout de même possible de manuellement ajouter un symbole sans y référer avec la macro \texttt{\textbackslash glsadd\{label\}}, ou \texttt{\textbackslash glsaddall}, pour tout ajouter.
 
-L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{\textbackslash gls} de \texttt{glossaries} : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : le \gls{LOOP}. Les abréviations sont uniquement définies à leur première utilisation : le \gls{LOOP}.
+\subsection{Symboles, indices et accentuations}
+L'insertion d'un symbole mathématique simple avec hyperlien se fait avec la macro \texttt{\textbackslash gls} de \texttt{glossaries} : \gls{k}, \gls{mat.A} et \gls{mat.b}. C'est la même chose pour les abréviations : la \gls{TL}. Les abréviations sont uniquement définies à leur première utilisation : la \gls{TL}.
 
 Les indices doivent être définis avec un label du format \texttt{sub.resteDuLabel}: l'indice \gls{sub.a} désigne l'air. La macro \texttt{\textbackslash glsub} permet d'ajouter un indice à une variable : \glsub{d}{v}, \glsub{z}{v}, \glsub{T}{v}, \glsub{D}{a}, \glsub{rho}{w} et \glsub{mu}{v}. En définissant les symboles mathématiques avec \texttt{\textbackslash newglosentrymath}, toutes les macros peuvent s'utiliser autant en mode \texttt{text} qu'en mode \texttt{math} (avec \texttt{\$\$}). Par contre, il est mieux d'écrire explicitement les symboles dans une équation afin d'alléger le code (pas d'hyperlien):
 \begin{equation}
@@ -86,7 +88,6 @@ Des accents peuvent aussi s'ajouter sur les variables avec la macro \texttt{\tex
 De plus, un argument optionnel permet d'ajouter des accents à toutes les macros précédentes : \glsub[bar]{T}{v} et \glsubs[dot]{m}{v}{a}. Il y a deux arguments optionnels dans le cas de \texttt{\textbackslash glsvi} et \texttt{\textbackslash glsvisub} : \glsvi[dot]{m}{k}, \glsvi[bar][dot]{T}{m} et \glsvisub[][dot]{T}{m}{w}. Finalement, il est possible d'utiliser les accents sans définition dans la nomenclature avec l'option \texttt{nodefop}.
 
 \subsection{Langue, abréviations et nomenclature}
-
 S'il y a des changements de langues à travers le document, il faut changer de langue pour les acronymes. La clé \texttt{descseclang} doit être préalablement définie dans le glossaire. Par la suite, la macro \texttt{\textbackslash setacronymlang} permet de choisir 4 options de langue: 
 \begin{description}
 	\item[L1] description langue principale (abréviations) : \setacronymlang{L1}\acrfull{ODE}

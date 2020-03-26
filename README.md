@@ -13,8 +13,7 @@ The main features are:
 - bilangual nomenclatures (for bilangual documents)
 - bilangual abbreviations
 
-At the time being, the documentation is based on `ulthese` class and
-in french only.
+The documentation is based on `ulthese` class.
 
 ## Licence
 
@@ -23,7 +22,7 @@ later version.
 
 ## Version
 
-0.5.2 (2020-03-20)
+1.0.0 (2020-03-26)
 
 ## Author
 
