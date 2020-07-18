@@ -1,17 +1,14 @@
-syntax: glob
 *.aux
 *.glo
 *.ist
 *.log
 *.out
-ex_glosnomtools.pdf
 *.synctex.gz
 *.toc
 *.bbl
 *.blg
 *.glg
 *.gls
-sample_glosnomtools.pdf
 *.zip
 sample_glosmathtools.pdf
 glosmathtools.tar.gz
